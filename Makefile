@@ -6,14 +6,14 @@
 #    By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/17 10:25:07 by mterkhoy          #+#    #+#              #
-#    Updated: 2021/10/17 16:11:22 by mterkhoy         ###   ########.fr        #
+#    Updated: 2021/10/25 16:54:00 by mterkhoy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-CC 	= clang-9
-CFLAGS = -Wall -Wextra -Werror
+CC 	= gcc
+CFLAGS = -g
 
 INC_DIR = ./includes
 LIB_DIR = ./libft

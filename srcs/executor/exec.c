@@ -6,67 +6,48 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2021/10/17 15:53:29 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2021/11/03 13:32:53 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	**process_redirects(char **argv, int *fds, int k)
+void	process_redirects(t_list *cmds, t_cmd *cmd, int *fds, int j)
 {
-	char	**argv_clean;
-	int		cleanidx = 0;
 	int		fd;
-	int		i;
+	t_list	*lst;
+	t_rdr	*rdr;
 	char	*buffer;
 
-	i = 0;
-	while (argv[i])
-		i++;
-	argv_clean = malloc((i + 1) * sizeof(char *));
-	for (int j = 0; argv[j]; j++)
+	if (cmd->r_in)
 	{
-		if (!strcmp(argv[j], "<"))
+		lst = cmd->r_in;
+		while (lst)
 		{
-			++j;
-			fd = open(argv[j], O_RDONLY);
-			dup2(fd, STDIN_FILENO);
-			close(fd);
-			continue ;
+			rdr = lst->content;
+			if (rdr->type == 1)
+				fd = open((char *)rdr->file, O_RDONLY);
+			dup2(fd, fds[j * 2]);
+			lst = lst->next;
 		}
-		if (!strcmp(argv[j], "<<"))
-		{
-			++j;
-			while (1)
-			{
-				buffer = readline("> ");
-				if (!strcmp(buffer, argv[j]))
-					break ;
-				write(fds[k + 1], buffer, strlen(buffer));
-				write(fds[k + 1], "\n", 1);
-			}
-			continue ;
-		}
-		if (!strcmp(argv[j], ">"))
-		{
-			++j;
-			fd = open(argv[j], O_CREAT | O_RDWR, 0644);
-			dup2(fd, STDOUT_FILENO);
-			close(fd);
-			continue ;
-		}
-		if (!strcmp(argv[j], ">>"))
-		{
-			++j;
-			fd = open(argv[j], O_CREAT | O_RDWR | O_APPEND, 0644);
-			dup2(fd, STDOUT_FILENO);
-			close(fd);
-			continue ;
-		}
-		argv_clean[cleanidx++] = trim_quotes(argv[j]);
 	}
-	argv_clean[cleanidx] = NULL;
-	return (argv_clean);
+	if (cmd->r_out)
+	{
+		lst = cmd->r_out;
+		while (lst)
+		{
+			rdr = lst->content;
+			if (rdr->type == 1)
+				fd = open((char *)rdr->file, O_CREAT | O_RDWR | O_TRUNC, 0644);
+			else
+				fd = open((char *)rdr->file, O_CREAT | O_RDWR | O_APPEND, 0644);
+			lst = lst->next;
+		}
+		dup2(fd, STDOUT_FILENO);
+	}
+	dup2(fds[j * 2], STDIN_FILENO);
+	if (cmds->next && !cmd->r_out)
+		dup2(fds[(j * 2) + 3], STDOUT_FILENO);
 }
 
 void	exec_path(char **tokens, t_sys *mini)
@@ -89,68 +70,50 @@ void	exec_path(char **tokens, t_sys *mini)
 			execve(path_to_bin, tokens, env_to_tab(mini->env));
 		free(path_to_bin);
 	}
-	exit (1);
-}
-
-void	process_pipes(t_list *cmds, int *fds, int j)
-{
-	if (cmds->next)
-		dup2(fds[j + 3], STDOUT_FILENO);
-    dup2(fds[j], STDIN_FILENO);
-}
-
-void	exec_cmds(t_list *cmds, int *fds, int pipes_count, t_sys *mini)
-{
-	t_cmd	*cmd;
-	int		pid;
-	int		j;
-	int		i;
-	char	**argv_clean;
-
-	j = 0;
-	while (cmds)
-	{
-		cmd = cmds->content;
-		argv_clean = process_redirects(cmd->argv, fds, j);
-		pid = fork();
-		if (pid == 0)
-		{
-			
-			process_pipes(cmds, fds, j);
-			i = -1;
-			while (++i < 2 * pipes_count)
-				close(fds[i]);
-			if (!argv_clean)
-				exit (1);
-			/*if (is_builtin(cmd->argv[0]))
-				exec_builtin(argv_clean, mini->env, mini);*/
-			else
-				exec_path(argv_clean, mini);
-		}
-		free(argv_clean);
-		cmds = cmds->next;
-		j += 2;
-	}
+	write (1, "Command not found\n", 18);
+	exit(127);
 }
 
 int	exec(t_list *cmds, t_sys *mini)
 {
 	int		*fds;
-	int		pipes_count;
+	int		cmds_count;
+	t_cmd	*cmd;
 	int		i;
+	int		j;
+	int		pid;
 	int		status;
 
-	pipes_count = ft_lstsize(cmds);
-	fds = malloc(2 * pipes_count * sizeof(int));
+	cmds_count = ft_lstsize(cmds);
+	fds = malloc(2 * cmds_count * sizeof(int));
 	i = -1;
-	while (++i < pipes_count)
+	while (++i < cmds_count)
 		pipe(&fds[i * 2]);
-	exec_cmds(cmds, fds, pipes_count, mini);
+	j = 0;
+	while (cmds)
+	{
+		cmd = cmds->content;
+		pid = fork();
+		if (pid == 0)
+		{
+			process_redirects(cmds, cmd, fds, j);
+			i = -1;
+			while (++i < 2 * cmds_count)
+				close(fds[i]);
+			if (!cmd->clean)
+				exit (1);
+			/*if (is_builtin(cmd->argv[0]))
+				exec_builtin(argv_clean, mini->env, mini);*/
+			exec_path(cmd->clean, mini);
+		}
+		cmds = cmds->next;
+		j++;
+	}
 	i = -1;
-	while (++i < 2 * pipes_count)
+	while (++i < 2 * cmds_count)
 		close(fds[i]);
 	i = -1;
-	while (++i < pipes_count + 1)
+	while (++i < cmds_count)
 		wait(&status);
 	free(fds);
 	return (status);

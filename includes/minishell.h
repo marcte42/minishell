@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 12:27:18 by pravry            #+#    #+#             */
-/*   Updated: 2021/10/17 15:59:21 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2021/10/25 12:15:04 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,16 @@ typedef struct		s_sys
 typedef struct		s_rdr
 {
 	int     type;
-	char    *name;
+	char    *file;
 }					t_rdr;
 
 typedef struct		s_cmd
 {
 	char	*raw;
 	char	**argv;
+	char	**clean;
+	t_list	*r_in;
+	t_list	*r_out;
 }					t_cmd;
 
 t_list	*init_env(char **env);

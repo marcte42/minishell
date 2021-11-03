@@ -6,11 +6,18 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 11:55:02 by pravry            #+#    #+#             */
-/*   Updated: 2021/10/17 16:01:04 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2021/10/25 16:06:21 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void handler(int num)
+{
+	if (num == SIGINT)
+		rl_redisplay();
+	exit(0);
+}
 
 int	main(int ac, char **av, char *env[])
 {
@@ -18,6 +25,7 @@ int	main(int ac, char **av, char *env[])
 	t_list	*env_lst;
 	t_sys	*mini;
 
+	signal(SIGINT, handler);
 	env_lst = init_env(env);
 	mini = init_sys(env_lst);
 	line = NULL;
