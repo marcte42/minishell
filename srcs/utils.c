@@ -30,6 +30,8 @@ void	print_cmds(t_list *cmds)
 	}
 }
 
+	// can be improved, add checks before free so can call this
+		// anytime.
 void	free_cmds(t_list *cmds)
 {
 	t_list	*tmp;
@@ -43,7 +45,7 @@ void	free_cmds(t_list *cmds)
 		i = -1;
 		while(cmd->argv[++i])
 			free(cmd->argv[i]);
-		free(cmd->argv);
+		free(cmd->argv);	// scott_free
 		free(cmd->raw);
 		free(cmd);
 		cmds = cmds->next;

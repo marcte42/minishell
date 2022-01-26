@@ -19,13 +19,16 @@ void	process_redirects(t_list *cmds, t_cmd *cmd, int *fds, int j)
 	t_rdr	*rdr;
 	char	*buffer;
 
+	// if (!cmds || !cmd || !fds) return
+
 	if (cmd->r_in)
 	{
 		lst = cmd->r_in;
 		while (lst)
 		{
+			// yea we could add more security checks here
 			rdr = lst->content;
-			if (rdr->type == 1)
+			if (rdr->type == 1)	// if rdr first
 				fd = open((char *)rdr->file, O_RDONLY);
 			dup2(fd, fds[j * 2]);
 			lst = lst->next;
@@ -34,16 +37,17 @@ void	process_redirects(t_list *cmds, t_cmd *cmd, int *fds, int j)
 	if (cmd->r_out)
 	{
 		lst = cmd->r_out;
-		while (lst)
+		while (lst)	// same as above, security checks i think
 		{
 			rdr = lst->content;
-			if (rdr->type == 1)
+			if (rdr->type == 1)	// if rdr first
 				fd = open((char *)rdr->file, O_CREAT | O_RDWR | O_TRUNC, 0644);
 			else
 				fd = open((char *)rdr->file, O_CREAT | O_RDWR | O_APPEND, 0644);
+			// should we: if (fd == -1) return and free?
 			lst = lst->next;
 		}
-		dup2(fd, STDOUT_FILENO);
+		dup2(fd, STDOUT_FILENO); // can it fail? yes rets (-1) if fail, secure it
 	}
 	dup2(fds[j * 2], STDIN_FILENO);
 	if (cmds->next && !cmd->r_out)
@@ -56,6 +60,10 @@ void	exec_path(char **tokens, t_sys *mini)
 	char	*path_to_bin;
 	char	*tmp;
 	int		i;
+
+	// if (!tokens || !mini) ideally
+
+	// secure all the split and joins
 
 	if (open(tokens[0], O_RDONLY) > 0)
 		execve(tokens[0], tokens, env_to_tab(mini->env));
@@ -70,7 +78,7 @@ void	exec_path(char **tokens, t_sys *mini)
 			execve(path_to_bin, tokens, env_to_tab(mini->env));
 		free(path_to_bin);
 	}
-	write (1, "Command not found\n", 18);
+	write (1, "Command not found\n", 18);	// perror instead?
 	exit(127);
 }
 
@@ -85,7 +93,7 @@ int	exec(t_list *cmds, t_sys *mini)
 	int		status;
 
 	cmds_count = ft_lstsize(cmds);
-	fds = malloc(2 * cmds_count * sizeof(int));
+	fds = malloc(2 * cmds_count * sizeof(int));	// ft_calloc? but ints so maybe not necessary
 	i = -1;
 	while (++i < cmds_count)
 		pipe(&fds[i * 2]);
@@ -93,8 +101,10 @@ int	exec(t_list *cmds, t_sys *mini)
 	while (cmds)
 	{
 		cmd = cmds->content;
-		pid = fork();
-		if (pid == 0)
+		pid = fork();	// store pid in cmd sturct so can wait for it
+		if (pid == -1)
+			return (0);	// make sure correct return
+		else if (pid == 0)
 		{
 			process_redirects(cmds, cmd, fds, j);
 			i = -1;
@@ -104,17 +114,17 @@ int	exec(t_list *cmds, t_sys *mini)
 				exit (1);
 			/*if (is_builtin(cmd->argv[0]))
 				exec_builtin(argv_clean, mini->env, mini);*/
-			exec_path(cmd->clean, mini);
+			exec_path(cmd->clean, mini); 
 		}
 		cmds = cmds->next;
 		j++;
 	}
 	i = -1;
 	while (++i < 2 * cmds_count)
-		close(fds[i]);
+		close(fds[i]);	// does close work on fd = -1? in error case
 	i = -1;
 	while (++i < cmds_count)
-		wait(&status);
+		wait(&status);	//waitpid maybe? 
 	free(fds);
-	return (status);
+	return (status); // put status in t_sys struct
 }

@@ -34,6 +34,7 @@ int	count_redirs(char *str)
 	return (count);
 }
 
+	// double check secure frees
 char	*add_space(char *str)
 {
 	char	*new_str;

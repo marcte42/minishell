@@ -23,19 +23,20 @@ int	main(int ac, char **av, char *env[])
 {
 	char	*line;
 	t_list	*env_lst;
-	t_sys	*mini;
+	t_sys	*mini;		// doesn't need to be a pointer.
 
 	signal(SIGINT, handler);
 	env_lst = init_env(env);
 	mini = init_sys(env_lst);
+	// free env_list?
 	line = NULL;
 	if (ac != 1 || av[0][1] == '1')
 		return (0);
 	while (1)
 	{
 		line = readline("$> ");
-		add_history(line);
-		mini->cmds = parse(line);
+		add_history(line);	// can if fail? if so free line
+		mini->cmds = parse(line);	// i assume this shit needs to be seucred, like all of these function calls!
 		exec(mini->cmds, mini);
 		free_cmds(mini->cmds);
 	}

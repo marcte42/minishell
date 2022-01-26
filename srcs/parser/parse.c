@@ -21,8 +21,9 @@ int	parse_args(t_list *cmds)
 	{
 		cmd = cmds->content;
 		raw_space = add_space(cmd->raw);
-		if (!raw_space)
+		if (!raw_space)	// free cmds but not in this func
 			return (0);
+		// what happens if split fails, things to free? ret(0)?
 		cmd->argv = ft_split_constraint(raw_space, ' ', is_inquotes);
 		free(raw_space);
 		cmds = cmds->next;
@@ -44,18 +45,19 @@ t_list	*parse_pipes(char *line)
 		return (NULL);
 	i = -1;
 	while (tokens[++i])
-	{
-		cmd = malloc(sizeof(t_cmd));
-		if (!cmd)
+	{	// maybe just make a free_cmd() and call each time, there is one, but fix it
+		cmd = malloc(sizeof(t_cmd));	// calloc so no bzero
+		if (!cmd)	// ft_free_strtab(tokens); and free lst
 			return (NULL);
 		bzero(cmd, sizeof(t_cmd));
 		cmd->raw = tokens[i];
 		node = ft_lstnew(cmd);
-		if (!node)
+		if (!node)	// free cmds and lst and tokens
 			return (NULL);
 		ft_lstadd_back(&lst, node);
 	}
-	free(tokens);
+	free(tokens);	// ok so you free the table of strings but not
+					// the strings? i think
 	return (lst);
 }
 
@@ -91,20 +93,23 @@ int	process_redirects_cmd(t_cmd *cmd)
 
 	j = 0;
 	i = 0;
-	while (cmd->argv[i])
+	if (!cmd)
+		return (0);
+	while (cmd->argv[i])// i have a strtab_len(), if len 0 we return?
 		i++;
-	cmd->clean = malloc((i + 1) * sizeof(char *));
+	cmd->clean = malloc((i + 1) * sizeof(char *));// ft_calloc
 	i = -1;
 	while (cmd->argv[++i])
 	{
-		if (!strcmp(cmd->argv[i], "<"))
+		if (!strcmp(cmd->argv[i], "<"))	// could def make a func that does all these
 		{
 			i++;
 			rdr = malloc(sizeof(rdr));
 			rdr->type = 1;
 			rdr->file = cmd->argv[i];
+			// not secure, you know how to fix, also free rdr?
 			ft_lstadd_back(&cmd->r_in, ft_lstnew(rdr));
-			continue ;
+			continue ;	// is this allowed?
 		}
 		if (!strcmp(cmd->argv[i], "<<"))
 		{
@@ -146,7 +151,7 @@ int	parse_redirects(t_list *cmds)
 	while (cmds)
 	{
 		cmd = cmds->content;
-		process_redirects_cmd(cmd);
+		process_redirects_cmd(cmd); // might want option to ret(0)
 		cmds = cmds->next;
 	}
 	return (1);
@@ -156,13 +161,15 @@ t_list	*parse(char *line)
 {
 	t_list	*cmds;
 
+	//surely some more checks... like for all the func calls
+
 	if (!line)
 		return (NULL);
 	if (!control_quotes(line))
 		return (NULL);
 	line = parse_env(line);
-	cmds = parse_pipes(line);
-	free(line);
+	cmds = parse_pipes(line);	
+	ft_scott_free(&line, 0);
 	parse_args(cmds);
 	parse_redirects(cmds);
 	return (cmds);

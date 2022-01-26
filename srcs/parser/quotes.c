@@ -77,7 +77,7 @@ char	*trim_quotes(char *str)
 			return (NULL);
 		else
 		{
-			newstr = malloc((len - 1) * sizeof(char));
+			newstr = malloc((len - 1) * sizeof(char)); // calloc maybe
 			if (!newstr)
 				return (NULL);
 			strncpy(newstr, &str[1], len - 2);

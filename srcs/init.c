@@ -16,7 +16,7 @@ t_sys 	*init_sys(t_list *env)
 {
 	t_sys	*mini;
 
-	mini = malloc(sizeof(t_sys));
+	mini = malloc(sizeof(t_sys));	// i could make it memalloc?
 	ft_bzero(mini, sizeof(t_sys));
 	mini->env = env;
 	return (mini);
@@ -37,7 +37,7 @@ t_list	*init_env(char **env)
 		if (!env_value)
 			return (NULL);
 		node = ft_lstnew(env_value);
-		if (!node)
+		if (!node)	// free env_value
 			return (NULL);
 		ft_lstadd_back(&lst, node);
 	}

@@ -58,13 +58,13 @@ char	*get_key(char *s)
 	char	*key;
 
 	len = 0;
-	i = -1;
+	i = -1;	// isalnum, can env vars have numbers?
 	while (s[++i] && (ft_isalnum(s[i]) || s[i] == '_'))
 		len++;
-	key = malloc((len + 1) * sizeof(char));
+	key = malloc((len + 1) * sizeof(char));	// ft_memalloc
 	if (!key)
 		return (NULL);
-	ft_strlcpy(key, s, len + 1);
+	ft_strlcpy(key, s, len + 1);	// can it fail? no malloc
 	return (key);
 }
 
@@ -89,7 +89,7 @@ char	*expand_env(char *line, char *start, char *value)
 	while (line[++i] && &line[i] != start)
 		tmp_line[i] = line[i];
 	if (value)
-		ft_strcat(tmp_line, value);
+		ft_strcat(tmp_line, value);	
 	ft_strcat(tmp_line, &start[key_len + 1]);
 	return (tmp_line);
 }
@@ -106,10 +106,21 @@ char	*parse_env(char *line)
 		if (line[i] == '$' && line[i + 1] && !ft_isspace(line[i + 1])
 			&& is_inquotes(line, &line[i]) != 1)
 		{
-			key = get_key(&line[i + 1]);
-			value = getenv(key);
-			free(key);
+			key = get_key(&line[i + 1]); // does this address all
+											// edge cases?
+			
+			"soemtho$HOME asdfasdf"
+
+
+		// we need to do this
+				// would it be better if we looked for env vals
+				// just in our list of envs?
+				// since can export and unset?
+			value = getenv(key);// can it fail?
+			// is it fine if send the whole line, "sfda$HOME someth"
+			free(key);	// ft_scott_free for case when key is null
 			line = expand_env(line, &line[i], value);
+			ft_scott_free(&value, 0);
 			if (!line)
 				return (NULL);
 			i = -1;
