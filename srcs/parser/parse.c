@@ -6,30 +6,11 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2021/10/25 16:14:02 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/28 16:07:41 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-int	parse_args(t_list *cmds)
-{
-	t_cmd	*cmd;
-	char	*raw_space;
-
-	while (cmds)
-	{
-		cmd = cmds->content;
-		raw_space = add_space(cmd->raw);
-		if (!raw_space)	// free cmds but not in this func
-			return (0);
-		// what happens if split fails, things to free? ret(0)?
-		cmd->argv = ft_split_constraint(raw_space, ' ', is_inquotes);
-		free(raw_space);
-		cmds = cmds->next;
-	}
-	return (1);
-}
 
 t_list	*parse_pipes(char *line)
 {
@@ -85,7 +66,96 @@ void	print_list(t_list *cmds)
 	}
 }
 
-int	process_redirects_cmd(t_cmd *cmd)
+int handle_heredoc(t_rdr *rdr, char *argv)
+{
+	int		fd;
+	char	*buffer;
+	char	*heredoc_name;
+	
+	heredoc_name = ft_strjoin("/tmp/", argv);
+	if (!heredoc_name)
+		return (0);
+	rdr->file = heredoc_name;
+	fd = open(heredoc_name, O_WRONLY | O_CREAT | O_TRUNC, 0600);
+	if (!fd)
+		return (0);
+	while (1)
+	{
+		buffer = readline("> ");
+		if (!buffer || !ft_strcmp(buffer, argv))
+			break ;
+		write(fd, buffer, ft_strlen(buffer));
+		write(fd, "\n", 1);
+	}
+	if (!buffer)
+		write(1, "warning: here-document delimited by end-of-file\n", 48);
+	printf("%s\n", rdr->file);
+	close (fd);
+	return (1);
+}
+
+int add_r_in(t_cmd *cmd, char *argv, int type)
+{
+	t_rdr	*rdr;
+	t_list	*node;
+	
+	rdr = malloc(sizeof(rdr));
+	if (!rdr)
+		return (0);
+	rdr->type = type;
+	rdr->file = argv;
+	if (type == 2)
+	{
+		if (!handle_heredoc(rdr, argv))
+		{
+			free (rdr);
+			return (0);
+		}
+	}
+	node = ft_lstnew(rdr);
+	if (!node)
+	{
+		free(rdr);
+		return (0);
+	}
+	ft_lstadd_back(&cmd->r_in, node);
+	return (1);
+}
+
+int add_r_out(t_cmd *cmd, char *argv, int type)
+{
+	t_rdr	*rdr;
+	t_list	*node;
+	
+	rdr = malloc(sizeof(rdr));
+	if (!rdr)
+		return (0);
+	rdr->type = type;
+	rdr->file = argv;
+	node = ft_lstnew(rdr);
+	if (!node)
+	{
+		free(rdr);
+		return (0);
+	}
+	ft_lstadd_back(&cmd->r_out, node);
+	return (1);
+}
+
+int add_redirect(t_cmd *cmd, char *argv, char *type_char)
+{
+	t_rdr	*rdr;
+	int		type;
+
+	type = 1;
+	if (!ft_strcmp(type_char, "<<") || !ft_strcmp(type_char, ">>"))
+		type = 2;
+	if (!ft_strcmp(type_char, "<") || !ft_strcmp(type_char, "<<"))
+		return (add_r_in(cmd, argv, type));
+	return (add_r_out(cmd, argv, type));
+}
+
+int	parse_redirects(t_cmd *cmd)
 {
 	int		i;
 	int		j;
@@ -101,41 +171,11 @@ int	process_redirects_cmd(t_cmd *cmd)
 	i = -1;
 	while (cmd->argv[++i])
 	{
-		if (!strcmp(cmd->argv[i], "<"))	// could def make a func that does all these
+		if (!ft_strcmp(cmd->argv[i], "<") || !ft_strcmp(cmd->argv[i], "<<")
+			|| !ft_strcmp(cmd->argv[i], ">") || !ft_strcmp(cmd->argv[i], ">>"))
 		{
 			i++;
-			rdr = malloc(sizeof(rdr));
-			rdr->type = 1;
-			rdr->file = cmd->argv[i];
-			// not secure, you know how to fix, also free rdr?
-			ft_lstadd_back(&cmd->r_in, ft_lstnew(rdr));
-			continue ;	// is this allowed?
-		}
-		if (!strcmp(cmd->argv[i], "<<"))
-		{
-			i++;
-			rdr = malloc(sizeof(rdr));
-			rdr->type = 2;
-			rdr->file = cmd->argv[i];
-			ft_lstadd_back(&cmd->r_in, ft_lstnew(rdr));
-			continue ;
-		}
-		if (!strcmp(cmd->argv[i], ">"))
-		{
-			i++;
-			rdr = malloc(sizeof(rdr));
-			rdr->type = 1;
-			rdr->file = cmd->argv[i];
-			ft_lstadd_back(&cmd->r_out, ft_lstnew(rdr));
-			continue ;
-		}
-		if (!strcmp(cmd->argv[i], ">>"))
-		{
-			i++;
-			rdr = malloc(sizeof(rdr));
-			rdr->type = 2;
-			rdr->file = cmd->argv[i];
-			ft_lstadd_back(&cmd->r_out, ft_lstnew(rdr));
+			add_redirect(cmd, cmd->argv[i], cmd->argv[i - 1]);
 			continue ;
 		}
 		cmd->clean[j++] = cmd->argv[i];
@@ -144,14 +184,21 @@ int	process_redirects_cmd(t_cmd *cmd)
 	return (1);
 }
 
-int	parse_redirects(t_list *cmds)
+int	parse_args(t_list *cmds)
 {
 	t_cmd	*cmd;
+	char	*raw_space;
 
 	while (cmds)
 	{
 		cmd = cmds->content;
-		process_redirects_cmd(cmd); // might want option to ret(0)
+		raw_space = add_space(cmd->raw);
+		if (!raw_space)	// free cmds but not in this func
+			return (0);
+		// what happens if split fails, things to free? ret(0)?
+		cmd->argv = ft_split_constraint(raw_space, ' ', is_inquotes);
+		parse_redirects(cmd);
+		free(raw_space);
 		cmds = cmds->next;
 	}
 	return (1);
@@ -168,9 +215,7 @@ t_list	*parse(char *line)
 	if (!control_quotes(line))
 		return (NULL);
 	line = parse_env(line);
-	cmds = parse_pipes(line);	
-	ft_scott_free(&line, 0);
+	cmds = parse_pipes(line);
 	parse_args(cmds);
-	parse_redirects(cmds);
 	return (cmds);
 }

@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:28:11 by mterkhoy          #+#    #+#             */
-/*   Updated: 2021/10/17 15:38:59 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/28 15:49:04 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ char	*parse_env(char *line)
 			key = get_key(&line[i + 1]); // does this address all
 											// edge cases?
 			
-			"soemtho$HOME asdfasdf"
+			// "soemtho$HOME asdfasdf"
 
 
 		// we need to do this
@@ -120,7 +120,6 @@ char	*parse_env(char *line)
 			// is it fine if send the whole line, "sfda$HOME someth"
 			free(key);	// ft_scott_free for case when key is null
 			line = expand_env(line, &line[i], value);
-			ft_scott_free(&value, 0);
 			if (!line)
 				return (NULL);
 			i = -1;
