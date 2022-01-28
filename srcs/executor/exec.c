@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/28 16:22:07 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/28 16:34:36 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ void	child_redirects(t_list *cmds, t_cmd *cmd, int *fds, int j)
 		{
 			// yea we could add more security checks here
 			rdr = lst->content;
-			if (rdr->type == 1)	// if rdr first
-				fd = open((char *)rdr->file, O_RDONLY);
+			fd = open((char *)rdr->file, O_RDONLY);
 			dup2(fd, fds[j * 2]);
 			lst = lst->next;
 		}
@@ -114,7 +113,7 @@ int	exec(t_list *cmds, t_sys *mini)
 			child_redirects(cmds, cmd, fds, j);
 			i = -1;
 			while (++i < 2 * cmds_count)
-				close(fds[i]);nchild
+				close(fds[i]);
 			if (!cmd->clean)
 				exit (1);
 			/*if (is_builtin(cmd->argv[0]))
