@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/28 16:16:03 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/28 16:19:27 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,8 @@ int	parse_redirects(t_cmd *cmd)
 	while (cmd->argv[i])// i have a strtab_len(), if len 0 we return?
 		i++;
 	cmd->clean = malloc((i + 1) * sizeof(char *));// ft_calloc
+	if (!cmd->clean)
+		return (0);
 	i = -1;
 	while (cmd->argv[++i])
 	{
@@ -174,7 +176,8 @@ int	parse_redirects(t_cmd *cmd)
 			|| !ft_strcmp(cmd->argv[i], ">") || !ft_strcmp(cmd->argv[i], ">>"))
 		{
 			i++;
-			add_redirect(cmd, cmd->argv[i], cmd->argv[i - 1]);
+			if (!add_redirect(cmd, cmd->argv[i], cmd->argv[i - 1]) == 0)
+				return (0);
 			continue ;
 		}
 		cmd->clean[j++] = cmd->argv[i];

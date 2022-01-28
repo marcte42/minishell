@@ -6,13 +6,18 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2021/11/03 13:32:53 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/28 16:22:07 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	process_redirects(t_list *cmds, t_cmd *cmd, int *fds, int j)
+void	parent_redirects(t_list *cmds, t_cmd *cmd, int *fds, int j)
+{
+	
+}
+
+void	child_redirects(t_list *cmds, t_cmd *cmd, int *fds, int j)
 {
 	int		fd;
 	t_list	*lst;
@@ -106,10 +111,10 @@ int	exec(t_list *cmds, t_sys *mini)
 			return (0);	// make sure correct return
 		else if (pid == 0)
 		{
-			process_redirects(cmds, cmd, fds, j);
+			child_redirects(cmds, cmd, fds, j);
 			i = -1;
 			while (++i < 2 * cmds_count)
-				close(fds[i]);
+				close(fds[i]);nchild
 			if (!cmd->clean)
 				exit (1);
 			/*if (is_builtin(cmd->argv[0]))
