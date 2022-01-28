@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/28 16:07:41 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/28 16:16:03 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ int handle_heredoc(t_rdr *rdr, char *argv)
 	}
 	if (!buffer)
 		write(1, "warning: here-document delimited by end-of-file\n", 48);
-	printf("%s\n", rdr->file);
 	close (fd);
 	return (1);
 }
