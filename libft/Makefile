@@ -6,7 +6,7 @@
 #    By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/14 20:27:55 by pravry            #+#    #+#              #
-#    Updated: 2021/10/17 12:27:37 by mterkhoy         ###   ########.fr        #
+#    Updated: 2022/01/28 16:05:06 by me               ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,7 @@ FLAGS = -Wall -Wextra -Werror
 
 NAME = libft.a
 
-INCS_DIR = libft.h
-
+DIR_SRCS	=	./
 SRCS =  ft_strdup.c\
 	   	ft_putchar_fd.c\
 		ft_atoi.c\
@@ -73,26 +72,69 @@ SRCS =  ft_strdup.c\
 		ft_strisnum.c\
 
 
+#INCS_DIR = libft.h
+
+DIR_INC		=	./
+INCS		=	-I$(DIR_INC)
+
+CFLAGS		=	$(FLAGS) $(INCS)
+
 HEADERS = $(INCS_DIR)
 
-OBJECT = ${SRCS:.c=.o}
+DIR_OBJ		=	./objs/
+
+OBJ_ALL		=	$(SRCS:.c=.o)
+
+OBJS_ALL	=	$(addprefix $(DIR_OBJ),$(OBJ_ALL))
+
+
+
+
+
+#OBJECT = ${SRCS:.c=.o}
 
 
 all : $(NAME)
 
-.c.o : 
-	${CC} ${FLAGS} -c -I . $< -o ${<:.c=.o}
+#.c.o : 
+#	${CC} ${FLAGS} -c -I . $< -o ${<:.c=.o}
 
-$(NAME): $(OBJECT)
-	ar rc $(NAME) $(OBJECT)
+#$(NAME): $(OBJECT)
+#	ar rc $(NAME) $(OBJECT)
+#	ranlib $(NAME)
+
+$(NAME): $(OBJS_ALL)
+	ar rc $(NAME) $(OBJS_ALL)
 	ranlib $(NAME)
+	printf "$(_GREEN)\r\33[2K\rFull $(NAME) created  😎\n$(_END)"
+
+$(DIR_OBJ)%.o: $(DIR_SRCS)%.c
+	mkdir -p $(DIR_OBJ)
+	$(CC) $(CFLAGS) -c $< -o $@
+	printf "$(_CYAN)\r\33[2K\rCompling $@$(_END)"
 
 clean:
-	@rm -rf $(OBJECT) $(OBJECT_B)
+	rm -rf $(DIR_OBJ)
+	echo "$(_RED).o Files Deleted  😱$(_END)"
+#	@rm -rf $(OBJECT) $(OBJECT_B)
 
 fclean: clean
-	@rm -rf $(NAME)
+	rm -rf $(NAME)
+	echo "$(_RED)Library Deleted  😱$(_END)"
 
 re : fclean all
 
 .PHONY: re clean fclean all bonus
+
+.SILENT:
+
+### COLORS ###
+
+_CYAN=$ \033[36m
+_GREEN=$ \033[32m
+_RED=$ \033[31m
+_END=$ \033[0m
+
+
+
+

@@ -1,35 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   list_funcs_more.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: me <erlazo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/17 12:33:50 by mterkhoy          #+#    #+#             */
-/*   Updated: 2021/10/17 16:00:12 by mterkhoy         ###   ########.fr       */
+/*   Created: 2022/01/18 20:41:51 by me                #+#    #+#             */
+/*   Updated: 2022/01/19 05:47:13 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minilib.h"
 
-void	print_cmds(t_list *cmds)
+int	ft_print_full_list(t_list *lst)
 {
-	t_cmd	*cmd;
-	char	**tab;
-	int		i;
-	
-	while (cmds)
+	if (!lst)
+		return (0);
+	while (lst)
 	{
-		cmd = cmds->content;
-		tab = cmd->argv;
-		i = -1;
-		while (tab[++i])
-			printf("%s\t|\t", tab[i]);
-		printf("\n");
-		cmds = cmds->next;
+		ft_print_list_elem(lst);
+		lst = lst->next;
 	}
+	return (1);
 }
 
-
-
-
+void	ft_lstdel_str_elem(void *data)
+{
+	if (!data)
+		return ;
+	free((char*)data);
+}
