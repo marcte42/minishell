@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 void handler(int num)
 {
@@ -23,11 +23,16 @@ int	main(int ac, char **av, char *env[])
 {
 	char	*line;
 	t_list	*env_lst;
-	t_sys	*mini;		// doesn't need to be a pointer.
+	t_sys	*mini;
 
-	signal(SIGINT, handler);
+	signal(SIGINT, handler);	// sort out how to do sigaction instead
 	env_lst = init_env(env);
 	mini = init_sys(env_lst);
+	if (!mini)
+	{
+		free_env(env_lst);
+		return (1);		// something other than 1? An Error Msg?
+	}
 	// free env_list?
 	line = NULL;
 	if (ac != 1 || av[0][1] == '1')

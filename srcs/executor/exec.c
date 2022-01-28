@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 void	process_redirects(t_list *cmds, t_cmd *cmd, int *fds, int j)
 {

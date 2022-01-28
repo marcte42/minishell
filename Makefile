@@ -2,20 +2,48 @@
 
 CC			=	gcc
 CFLAGS		=	-Wall -Werror -Wextra
-# might need to add -pthread somewhere could do it in flags
 
 NAME		=	minishell
 
-DIR_SHELL	=	./srcs/
+DIR_SRCS	=	./srcs/
 
-SRCS_SHELL	=	minishell.c \
+DIR_MAIN	=	$(DIR_SRCS)
+SRCS_MAIN	=	minishell.c \
 				init.c \
+				utils.c \
+				free.c \
 
-# the files at the end may not be that useful in the end
+DIR_BUILT	=	$(DIR_SRCS)builtins/
+SRCS_BUILT	=	builtin_cd.c \
+				builtin_echo.c \
+				builtin_env.c \
+				builtin_exit.c \
+				builtin_export.c \
+				builtin_pwd.c \
+				builtin_unset.c \
+
+DIR_EXEC	=	$(DIR_SRCS)executor/
+SRCS_EXEC	=	exec.c \
+				utils_exec.c \
+
+DIR_PARSE	=	$(DIR_SRCS)parser/
+SRCS_PARSE	=	parse.c \
+				env.c \
+				quotes.c \
+				utils_parse.c \
 
 # may move these to be in the SRCS folder, if the cors are gonna get all annoying about it...
 DIR_MINILIB	=	./minilib/
-SRCS_MINILIB	=	atoi_funcs.c \
+SRCS_MINILIB	=	big_str_funcs.c \
+					error_funcs.c \
+					nlist_funcs.c \
+					nlstdel_n_one.c \
+					ilist_funcs.c \
+					put_funcs.c \
+					str_funcs.c \
+					tab_funcs.c \
+
+#SRCS_MINILIB	=	atoi_funcs.c \
 					big_str_funcs.c \
 					error_funcs.c \
 					ft_split.c \
@@ -33,33 +61,65 @@ SRCS_MINILIB	=	atoi_funcs.c \
 					gnl_utils.c \
 
 
-#DIR_INC		=	./includes/
-DIR_INC		=	./
+DIR_INC		=	./includes/
+#DIR_INC		=	./
 INCS		=	-I$(DIR_INC)
+
+LIBFT_NAME	=	libft.a
+DIR_LIBFT	=	./libft/
+LIBFT		=	$(DIR_LIBFT)$(LIBFT_NAME)
+
+DIR_LIBFT_INC	=	$(DIR_LIBFT)
+LIBFT_INC		=	libft.h
+LIBFT_INCS		=	$(addprefix -I,$(addprefix $(DIR_LIBFT_INC), $(LIBFT_INC)))
+
+
 
 
 # if we had a library we would add its .h here
-ALL_INCS	=	$(INCS) -I$(DIR_MINILIB)
+#ALL_INCS	=	$(INCS) -I$(DIR_MINILIB)
+ALL_INCS	=	$(INCS)	$(LIBFT_INCS)
 
 DIR_OBJ		=	./objs/
 
-OBJ_MINILIB	=	$(SRCS_MINILIB:.c=.o)
-OBJ_SHELL	=	$(SRCS_SHELL:.c=.o) $(OBJ_MINILIB)
+#OBJ_MINILIB	=	$(SRCS_MINILIB:.c=.o)
+#OBJ_SHELL	=	$(SRCS_SHELL:.c=.o) $(OBJ_MINILIB)
 
-OBJS_SHELL	=	$(addprefix $(DIR_OBJ),$(OBJ_SHELL))
+OBJ_MAIN	=	$(SRCS_MAIN:.c=.o)
+OBJ_BUILT	=	$(SRCS_BUILT:.c=.o)
+OBJ_EXEC	=	$(SRCS_EXEC:.c=.o)
+OBJ_PARSE	=	$(SRCS_PARSE:.c=.o)
+
+OBJ_ALL		=	$(OBJ_MAIN) $(OBJ_BUILT) $(OBJ_EXEC) $(OBJ_PARSE) 
+OBJS_ALL	=	$(addprefix $(DIR_OBJ),$(OBJ_ALL))
 
 
 ##### RULES ######
 
 all: $(NAME)
 
-#bonus: $(BONUS)
+#$(LIBFT): $(LIBFT_INC) 
 
-$(NAME): $(OBJS_SHELL)
-	$(CC) $(CFLAGS) $(ALL_INCS) $(OBJS_SHELL) -o $(NAME)
+$(NAME): $(OBJS_ALL)
+	$(CC) $(CFLAGS) $(ALL_INCS) $(OBJS_ALL) -o $(NAME)
 	printf "$(_GREEN)\r\33[2K\r$(NAME) created  😎\n$(_END)"
 
-$(DIR_OBJ)%.o: $(DIR_SHELL)%.c
+$(DIR_OBJ)%.o: $(DIR_MAIN)%.c
+	mkdir -p $(DIR_OBJ)
+	$(CC) $(CFLAGS) $(ALL_INCS) -c $< -o $@
+	printf "$(_CYAN)\r\33[2K\rCompling $@$(_END)"
+
+$(DIR_OBJ)%.o: $(DIR_BUILT)%.c
+	mkdir -p $(DIR_OBJ)
+	$(CC) $(CFLAGS) $(ALL_INCS) -c $< -o $@
+	printf "$(_CYAN)\r\33[2K\rCompling $@$(_END)"
+
+$(DIR_OBJ)%.o: $(DIR_EXEC)%.c
+	mkdir -p $(DIR_OBJ)
+	$(CC) $(CFLAGS) $(ALL_INCS) -c $< -o $@
+	printf "$(_CYAN)\r\33[2K\rCompling $@$(_END)"
+
+$(DIR_OBJ)%.o: $(DIR_PARSE)%.c
 	mkdir -p $(DIR_OBJ)
 	$(CC) $(CFLAGS) $(ALL_INCS) -c $< -o $@
 	printf "$(_CYAN)\r\33[2K\rCompling $@$(_END)"
@@ -74,12 +134,10 @@ clean:
 	echo "$(_RED).o Files Deleted  😱$(_END)"
 
 fclean: clean
-	rm -rf $(NAME) $(BONUS)
-	echo "$(_RED)$(NAME) and $(BONUS) Deleted  😱$(_END)"
+	rm -rf $(NAME)
+	echo "$(_RED)$(NAME) Deleted  😱$(_END)"
 
 re: fclean all
-
-rebonus: fclean bonus
 
 
 ### Leak testing ####

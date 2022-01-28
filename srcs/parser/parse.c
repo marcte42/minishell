@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 int	parse_args(t_list *cmds)
 {
@@ -20,6 +20,11 @@ int	parse_args(t_list *cmds)
 	while (cmds)
 	{
 		cmd = cmds->content;
+		if (!cmd)
+		{
+			// free something?
+			return (0);
+		}
 		raw_space = add_space(cmd->raw);
 		if (!raw_space)	// free cmds but not in this func
 			return (0);
@@ -151,7 +156,8 @@ int	parse_redirects(t_list *cmds)
 	while (cmds)
 	{
 		cmd = cmds->content;
-		process_redirects_cmd(cmd); // might want option to ret(0)
+		if (!process_redirects_cmd(cmd))
+			return (0);	 // might want option to ret(0), stuff to free?
 		cmds = cmds->next;
 	}
 	return (1);
@@ -168,9 +174,15 @@ t_list	*parse(char *line)
 	if (!control_quotes(line))
 		return (NULL);
 	line = parse_env(line);
-	cmds = parse_pipes(line);	
+	cmds = parse_pipes(line);
 	ft_scott_free(&line, 0);
+	if (!cmds)
+		return (NULL);
 	parse_args(cmds);
-	parse_redirects(cmds);
+	if (!parse_redirects(cmds))
+	{
+		// free cmds
+		return (NULL);
+	}
 	return (cmds);
 }
