@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:28:11 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/29 15:39:43 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 16:59:51 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ char	*expand_env(char *line, char *start, char *value)
 	free(line);
 	return (tmp_line);
 }
-
 
 // ft_getenv 
 // Retourne un char* avec la valeur associee a la key
