@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 11:55:02 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/29 13:24:08 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 13:55:45 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ int	main(int ac, char **av, char *env[])
 		add_history(line);
 		if (!parse(line, &mini))
 		{
-			// besoin d'une fonction de free complet de tout la strucutre t_sys et 
+			// besoin d'une fonction de free complet de toute la strucuture t_sys et 
 			// des structures et listes internes
 			// une fois que tout est free on peut continue
 		}
 		exec(mini.cmds, &mini);
-		// besoin d'une fonction de free complet de tout la strucutre t_sys et 
+		// besoin d'une fonction de free complet de toute la structure t_sys et 
 		// des structures et listes internes
 		// une fois que tout est free on peut continue
 	}

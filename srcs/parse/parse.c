@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/29 13:28:36 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 14:29:21 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,5 +223,6 @@ int parse(char *line, t_sys *mini)
 		return (ERROR);
 	if (!parse_args(mini->cmds))
 		return (ERROR);
+	mini->cmds_count = ft_lstsize(mini->cmds);
 	return (SUCCESS);
 }

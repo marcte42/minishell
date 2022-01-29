@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/29 13:24:06 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 14:29:41 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,32 +80,29 @@ void	exec_path(char **tokens, t_sys *mini)
 
 int	exec(t_list *cmds, t_sys *mini)
 {
-	int		*fds;
-	int		cmds_count;
 	t_cmd	*cmd;
 	int		i;
 	int		j;
-	int		pid;
-	int		status;
 
-	cmds_count = ft_lstsize(cmds);
-	fds = malloc(2 * cmds_count * sizeof(int));	// ft_calloc? but ints so maybe not necessary
+	mini->pfds = malloc(2 * mini->cmds_count * sizeof(int));
+	if (!mini->pfds)
+		return (ERROR);
 	i = -1;
-	while (++i < cmds_count)
-		pipe(&fds[i * 2]);
+	while (++i < mini->cmds_count)
+		pipe(&mini->pfds[i * 2]);
 	j = 0;
 	while (cmds)
 	{
 		cmd = cmds->content;
-		pid = fork();	// store pid in cmd sturct so can wait for it
-		if (pid == -1)
-			return (0);	// make sure correct return
-		else if (pid == 0)
+		cmd->pid = fork();
+		if (cmd->pid == -1)
+			return (ERROR);	// make sure correct return
+		else if (cmd->pid == 0)
 		{
-			child_redirects(cmds, cmd, fds, j);
+			child_redirects(cmds, cmd, mini->pfds, j);
 			i = -1;
-			while (++i < 2 * cmds_count)
-				close(fds[i]);
+			while (++i < 2 * mini->cmds_count)
+				close(mini->pfds[i]);
 			if (!cmd->clean)
 				exit (1);
 			/*if (is_builtin(cmd->argv[0]))
@@ -116,11 +113,11 @@ int	exec(t_list *cmds, t_sys *mini)
 		j++;
 	}
 	i = -1;
-	while (++i < 2 * cmds_count)
-		close(fds[i]);	// does close work on fd = -1? in error case
+	while (++i < 2 * mini->cmds_count)
+		close(mini->pfds[i]);	// does close work on fd = -1? in error case
 	i = -1;
-	while (++i < cmds_count)
-		wait(&status);	//waitpid maybe? 
-	free(fds);
-	return (status); // put status in t_sys struct
+	while (++i < mini->cmds_count)
+		wait(&mini->status);	//waitpid maybe? 
+	free(mini->pfds);
+	return (mini->status);
 }

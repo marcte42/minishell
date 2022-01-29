@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 12:27:18 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/29 13:20:35 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 14:31:09 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,28 @@
 
 typedef struct		s_sys
 {
-	int		ret;
-	int		exit;
-	t_list	*env;
-	t_list	*cmds;
+	t_list	*env;			// Liste chainee avec les variables d'env
+	t_list	*cmds;			// Liste chainee avec les commandes
+	int		cmds_count;		// Nombre de commandes a executer
+	int		*pfds;			// Tableau de pipes
+	int		status;			// Valeur finale de retour d'execution
+	int		exit;			// ???
 }					t_sys;
 
 typedef struct		s_rdr
 {
-	int     type;
-	char    *file;
+	int     type;			// Type 1 = '<' et '>' type 2 = '<<' et '>>'
+	char    *file;			// Destination vers le fichier
 }					t_rdr;
 
 typedef struct		s_cmd
 {
-	char	*raw;
-	char	**argv;
-	char	**clean;
-	t_list	*r_in;
-	t_list	*r_out;
+	pid_t	pid;			// L'id du process de la commande 
+	char	*raw;			// Ligne brute	
+	char	**argv;			// Tableau de char** avec la commande, les arguments et les redirs
+	char	**clean;		// Tableau de char** avec juste la commande et les args
+	t_list	*r_in;			// Liste chainee avec toutes les redirections entrantes
+	t_list	*r_out;			// Liste chainee avec toutes les redirections sortantes
 }					t_cmd;
 
 t_list	*init_env(char **env);
