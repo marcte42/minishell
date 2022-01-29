@@ -61,6 +61,14 @@ typedef struct		s_cmd
 	t_list	*r_out;			// Liste chainee avec toutes les redirections sortantes
 }					t_cmd;
 
+typedef struct		s_var
+{
+	int		status;
+	int		signal;
+	pid_t	pid;
+}					t_var;
+
+
 t_list	*init_env(char **env);
 int		init_sys(t_sys *mini, char **env);
 int		parse(char *line, t_sys *mini);
