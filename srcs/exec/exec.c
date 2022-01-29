@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/29 16:52:35 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 17:46:16 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	exec(t_list *cmds, t_sys *mini)
 		cmd->pid = fork();
 		if (cmd->pid == -1)
 			return (ERROR);	// make sure correct return
-		else if (cmd->pid == 0)
+		if (cmd->pid == 0)
 		{
 			child_redirects(cmds, cmd, mini->pfds, j);
 			close_pfds(mini);

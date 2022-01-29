@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:38:15 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/29 16:38:51 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 17:47:43 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	close_pfds(t_sys *mini)
 	int	i;
 	
 	i = -1;
-	while (++i < 2 * mini->cmds_count)
+	while (++i < 2 * (mini->cmds_count - 1))
 		close(mini->pfds[i]);	// does close work on fd = -1? in error case
 	free(mini->pfds);
 	return (SUCCESS);
@@ -27,7 +27,7 @@ int	init_pfds(t_sys *mini)
 {
 	int i;
 	
-	mini->pfds = malloc(2 * mini->cmds_count * sizeof(int));
+	mini->pfds = malloc(2 * (mini->cmds_count - 1) * sizeof(int));
 	if (!mini->pfds)
 		return (ERROR);
 	i = -1;
