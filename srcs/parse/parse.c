@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/29 12:22:43 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 13:05:15 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,28 @@ t_list	*parse_pipes(char *line)
 	lst = NULL;
 	tokens = ft_split_constraint(line, '|', is_inquotes);
 	if (!tokens)
-		return (NULL);
+		return (ERROR);
 	i = -1;
 	while (tokens[++i])
-	{	// maybe just make a free_cmd() and call each time, there is one, but fix it
-		cmd = malloc(sizeof(t_cmd));	// calloc so no bzero
-		if (!cmd)	// ft_free_strtab(tokens); and free lst
-			return (NULL);
-		bzero(cmd, sizeof(t_cmd));
+	{
+		cmd = ft_calloc(1, sizeof(t_cmd));
+		if (!cmd)
+		{
+			// On doit aussi free toutes les nodes et tous les contents qui precedent
+			free(tokens);
+			return (ERROR);
+		}
 		cmd->raw = tokens[i];
 		node = ft_lstnew(cmd);
-		if (!node)	// free cmds and lst and tokens
-			return (NULL);
+		if (!node)
+		{
+			// On doit aussi free toutes les nodes et tous les contents qui precedent
+			free(tokens);
+			return (ERROR);
+		}
 		ft_lstadd_back(&lst, node);
 	}
-	free(tokens);	// ok so you free the table of strings but not
-					// the strings? i think
+	free(tokens);
 	return (lst);
 }
 
@@ -200,21 +206,21 @@ int	parse_args(t_list *cmds)
 		free(raw_space);
 		cmds = cmds->next;
 	}
-	return (1);
+	return (SUCCESS);
 }
 
-t_list	*parse(char *line, t_sys *mini)
+int parse(char *line, t_sys *mini)
 {
-	t_list	*cmds;
-
-	//surely some more checks... like for all the func calls
-
 	if (!line)
-		return (NULL);
+		return (ERROR);
 	if (!control_quotes(line))
-		return (NULL);
+		return (ERROR);
 	line = parse_env(line, mini->env);
-	cmds = parse_pipes(line);
-	parse_args(cmds);
-	return (cmds);
+	if(!line)
+		return (ERROR);
+	mini->cmds = parse_pipes(line);
+	if (!mini->cmds)
+		return (ERROR);
+	parse_args(mini->cmds);
+	return (SUCCESS);
 }

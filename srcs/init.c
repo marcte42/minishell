@@ -6,20 +6,15 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 10:36:47 by mterkhoy          #+#    #+#             */
-/*   Updated: 2021/10/25 12:28:14 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 13:07:57 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_sys 	*init_sys(t_list *env)
+void 	init_sys(t_sys *mini, t_list *env)
 {
-	t_sys	*mini;
-
-	mini = malloc(sizeof(t_sys));	// i could make it memalloc?
-	ft_bzero(mini, sizeof(t_sys));
 	mini->env = env;
-	return (mini);
 }
 
 t_list	*init_env(char **env)

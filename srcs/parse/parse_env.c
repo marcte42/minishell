@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:28:11 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/29 12:40:11 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 13:03:39 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ char	*expand_env(char *line, char *start, char *value)
 	if (value)
 		ft_strcat(tmp_line, value);	
 	ft_strcat(tmp_line, &start[key_len + 1]);
+	free(line);
 	return (tmp_line);
 }
 
