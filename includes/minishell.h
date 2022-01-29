@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 12:27:18 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/29 13:08:05 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 13:20:35 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct		s_cmd
 }					t_cmd;
 
 t_list	*init_env(char **env);
-void 	init_sys(t_sys *mini, t_list *env);
+int		init_sys(t_sys *mini, char **env);
 int		parse(char *line, t_sys *mini);
 char	*parse_env(char *line, t_list *env);
 char	**env_to_tab(t_list *env);

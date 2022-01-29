@@ -6,16 +6,11 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 10:36:47 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/29 13:07:57 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 13:21:08 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void 	init_sys(t_sys *mini, t_list *env)
-{
-	mini->env = env;
-}
 
 t_list	*init_env(char **env)
 {
@@ -30,11 +25,26 @@ t_list	*init_env(char **env)
 	{
 		env_value = ft_strdup(env[i]);
 		if (!env_value)
-			return (NULL);
+		{
+			ft_lstclear(&lst, free);
+			return (ERROR);
+		}
 		node = ft_lstnew(env_value);
-		if (!node)	// free env_value
-			return (NULL);
+		if (!node)
+		{
+			free(env);
+			ft_lstclear(&lst, free);
+			return (ERROR);
+		}
 		ft_lstadd_back(&lst, node);
 	}
 	return (lst);
+}
+
+int		init_sys(t_sys *mini, char **env)
+{
+	mini->env = init_env(env);
+	if (!mini->env)
+		return (ERROR);
+	return (SUCCESS);
 }

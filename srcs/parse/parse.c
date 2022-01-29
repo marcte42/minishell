@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/29 13:05:15 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 13:28:36 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_list	*parse_pipes(char *line)
 		cmd = ft_calloc(1, sizeof(t_cmd));
 		if (!cmd)
 		{
-			// On doit aussi free toutes les nodes et tous les contents qui precedent
+			ft_lstclear(&lst, free);
 			free(tokens);
 			return (ERROR);
 		}
@@ -38,7 +38,7 @@ t_list	*parse_pipes(char *line)
 		node = ft_lstnew(cmd);
 		if (!node)
 		{
-			// On doit aussi free toutes les nodes et tous les contents qui precedent
+			ft_lstclear(&lst, free);
 			free(tokens);
 			return (ERROR);
 		}
@@ -80,11 +80,11 @@ int handle_heredoc(t_rdr *rdr, char *argv)
 	
 	heredoc_name = ft_strjoin("/tmp/", argv);
 	if (!heredoc_name)
-		return (0);
+		return (ERROR);
 	rdr->file = heredoc_name;
 	fd = open(heredoc_name, O_WRONLY | O_CREAT | O_TRUNC, 0600);
 	if (!fd)
-		return (0);
+		return (ERROR);
 	while (1)
 	{
 		buffer = readline("> ");
@@ -96,7 +96,7 @@ int handle_heredoc(t_rdr *rdr, char *argv)
 	if (!buffer)
 		write(1, "warning: here-document delimited by end-of-file\n", 48);
 	close (fd);
-	return (1);
+	return (SUCCESS);
 }
 
 int add_r_in(t_cmd *cmd, char *argv, int type)
@@ -106,7 +106,7 @@ int add_r_in(t_cmd *cmd, char *argv, int type)
 	
 	rdr = malloc(sizeof(rdr));
 	if (!rdr)
-		return (0);
+		return (ERROR);
 	rdr->type = type;
 	rdr->file = argv;
 	if (type == 2)
@@ -114,17 +114,17 @@ int add_r_in(t_cmd *cmd, char *argv, int type)
 		if (!handle_heredoc(rdr, argv))
 		{
 			free (rdr);
-			return (0);
+			return (ERROR);
 		}
 	}
 	node = ft_lstnew(rdr);
 	if (!node)
 	{
 		free(rdr);
-		return (0);
+		return (ERROR);
 	}
 	ft_lstadd_back(&cmd->r_in, node);
-	return (1);
+	return (SUCCESS);
 }
 
 int add_r_out(t_cmd *cmd, char *argv, int type)
@@ -141,10 +141,10 @@ int add_r_out(t_cmd *cmd, char *argv, int type)
 	if (!node)
 	{
 		free(rdr);
-		return (0);
+		return (ERROR);
 	}
 	ft_lstadd_back(&cmd->r_out, node);
-	return (1);
+	return (SUCCESS);
 }
 
 int add_redirect(t_cmd *cmd, char *argv, char *type_char)
@@ -181,13 +181,13 @@ int	parse_redirects(t_cmd *cmd)
 		{
 			i++;
 			if (!add_redirect(cmd, cmd->argv[i], cmd->argv[i - 1]))
-				return (0);
+				return (ERROR);
 			continue ;
 		}
 		cmd->clean[j++] = cmd->argv[i];
 	}
 	cmd->clean[j] = NULL;
-	return (1);
+	return (SUCCESS);
 }
 
 int	parse_args(t_list *cmds)
@@ -200,7 +200,7 @@ int	parse_args(t_list *cmds)
 		cmd = cmds->content;
 		raw_space = add_space(cmd->raw);
 		if (!raw_space)
-			return (0);
+			return (ERROR);
 		cmd->argv = ft_split_constraint(raw_space, ' ', is_inquotes);
 		parse_redirects(cmd);
 		free(raw_space);
@@ -221,6 +221,7 @@ int parse(char *line, t_sys *mini)
 	mini->cmds = parse_pipes(line);
 	if (!mini->cmds)
 		return (ERROR);
-	parse_args(mini->cmds);
+	if (!parse_args(mini->cmds))
+		return (ERROR);
 	return (SUCCESS);
 }
