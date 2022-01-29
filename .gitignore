@@ -2,3 +2,4 @@
 objs
 *.o
 minishell
+libft.a

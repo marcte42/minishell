@@ -101,8 +101,8 @@ OBJS_ALL	=	$(addprefix $(DIR_OBJ),$(OBJ_ALL))
 
 all: $(NAME)
 
-#$(LIBFT): $(DIR_LIBFT)$(LIBFT_INC) $(SRCS_LIBFT)
-$(LIBFT): ./libft/$(LIBFT_INC) ./libft
+#$(LIBFT): ./libft/$(LIBFT_INC) ./libft
+$(LIBFT): $(DIR_LIBFT)$(LIBFT_INC) $(SRCS_LIBFT)
 	make -C $(DIR_LIBFT)
 
 $(NAME): $(OBJS_ALL) $(LIBFT)
@@ -142,6 +142,7 @@ clean:
 
 fclean: clean
 	rm -rf $(NAME)
+	make -C $(DIR_LIBFT) fclean
 	echo "$(_RED)$(NAME) Deleted  😱$(_END)"
 
 re: fclean all
