@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/29 17:46:16 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 19:18:07 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@ void	child_redirects(t_list *cmds, t_cmd *cmd, int *fds, int j)
 	t_list	*lst;
 	t_rdr	*rdr;
 	
+	if (j != 0)
+		dup2(fds[(j - 1) * 2], STDIN_FILENO);
+	if (cmds->next)
+		dup2(fds[j * 2 + 1], STDOUT_FILENO);
 	if (cmd->r_in)
 	{
 		lst = cmd->r_in;
@@ -26,7 +30,7 @@ void	child_redirects(t_list *cmds, t_cmd *cmd, int *fds, int j)
 			// yea we could add more security checks here
 			rdr = lst->content;
 			fd = open((char *)rdr->file, O_RDONLY);
-			dup2(fd, fds[j * 2]);
+			dup2(fd, STDIN_FILENO); 
 			lst = lst->next;
 		}
 	}
@@ -45,9 +49,7 @@ void	child_redirects(t_list *cmds, t_cmd *cmd, int *fds, int j)
 		}
 		dup2(fd, STDOUT_FILENO); // can it fail? yes rets (-1) if fail, secure it
 	}
-	dup2(fds[j * 2], STDIN_FILENO);
-	if (cmds->next && !cmd->r_out)
-		dup2(fds[(j * 2) + 3], STDOUT_FILENO);
+	
 }
 
 void	exec_path(char **tokens, t_sys *mini)
