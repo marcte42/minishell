@@ -6,13 +6,18 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2021/11/03 13:32:53 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/28 16:34:36 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	process_redirects(t_list *cmds, t_cmd *cmd, int *fds, int j)
+void	parent_redirects(t_list *cmds, t_cmd *cmd, int *fds, int j)
+{
+	
+}
+
+void	child_redirects(t_list *cmds, t_cmd *cmd, int *fds, int j)
 {
 	int		fd;
 	t_list	*lst;
@@ -28,8 +33,7 @@ void	process_redirects(t_list *cmds, t_cmd *cmd, int *fds, int j)
 		{
 			// yea we could add more security checks here
 			rdr = lst->content;
-			if (rdr->type == 1)	// if rdr first
-				fd = open((char *)rdr->file, O_RDONLY);
+			fd = open((char *)rdr->file, O_RDONLY);
 			dup2(fd, fds[j * 2]);
 			lst = lst->next;
 		}
@@ -106,7 +110,7 @@ int	exec(t_list *cmds, t_sys *mini)
 			return (0);	// make sure correct return
 		else if (pid == 0)
 		{
-			process_redirects(cmds, cmd, fds, j);
+			child_redirects(cmds, cmd, fds, j);
 			i = -1;
 			while (++i < 2 * cmds_count)
 				close(fds[i]);
