@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/29 11:56:30 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 12:22:43 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,9 +193,8 @@ int	parse_args(t_list *cmds)
 	{
 		cmd = cmds->content;
 		raw_space = add_space(cmd->raw);
-		if (!raw_space)	// free cmds but not in this func
+		if (!raw_space)
 			return (0);
-		// what happens if split fails, things to free? ret(0)?
 		cmd->argv = ft_split_constraint(raw_space, ' ', is_inquotes);
 		parse_redirects(cmd);
 		free(raw_space);
@@ -204,7 +203,7 @@ int	parse_args(t_list *cmds)
 	return (1);
 }
 
-t_list	*parse(char *line)
+t_list	*parse(char *line, t_sys *mini)
 {
 	t_list	*cmds;
 
@@ -214,7 +213,7 @@ t_list	*parse(char *line)
 		return (NULL);
 	if (!control_quotes(line))
 		return (NULL);
-	line = parse_env(line);
+	line = parse_env(line, mini->env);
 	cmds = parse_pipes(line);
 	parse_args(cmds);
 	return (cmds);

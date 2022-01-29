@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 11:55:02 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/29 11:49:33 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 12:25:35 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	main(int ac, char **av, char *env[])
 	{
 		line = readline("$> ");
 		add_history(line);	// can if fail? if so free line
-		mini->cmds = parse(line);	// i assume this shit needs to be seucred, like all of these function calls!
+		mini->cmds = parse(line, mini);	// i assume this shit needs to be seucred, like all of these function calls!
 		exec(mini->cmds, mini);
 		//free_cmds(mini->cmds);
 	}

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   parse_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:28:11 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/29 11:53:17 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 12:40:11 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ char	*get_key(char *s)
 	char	*key;
 
 	len = 0;
-	i = -1;	// isalnum, can env vars have numbers?
+	i = -1;
 	while (s[++i] && (ft_isalnum(s[i]) || s[i] == '_'))
 		len++;
-	key = malloc((len + 1) * sizeof(char));	// ft_memalloc
+	key = malloc((len + 1) * sizeof(char));
 	if (!key)
 		return (NULL);
-	ft_strlcpy(key, s, len + 1);	// can it fail? no malloc
+	ft_strlcpy(key, s, len + 1);
 	return (key);
 }
 
@@ -94,7 +94,37 @@ char	*expand_env(char *line, char *start, char *value)
 	return (tmp_line);
 }
 
-char	*parse_env(char *line)
+
+// ft_getenv 
+// Retourne un char* avec la valeur associee a la key
+// Si la key n'a pas ete trouvee on retourne un char* vide ""
+// Si une erreur se produit on retourne un NULL
+char *ft_getenv (char *key, t_list *env)
+{
+	char	*value;
+	int		value_len;
+	
+	while (env)
+	{
+		if (!ft_strncmp(key, env->content, ft_strlen(key)))
+		{
+			value_len = ft_strlen(ft_strchr(env->content, '=') + 1);
+			value = malloc((value_len + 1) * sizeof(char));
+			if (!value)
+				return (NULL);
+			ft_strcpy(value, ft_strchr(env->content, '=') + 1);
+			return (value);
+		}
+		env = env->next;
+	}
+	value = malloc(1 * sizeof(char));
+	if (!value)
+		return (NULL);
+	value[0] = 0;
+	return (value);
+}
+
+char	*parse_env(char *line, t_list *env)
 {
 	int		i;
 	char	*key;
@@ -106,20 +136,15 @@ char	*parse_env(char *line)
 		if (line[i] == '$' && line[i + 1] && !ft_isspace(line[i + 1])
 			&& is_inquotes(line, &line[i]) != 1)
 		{
-			key = get_key(&line[i + 1]); // does this address all
-											// edge cases?
-			
-			// "soemtho$HOME asdfasdf"
-
-
-		// we need to do this
-				// would it be better if we looked for env vals
-				// just in our list of envs?
-				// since can export and unset?
-			value = getenv(key);// can it fail?
-			// is it fine if send the whole line, "sfda$HOME someth"
-			free(key);	// ft_scott_free for case when key is null
+			key = get_key(&line[i + 1]);
+			if (!key)
+				return (NULL);
+			value = ft_getenv(key, env);
+			free(key);
+			if (!value)
+				return (NULL);
 			line = expand_env(line, &line[i], value);
+			free(value);
 			if (!line)
 				return (NULL);
 			i = -1;

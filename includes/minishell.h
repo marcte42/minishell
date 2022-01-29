@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 12:27:18 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/29 11:49:56 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 12:33:51 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ typedef struct		s_cmd
 
 t_list	*init_env(char **env);
 t_sys 	*init_sys(t_list *env);
-t_list	*parse(char *line);
-char	*parse_env(char *line);
+t_list	*parse(char *line, t_sys *mini);
+char	*parse_env(char *line, t_list *env);
 char	**env_to_tab(t_list *env);
 int		control_quotes(char *str);
 int		is_inquotes(char *s, char *c);
