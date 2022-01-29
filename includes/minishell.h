@@ -6,14 +6,18 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 12:27:18 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/29 14:31:09 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 14:36:59 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../libft/libft.h"
+//# include "../libft/libft.h"
+# include "libft.h"
+
+# include "minilib.h"
+
 # include <unistd.h>
 # include <string.h>
 # include <stdlib.h>
