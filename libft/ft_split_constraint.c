@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "libft.h"
 
 static void	ft_free(int i, char **result)
 {
