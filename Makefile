@@ -14,13 +14,14 @@ SRCS_MAIN	=	minishell.c \
 				free.c \
 
 DIR_BUILT	=	$(DIR_SRCS)builtins/
-SRCS_BUILT	=	builtin_cd.c \
+SRCS_BUILT	=	builtin.c \
 				builtin_echo.c \
-				builtin_env.c \
-				builtin_exit.c \
-				builtin_export.c \
-				builtin_pwd.c \
-				builtin_unset.c \
+				#builtin_cd.c \
+				#builtin_env.c \
+				#builtin_exit.c \
+				#builtin_export.c \
+				#builtin_pwd.c \
+				#builtin_unset.c \
 
 DIR_EXEC	=	$(DIR_SRCS)exec/
 SRCS_EXEC	=	exec.c \
@@ -90,8 +91,8 @@ OBJ_BUILT	=	$(SRCS_BUILT:.c=.o)
 OBJ_EXEC	=	$(SRCS_EXEC:.c=.o)
 OBJ_PARSE	=	$(SRCS_PARSE:.c=.o)
 
-#OBJ_ALL		=	$(OBJ_MAIN) $(OBJ_BUILT) $(OBJ_EXEC) $(OBJ_PARSE) 
-OBJ_ALL		=	$(OBJ_MAIN) $(OBJ_EXEC) $(OBJ_PARSE) $(OBJ_MINILIB)
+#OBJ_ALL		=	$(OBJ_MAIN)  $(OBJ_EXEC) $(OBJ_PARSE) 
+OBJ_ALL		=	$(OBJ_MAIN) $(OBJ_BUILT) $(OBJ_EXEC) $(OBJ_PARSE) $(OBJ_MINILIB)
 #OBJ_ALL		=	$(OBJ_MAIN) $(OBJ_EXEC) $(OBJ_PARSE)
 #OBJ_ALL		=	$(OBJ_MAIN) $(OBJ_EXEC) $(OBJ_PARSE)
 OBJS_ALL	=	$(addprefix $(DIR_OBJ),$(OBJ_ALL))

@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/29 19:18:07 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 20:18:35 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,13 @@ void	child_redirects(t_list *cmds, t_cmd *cmd, int *fds, int j)
 	t_list	*lst;
 	t_rdr	*rdr;
 	
+	// On commence par rediriger quoi qu'il arrive dans les pipes
 	if (j != 0)
 		dup2(fds[(j - 1) * 2], STDIN_FILENO);
 	if (cmds->next)
 		dup2(fds[j * 2 + 1], STDOUT_FILENO);
+
+	// Si on a des redirections entrantes ou sortantes alors on redirige les fd
 	if (cmd->r_in)
 	{
 		lst = cmd->r_in;
@@ -49,7 +52,6 @@ void	child_redirects(t_list *cmds, t_cmd *cmd, int *fds, int j)
 		}
 		dup2(fd, STDOUT_FILENO); // can it fail? yes rets (-1) if fail, secure it
 	}
-	
 }
 
 void	exec_path(char **tokens, t_sys *mini)
@@ -76,8 +78,23 @@ void	exec_path(char **tokens, t_sys *mini)
 			execve(path_to_bin, tokens, env_to_tab(mini->env));
 		free(path_to_bin);
 	}
-	write (1, "Command not found\n", 18);	// perror instead?
-	exit(127);
+}
+
+int exec_child(t_sys *mini, t_cmd *cmd, int j)
+{
+	cmd->pid = fork();
+	if (cmd->pid == -1)
+		return (ERROR);	// make sure correct return
+	if (cmd->pid == 0)
+	{
+		child_redirects(mini->cmds, cmd, mini->pfds, j);
+		close_pfds(mini);
+		if (!cmd->clean)
+			exit (1);
+		exec_path(cmd->clean, mini);
+		write (1, "Command not found\n", 18);	// perror instead?
+		exit(127);
+	}
 }
 
 int	exec(t_list *cmds, t_sys *mini)
@@ -92,17 +109,10 @@ int	exec(t_list *cmds, t_sys *mini)
 	while (cmds)
 	{
 		cmd = cmds->content;
-		cmd->pid = fork();
-		if (cmd->pid == -1)
-			return (ERROR);	// make sure correct return
-		if (cmd->pid == 0)
-		{
-			child_redirects(cmds, cmd, mini->pfds, j);
-			close_pfds(mini);
-			if (!cmd->clean)
-				exit (1);
-			exec_path(cmd->clean, mini); 
-		}
+		if (is_builtin(cmd->clean[0]))
+			exec_builtin(mini, cmd, j);
+		else
+			exec_child(mini, cmd, j);
 		cmds = cmds->next;
 		j++;
 	}

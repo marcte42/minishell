@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 17:47:33 by pravry            #+#    #+#             */
-/*   Updated: 2021/10/05 15:08:29 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 20:15:47 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,5 @@ int			ft_echo(char **args)
 	}
 	if (flag == 0)
 		write(1, "\n", 1);
-	exit (0);
+	return (SUCCESS);
 }
