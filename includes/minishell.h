@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 12:27:18 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/29 14:36:59 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 16:37:50 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 //# include "../libft/libft.h"
 # include "libft.h"
 
-# include "minilib.h"
+// # include "minilib.h"
 
 # include <unistd.h>
 # include <string.h>
@@ -72,6 +72,8 @@ char	*trim_quotes(char *str);
 char	*add_space(char *str);
 
 int		exec(t_list *cmds, t_sys *mini);
+int		init_pfds(t_sys *mini);
+int		close_pfds(t_sys *mini);
 
 void	free_sys(t_sys *mini);
 void	free_cmds(t_list *cmds);

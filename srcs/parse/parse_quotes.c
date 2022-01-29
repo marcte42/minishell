@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/01 20:47:04 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/29 11:53:28 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 16:53:02 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*trim_quotes(char *str)
 			return (NULL);
 		else
 		{
-			newstr = malloc((len - 1) * sizeof(char)); // calloc maybe
+			newstr = malloc((len - 1) * sizeof(char));
 			if (!newstr)
 				return (NULL);
 			strncpy(newstr, &str[1], len - 2);
@@ -85,5 +85,9 @@ char	*trim_quotes(char *str)
 			return (newstr);
 		}
 	}
-	return (str);
+	newstr = ft_strdup(str);
+	if (!newstr)
+		return (NULL);
+	return (newstr);
 }
+

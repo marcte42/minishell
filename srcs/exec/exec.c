@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/29 14:29:41 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 16:52:35 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,8 @@ int	exec(t_list *cmds, t_sys *mini)
 	int		i;
 	int		j;
 
-	mini->pfds = malloc(2 * mini->cmds_count * sizeof(int));
-	if (!mini->pfds)
+	if (!init_pfds(mini))
 		return (ERROR);
-	i = -1;
-	while (++i < mini->cmds_count)
-		pipe(&mini->pfds[i * 2]);
 	j = 0;
 	while (cmds)
 	{
@@ -100,24 +96,17 @@ int	exec(t_list *cmds, t_sys *mini)
 		else if (cmd->pid == 0)
 		{
 			child_redirects(cmds, cmd, mini->pfds, j);
-			i = -1;
-			while (++i < 2 * mini->cmds_count)
-				close(mini->pfds[i]);
+			close_pfds(mini);
 			if (!cmd->clean)
 				exit (1);
-			/*if (is_builtin(cmd->argv[0]))
-				exec_builtin(argv_clean, mini->env, mini);*/
 			exec_path(cmd->clean, mini); 
 		}
 		cmds = cmds->next;
 		j++;
 	}
-	i = -1;
-	while (++i < 2 * mini->cmds_count)
-		close(mini->pfds[i]);	// does close work on fd = -1? in error case
+	close_pfds(mini);
 	i = -1;
 	while (++i < mini->cmds_count)
 		wait(&mini->status);	//waitpid maybe? 
-	free(mini->pfds);
 	return (mini->status);
 }
