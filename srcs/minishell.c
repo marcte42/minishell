@@ -12,19 +12,49 @@
 
 #include "minishell.h"
 
-void handler(int num)
+// temporarily using a simple global var, just an int
+	// actually it's way more complicated, might as well just use a structure
+
+
+t_var	g_var;
+
+
+/*void handler(int sig)
 {
-	if (num == SIGINT)
+	if (sig == SIGINT)
 		rl_redisplay();
 	exit(0);
 }
+*/
+
+void	signal_handler(int sig)
+{
+	if (sig == SIGINT)
+	{	// control_c
+
+		
+	}
+	else if (sig == SIGQUIT)
+	{	// control_slash
+
+
+	}
+	
+}
+
+
 
 int	main(int ac, char **av, char *env[])
 {
 	char	*line;
 	t_sys	mini;
+	struct sigaction    s1;
 
-	signal(SIGINT, handler);	// sort out how to do sigaction instead
+	g_sig_exit = -1;
+
+	s1.sa_handler = &handler;
+	sigaction(SIGINT, &s1, NULL);
+	//signal(SIGINT, handler);	// sort out how to do sigaction instead
 	if (!init_sys(&mini, env))
 		return (127); 			// Message d'erreur a definir en cas de non initialisation
 	line = NULL;
