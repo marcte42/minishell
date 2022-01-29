@@ -6,26 +6,18 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/28 16:34:36 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 11:57:00 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	parent_redirects(t_list *cmds, t_cmd *cmd, int *fds, int j)
-{
-	
-}
 
 void	child_redirects(t_list *cmds, t_cmd *cmd, int *fds, int j)
 {
 	int		fd;
 	t_list	*lst;
 	t_rdr	*rdr;
-	char	*buffer;
-
-	// if (!cmds || !cmd || !fds) return
-
+	
 	if (cmd->r_in)
 	{
 		lst = cmd->r_in;

@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 16:36:47 by me                #+#    #+#             */
-/*   Updated: 2022/01/29 11:53:11 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 11:56:04 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void    free_rdr()
 	{
 		tmp = *lst->next;
 		cmd = (t_cmd *)(*lst)->content;
-		/*
         ft_free_strtab(cmd->argv);
         ft_scott_free(&raw, 1);
 		while(cmd->argv[++i])

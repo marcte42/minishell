@@ -6,28 +6,28 @@
 #    By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/17 10:25:07 by mterkhoy          #+#    #+#              #
-#    Updated: 2022/01/29 11:48:11 by mterkhoy         ###   ########.fr        #
+#    Updated: 2022/01/29 11:55:43 by mterkhoy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 CC 	= gcc
-CFLAGS = -g
+CFLAGS = -g -Wall -Werror -Wextra
 
 INC_DIR = ./includes
 LIB_DIR = ./libft
 
 SRCS =		minishell.c \
 			init.c \
-			parser/parse.c \
-			parser/env.c \
-			parser/quotes.c \
-			parser/utils_parse.c \
-			executor/exec.c \
-			executor/utils_exec.c \
 			free.c \
-			utils.c
+			utils.c \
+			parse/parse.c \
+			parse/parse_env.c \
+			parse/parse_quotes.c \
+			parse/parse_utils.c \
+			exec/exec.c \
+			exec/exec_utils.c			
 
 OBJS	= $(addprefix srcs/, $(SRCS:.c=.o))
 

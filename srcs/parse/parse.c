@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/29 11:36:56 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 11:56:30 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,6 @@ int add_r_out(t_cmd *cmd, char *argv, int type)
 
 int add_redirect(t_cmd *cmd, char *argv, char *type_char)
 {
-	t_rdr	*rdr;
 	int		type;
 
 	type = 1;
@@ -158,7 +157,6 @@ int	parse_redirects(t_cmd *cmd)
 {
 	int		i;
 	int		j;
-	t_rdr	*rdr;
 
 	j = 0;
 	i = 0;
