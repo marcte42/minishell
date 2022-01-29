@@ -42,3 +42,15 @@ int	ft_print_strtab(char **tab)
 	}
 	return (1);
 }
+
+int	strtab_len(char **tab)
+{
+	int	i;
+
+	if (!tab)
+		return (-1);	// or shoult it be 0?
+	i = 0;
+	while (tab[i])
+		++i;
+	return (i);
+}
