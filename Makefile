@@ -6,7 +6,7 @@
 #    By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/17 10:25:07 by mterkhoy          #+#    #+#              #
-#    Updated: 2022/01/29 11:42:57 by mterkhoy         ###   ########.fr        #
+#    Updated: 2022/01/29 11:48:11 by mterkhoy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,9 +23,10 @@ SRCS =		minishell.c \
 			parser/parse.c \
 			parser/env.c \
 			parser/quotes.c \
-			parser/utils.c \
+			parser/utils_parse.c \
 			executor/exec.c \
-			executor/utils.c \
+			executor/utils_exec.c \
+			free.c \
 			utils.c
 
 OBJS	= $(addprefix srcs/, $(SRCS:.c=.o))
@@ -39,13 +40,16 @@ $(NAME): $(OBJS) $(INC_DIR)/minishell.h
 
 all: $(NAME)
 
-clean:
-	rm -rf $(DIR_OBJ)
+clean :
+	make clean -s -C $(LIB_DIR)
+	rm -rf $(OBJS)
 
-fclean: clean
-	rm -rf $(NAME)
+fclean:	clean
+	$(RM) libft/libft.a
+	$(RM) $(NAME)
+	$(RM) $(NAME)
 
-re: fclean all
+re:	fclean all
 
-.PHONY: all clean fclean re bonus rebonus tests testl testv
+.PHONY:	all clean fclean re
 

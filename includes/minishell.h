@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 12:27:18 by pravry            #+#    #+#             */
-/*   Updated: 2021/10/25 12:15:04 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/29 11:49:56 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int		exec(t_list *cmds, t_sys *mini);
 
 void	free_sys(t_sys *mini);
 void	free_cmds(t_list *cmds);
+void	free_env(t_list *env);
 void	print_cmds(t_list *cmds);
 
 #endif
