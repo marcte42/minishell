@@ -6,63 +6,45 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 16:36:47 by me                #+#    #+#             */
-/*   Updated: 2022/01/29 11:56:04 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 20:17:22 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    free_rdr()
+void	ft_freestrtab(char **tab)
 {
+	int		i;
 	
-}
-
-/*void	free_cmds(t_list **lst)
-{
-	t_list	*tmp;
-	t_cmd	*cmd;
-
-	while (*lst)
-	{
-		tmp = *lst->next;
-		cmd = (t_cmd *)(*lst)->content;
-        ft_free_strtab(cmd->argv);
-        ft_scott_free(&raw, 1);
-		while(cmd->argv[++i])
-			free(cmd->argv[i]);
-		free(cmd->argv);	// scott_free
-		free(cmd->raw);
-
-		free(*lst);
-    	free(cmd);
-		lst = tmp;
-	}
-}*/
-
-void	free_env(t_list *env)
-{
-	t_list	*tmp;
-
-	while (env && env->next)
-	{
-		tmp = env;
-		free(env->content);
-		env = env->next;
-		free(tmp);
-	}
-	free(env->content);
-	free(env);
+	if (!tab || !*tab)
+		return ;
+	i = -1;
+	while (tab[++i])
+		free(&tab[i]);
+	free(tab);
 }
 
 void	free_sys(t_sys *mini)
 {
-	free_env(mini->env);
-	free(mini);
+	t_list	*cmds;
+	t_list	*tmp;
+	t_cmd	*cmd;
+	
+	ft_lstclear(&mini->env, free);
+	cmds = mini->cmds;
+	while (cmds)
+	{
+		cmd = cmds->content;
+		if (cmd->raw)
+			free(cmd->raw);
+		ft_free_strtab(cmd->argv);
+		free(cmd->clean);
+		ft_lstclear(&cmd->r_in, free);
+		ft_lstclear(&cmd->r_in, free);
+		tmp = cmds->next;
+		free(cmds);
+		cmds = tmp;
+	}
+	if (mini->pfds)
+		free(mini->pfds);
 }
-
-/*
-void    free_all()
-{
-
-}
-*/

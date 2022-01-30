@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 12:27:18 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/30 16:25:07 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 20:00:12 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,6 @@ int		ft_unset(char **args, t_list *env);
 
 
 void	free_sys(t_sys *mini);
-void	free_cmds(t_list *cmds);
-void	free_env(t_list *env);
 void	print_cmds(t_list *cmds);
 
 #endif
