@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 19:38:24 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/30 13:36:56 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 14:24:42 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,10 @@ int		exec_builtin(t_sys *mini, t_cmd *cmd)
 	fd = builtin_redirects(mini, cmd);
 	if (!strcmp(cmd->clean[0], "echo"))
 		return (ft_echo(cmd->clean, fd));
+	else if (!strcmp(cmd->clean[0], "cd"))
+		return (ft_cd(mini, cmd->clean));
 	/*else if (!strcmp(cmd->clean[0], "pwd"))
 		ft_pwd();
-	else if (!strcmp(cmd->clean[0], "cd"))
-		ft_cd(cmd->clean, mini->env);
 	else if (!strcmp(cmd->clean[0], "export"))
 		ft_export(cmd->clean, mini->env);
 	else if (!strcmp(cmd->clean[0], "unset"))

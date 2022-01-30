@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/30 14:04:20 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 14:13:04 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,11 @@ int parse(char *line, t_sys *mini)
 	if (!line)
 		return (ERROR);
 	if (!control_quotes(line))
+	{
+		ft_putstr("error: unclosed quotes\n");
 		return (ERROR);
+	}
+		
 	line = parse_env(line, mini->env);
 	if(!line)
 		return (ERROR);

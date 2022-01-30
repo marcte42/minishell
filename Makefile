@@ -16,7 +16,7 @@ SRCS_MAIN	=	minishell.c \
 DIR_BUILT	=	$(DIR_SRCS)builtins/
 SRCS_BUILT	=	builtin.c \
 				builtin_echo.c \
-				#builtin_cd.c \
+				builtin_cd.c \
 				#builtin_env.c \
 				#builtin_exit.c \
 				#builtin_export.c \

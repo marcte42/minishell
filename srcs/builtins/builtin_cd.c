@@ -3,39 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pravry <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 11:08:56 by pravry            #+#    #+#             */
-/*   Updated: 2021/06/28 10:30:42 by pravry           ###   ########.fr       */
+/*   Updated: 2022/01/30 14:32:58 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_path(t_envi *env, char *var)
+char	*get_path(t_list *env, char *var)
 {
 	char	*path;
 	
 	while (env)
 	{
-		if (ft_strncmp(var, env->value, 5) == 0)
-			path = ft_strjoin(var, copy_value(env->value));
+		if (ft_strncmp(var, env->content, 5) == 0)
+			path = ft_strjoin(var, ft_strchr(env->content, '=') + 1);
 		env = env->next;
 	}
 	return (path);
 }
 
-static void	add_env(char *oldpwd, t_envi *env)
+static void	add_env(char *oldpwd, t_list *env)
 {
 	while (env)
 	{
-		if (ft_strncmp(oldpwd, env->value, 6) == 0)
-			env->value = ft_strdup(oldpwd);
+		if (ft_strncmp(oldpwd, env->content, 6) == 0)
+			env->content = ft_strdup(oldpwd);
 		env = env->next;
 	}
 }
 
-static int	update_oldpwd(t_envi *env)
+static int	update_oldpwd(t_list *env)
 {
 	char	*oldpwd;
 	char	cwd[PATH_MAX];
@@ -49,9 +49,9 @@ static int	update_oldpwd(t_envi *env)
 	return (1);
 }
 
-static int	go_to_home(t_envi *env)
+static int	go_to_home(t_list *env)
 {
-	int	ret;
+	int		ret;
 	char	*path;
 	char	*tmp;
 
@@ -62,17 +62,16 @@ static int	go_to_home(t_envi *env)
 		printf("cd : HOME not set\n");
 		return (0);
 	}
-	tmp = copy_value(path);
+	tmp = ft_strchr(path, '=') + 1;
 	ret = chdir(tmp);
-	free(path);
-	free(tmp);
+	free(path);	
 	return (ret);
 }
 
-static int	go_to_prev(t_envi *env)
+static int	go_to_prev(t_list *env)
 {
-	int	ret;
-	char *path;
+	int		ret;
+	char	*path;
 
 	path = get_path(env, "OLDPWD");
 	if (!path)
@@ -85,15 +84,15 @@ static int	go_to_prev(t_envi *env)
 	return (ret);
 }
 
-int		ft_cd(char **args, t_envi *env)
+int		ft_cd(t_sys *mini, char **args)
 {
 	int ret;
 
-	update_oldpwd(env);
+	update_oldpwd(mini->env);
 	if (!args[1])
-		return (go_to_home(env));
+		return (go_to_home(mini->env));
 	if (ft_strcmp(args[1], "-") == 0)
-		ret = go_to_prev(env);
+		ret = go_to_prev(mini->env);
 	else
 		ret = chdir(args[1]);
 	return (ret);

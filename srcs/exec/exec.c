@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/30 13:03:35 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 14:08:59 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,28 +51,24 @@ void	child_redirects(t_sys *mini, t_cmd *cmd)
 	}
 }
 
-void	exec_path(t_sys *mini, char **tokens)
+void	exec_path(t_sys *mini, char **clean)
 {
 	char	**paths;
 	char	*path_to_bin;
 	char	*tmp;
 	int		i;
 
-	// if (!tokens || !mini) ideally
-
-	// secure all the split and joins
-
-	if (open(tokens[0], O_RDONLY) > 0)
-		execve(tokens[0], tokens, env_to_tab(mini->env));
+	if (open(clean[0], O_RDONLY) > 0)
+		execve(clean[0], clean, env_to_tab(mini->env));
 	paths = ft_split(getenv("PATH"), ':');
 	i = -1;
 	while (paths[++i])
 	{
 		tmp = ft_strjoin(paths[i], "/");
-		path_to_bin = ft_strjoin(tmp, tokens[0]);
+		path_to_bin = ft_strjoin(tmp, clean[0]);
 		free(tmp);
 		if (open(path_to_bin, O_RDONLY) > 0)
-			execve(path_to_bin, tokens, env_to_tab(mini->env));
+			execve(path_to_bin, clean, env_to_tab(mini->env));
 		free(path_to_bin);
 	}
 }
