@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 21:19:11 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/30 14:38:29 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 14:39:54 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	ft_pwd(int fd)
 	{
 		ft_putstr_fd(cwd, fd);
 		ft_putchar_fd('\n', fd);
+		return (SUCCESS);
 	}
-    return (SUCCESS);
+    return (ERROR);
 }
