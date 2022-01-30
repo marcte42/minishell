@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <string.h>
 
+//# include "minishell.h"
 # include "libft.h"
 
 typedef struct s_nlist
@@ -92,12 +93,16 @@ long		ft_error_msg(char *str, int ret);
 long		ft_error_msg_fd(char *str, int fd, int ret);
 long		ft_scott_free(char **str, int ret);
 
+// This does not belong here but here it is
+void	ft_putnbrnl_fd(int nbr, int fd);
+
 /*
 **		Tab Funcs
 */
 
 int			ft_free_strtab(char **tab);
 int			ft_print_strtab(char **tab);
+int			strtab_len(char **tab);
 
 /*
 **		Is Functions

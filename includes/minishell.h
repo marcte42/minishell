@@ -16,7 +16,7 @@
 //# include "../libft/libft.h"
 # include "libft.h"
 
-// # include "minilib.h"
+# include "minilib.h"
 
 # include <unistd.h>
 # include <string.h>

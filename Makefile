@@ -59,25 +59,21 @@ SRCS_MINILIB	=	error_funcs.c \
 					gnl.c \
 					gnl_utils.c \
 
-DIR_LIBFT	=	./libft/
 
 
 DIR_INC		=	./includes/
-#DIR_INC		=	./
 INCS		=	-I$(DIR_INC)
 
 LIBFT_NAME	=	libft.a
 LIBFT		=	$(DIR_LIBFT)$(LIBFT_NAME)
 
+DIR_LIBFT		=	./libft/
 DIR_LIBFT_INC	=	$(DIR_LIBFT)
 LIBFT_INC		=	libft.h
-
 LIBFT_INCS		=	-I$(DIR_LIBFT)
 
 MINILIB_INCS	=	-I$(DIR_MINILIB)
 
-# if we had a library we would add its .h here
-#ALL_INCS	=	$(INCS) -I$(DIR_MINILIB)
 ALL_INCS	=	$(INCS) $(LIBFT_INCS) $(MINILIB_INCS)
 ALL_LIBS	=	-lreadline -L$(DIR_LIBFT) -lft
 
@@ -102,7 +98,6 @@ OBJS_ALL	=	$(addprefix $(DIR_OBJ),$(OBJ_ALL))
 
 all: $(NAME)
 
-#$(LIBFT): ./libft/$(LIBFT_INC) ./libft
 $(LIBFT): $(DIR_LIBFT)$(LIBFT_INC) $(SRCS_LIBFT)
 	make -C $(DIR_LIBFT)
 

@@ -38,3 +38,9 @@ long	ft_scott_free(char **str, int ret)
 	}
 	return (ret);
 }
+
+void	ft_putnbrnl_fd(int nbr, int fd)
+{
+	ft_putnbr_fd(nbr, fd);
+	ft_putchar_fd('\n', fd);
+}
