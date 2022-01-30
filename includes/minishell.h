@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 12:27:18 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/30 14:38:02 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 14:43:16 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int		exec_builtin(t_sys *mini, t_cmd *cmd);
 int		ft_echo(char **args, int fd);
 int		ft_cd(t_sys *mini, char **args);
 int		ft_pwd(int fd);
+int		ft_unset(char **args, t_list *env);
 
 
 void	free_sys(t_sys *mini);

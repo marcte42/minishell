@@ -6,15 +6,15 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/23 14:40:38 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/29 19:39:20 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 14:42:03 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_elem(t_envi *env)
+void	free_elem(t_list *env)
 {
-	free(env->value);
+	free(env->content);
 	free(env);
 }
 
@@ -31,13 +31,13 @@ int	value_size(char *value)
 	return (size);
 }
 
-int	ft_unset(char **args, t_envi *env)
+int	ft_unset(char **args, t_list *env)
 {
-	t_envi	*tmp;
+	t_list	*tmp;
 
 	if (!args[1])
 		return (SUCCESS);
-	if (ft_strncmp(args[1], env->value, value_size(env->value)) == 0)
+	if (ft_strncmp(args[1], env->content, value_size(env->content)) == 0)
 	{
 		tmp = env->next;
 		free_elem(env);
@@ -45,7 +45,7 @@ int	ft_unset(char **args, t_envi *env)
 	}
 	while (env && env->next)
 	{
-		if (ft_strncmp(args[1], env->next->value, value_size(env->next->value)) == 0)
+		if (ft_strncmp(args[1], env->next->content, value_size(env->next->content)) == 0)
 		{
 				tmp = env->next->next;
 				free_elem(env->next);
