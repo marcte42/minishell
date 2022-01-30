@@ -64,21 +64,33 @@ void	signal_handler(int sig)
 */
 }
 
+void	signal_handler_2(int sig)
+{
+	if (sig == SIGINT)
+	{
+		ft_putchar_fd('\n', 2);
+		g_var.status = 130;
+
+/*
+		rl_on_new_line();
+		rl_replace_line("", 0);
+*/
+// not sure which is better
+	// The second one works, the first does not...
+		rl_replace_line("", 0);
+		rl_redisplay();
+
+	}
+}
+
 int	main(int ac, char **av, char *env[])
 {
 	char	*line;
 	t_sys	mini;
-	struct sigaction    s1;
 
-	//g_sig_exit = -1;
-
-	s1.sa_handler = &signal_handler;
-	sigaction(SIGINT, &s1, NULL);
-	// I'm an idiot, you can't do a Sigaction on Sigquit, or is it Sigterm it doesn't work on...
-	// either way doesn't really matter have a better way of dealing with it...
-//	sigaction(SIGQUIT, &s1, NULL);
-//	signal(SIGQUIT, SIG_IGN);
-	//signal(SIGINT, handler);	// sort out how to do sigaction instead
+	signal(SIGINT, signal_handler);	// sort out how to do sigaction instead
+	// not clear if i also need to handle SIGQUIT...
+	signal(SIGQUIT, SIG_IGN);
 	if (!init_sys(&mini, env))
 		return (127); 			// Message d'erreur a definir en cas de non initialisation
 	line = NULL;
@@ -89,7 +101,8 @@ int	main(int ac, char **av, char *env[])
 		// this did not help, prolly get rid of it
 //		sigaction(SIGINT, &s1, NULL);
 //		sigaction(SIGQUIT, &s1, NULL);
-//		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, signal_handler);
+		signal(SIGQUIT, SIG_IGN);
 		line = readline("$> ");
 		if (!line)
 		{

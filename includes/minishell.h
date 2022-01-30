@@ -102,4 +102,7 @@ void	free_cmds(t_list *cmds);
 void	free_env(t_list *env);
 void	print_cmds(t_list *cmds);
 
+void	signal_handler(int sig);
+void	signal_handler_2(int sig);
+
 #endif

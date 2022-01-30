@@ -75,11 +75,15 @@ void	exec_path(t_sys *mini, char **clean)
 
 int	exec_child(t_sys *mini, t_cmd *cmd)
 {
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	cmd->pid = fork();
 	if (cmd->pid == -1)
 		return (ERROR);// make sure correct return
 	if (cmd->pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		child_redirects(mini, cmd);
 		close_pfds(mini);
 		if (!cmd->clean)
@@ -108,8 +112,12 @@ int	exec(t_list *cmds, t_sys *mini)
 		cmds = cmds->next;
 	}
 	close_pfds(mini);
+	signal(SIGINT, signal_handler_2);
+	signal(SIGQUIT, SIG_IGN);
 	i = -1;
 	while (++i < mini->cmds_count)
-		wait(&mini->retval);//waitpid maybe? 
+		wait(&mini->retval);//waitpid maybe?
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, SIG_IGN);
 	return (mini->retval);
 }
