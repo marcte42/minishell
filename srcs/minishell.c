@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 11:55:02 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/30 13:48:06 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 18:15:42 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	signal_handler(int sig)
 //		ft_putstr("we should be in sigint\n");
 		ft_putchar_fd('\n', 2);
 		rl_on_new_line();
-	//	rl_replace_line("", 0);	// doesn't exit in mac -lreadline library...
+		rl_replace_line("", 0);	// doesn't exit in mac -lreadline library...
 		rl_redisplay();
 		g_var.status = 130;
 		g_var.signal = 1;
@@ -68,12 +68,12 @@ int	main(int ac, char **av, char *env[])
 {
 	char	*line;
 	t_sys	mini;
-	// struct sigaction    s1;
+	struct sigaction    s1;
 
 	//g_sig_exit = -1;
 
-	// s1.sa_handler = &signal_handler;
-	// sigaction(SIGINT, &s1, NULL);
+	s1.sa_handler = &signal_handler;
+	sigaction(SIGINT, &s1, NULL);
 	// I'm an idiot, you can't do a Sigaction on Sigquit, or is it Sigterm it doesn't work on...
 	// either way doesn't really matter have a better way of dealing with it...
 //	sigaction(SIGQUIT, &s1, NULL);
@@ -93,7 +93,7 @@ int	main(int ac, char **av, char *env[])
 		line = readline("$> ");
 		if (!line)
 		{
-			write(1, "exit\n", 5);
+			ft_putstr_fd("exit\n", STDERR_FILENO);
 			return (0);
 		}
 		add_history(line);

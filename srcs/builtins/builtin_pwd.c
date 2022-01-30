@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 21:19:11 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/30 14:40:28 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 16:38:37 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_pwd(int fd)
 {
-	char cwd[PATH_MAX];
+	char	cwd[PATH_MAX];
 
 	if (getcwd(cwd, PATH_MAX))
 	{
@@ -22,5 +22,5 @@ int	ft_pwd(int fd)
 		ft_putchar_fd('\n', fd);
 		return (SUCCESS);
 	}
-    return (ERROR);
+	return (ERROR);
 }

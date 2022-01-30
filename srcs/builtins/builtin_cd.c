@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 11:08:56 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/30 14:35:07 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 16:40:25 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*get_path(t_list *env, char *var)
 {
 	char	*path;
-	
+
 	while (env)
 	{
 		if (ft_strncmp(var, env->content, 5) == 0)
@@ -42,7 +42,8 @@ static int	update_oldpwd(t_list *env)
 
 	if (getcwd(cwd, PATH_MAX) == NULL)
 		return (0);
-	if (!(oldpwd = ft_strjoin("OLDPWD=", cwd)))
+	oldpwd = ft_strjoin("OLDPWD=", cwd);
+	if (!oldpwd)
 		return (0);
 	add_env(oldpwd, env);
 	free(oldpwd);
@@ -64,7 +65,7 @@ static int	go_to_home(t_list *env)
 	}
 	tmp = ft_strchr(path, '=') + 1;
 	ret = chdir(tmp);
-	free(path);	
+	free(path);
 	return (ret);
 }
 
@@ -75,18 +76,18 @@ static int	go_to_prev(t_list *env)
 
 	path = get_path(env, "OLDPWD");
 	if (!path)
-    {
-        printf("cd : HOME not set\n");
-        return (0);
-    }
+	{
+		printf("cd : HOME not set\n");
+		return (0);
+	}
 	update_oldpwd(env);
 	ret = chdir(path);
 	return (ret);
 }
 
-int		ft_cd(t_sys *mini, char **args)
+int	ft_cd(t_sys *mini, char **args)
 {
-	int ret;
+	int	ret;
 
 	update_oldpwd(mini->env);
 	if (!args[1])

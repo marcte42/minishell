@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/23 14:40:38 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/30 14:42:03 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 16:41:23 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,13 @@ int	ft_unset(char **args, t_list *env)
 	}
 	while (env && env->next)
 	{
-		if (ft_strncmp(args[1], env->next->content, value_size(env->next->content)) == 0)
+		if (ft_strncmp(args[1],
+				env->next->content, value_size(env->next->content)) == 0)
 		{
-				tmp = env->next->next;
-				free_elem(env->next);
-				env->next = tmp;
-				return (SUCCESS);
+			tmp = env->next->next;
+			free_elem(env->next);
+			env->next = tmp;
+			return (SUCCESS);
 		}
 		env = env->next;
 	}

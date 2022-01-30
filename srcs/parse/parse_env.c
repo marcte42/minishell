@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:28:11 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/29 16:59:51 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 16:33:04 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@ int	ft_envlen(t_list *env)
 	i = 0;
 	while (env)
 	{
-		env = env->next;	
+		env = env->next;
 		i++;
 	}
 	return (i);
 }
 
-char **env_to_tab(t_list *env)
+char	**env_to_tab(t_list *env)
 {
-	char **tab;	
-	int	i;
+	char	**tab;	
+	int		i;
 
 	i = 0;
 	tab = malloc(sizeof(char *) * (ft_envlen(env) + 1));
@@ -89,7 +89,7 @@ char	*expand_env(char *line, char *start, char *value)
 	while (line[++i] && &line[i] != start)
 		tmp_line[i] = line[i];
 	if (value)
-		ft_strcat(tmp_line, value);	
+		ft_strcat(tmp_line, value);
 	ft_strcat(tmp_line, &start[key_len + 1]);
 	free(line);
 	return (tmp_line);
@@ -99,11 +99,11 @@ char	*expand_env(char *line, char *start, char *value)
 // Retourne un char* avec la valeur associee a la key
 // Si la key n'a pas ete trouvee on retourne un char* vide ""
 // Si une erreur se produit on retourne un NULL
-char *ft_getenv (char *key, t_list *env)
+char	*ft_getenv (char *key, t_list *env)
 {
 	char	*value;
 	int		value_len;
-	
+
 	while (env)
 	{
 		if (!ft_strncmp(key, env->content, ft_strlen(key)))

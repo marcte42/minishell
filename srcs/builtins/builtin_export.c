@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/11 13:09:53 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/30 15:32:45 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 16:41:43 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	check_in_env(t_list *env, char *args, int error)
 {
 	char	*var;
 	char	*env_name;
-	
+
 	var = get_key(args);
 	if (error == 2)
 		return (1);
@@ -59,7 +59,7 @@ int	check_in_env(t_list *env, char *args, int error)
 
 void	env_add(char *arg, t_list *env)
 {
-	t_list *node;	
+	t_list	*node;	
 
 	node = ft_lstnew(arg);
 	ft_lstadd_back(&env, node);

@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 12:27:18 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/30 15:32:12 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 16:25:07 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ typedef struct		s_sys
 	t_list	*cmds;			// Liste chainee avec les commandes
 	int		cmds_count;		// Nombre de commandes a executer
 	int		*pfds;			// Tableau de pipes
-	int		status;			// Valeur finale de retour d'execution
-	int		exit;			// ???
+	int		retval;			// Valeur finale de retour d'execution
+	int		exit;			// Flag pour le builtin exit
 }					t_sys;
 
 typedef struct		s_rdr
@@ -60,6 +60,7 @@ typedef struct		s_cmd
 	char	**clean;		// Tableau de char** avec juste la commande et les args
 	t_list	*r_in;			// Liste chainee avec toutes les redirections entrantes
 	t_list	*r_out;			// Liste chainee avec toutes les redirections sortantes
+	int		retval;
 }					t_cmd;
 
 typedef struct		s_var

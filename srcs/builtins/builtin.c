@@ -6,13 +6,13 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 19:38:24 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/30 15:31:57 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 18:02:37 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int			is_builtin(char *cmd)
+int	is_builtin(char *cmd)
 {
 	char	*builtin[] = {"pwd", "cd", "echo", "export", "unset", "exit", "env", NULL};
 	int		i;
@@ -32,7 +32,7 @@ int	builtin_redirects(t_sys *mini, t_cmd *cmd)
 	int		fd;
 	t_list	*lst;
 	t_rdr	*rdr;
-	
+
 	fd = STDOUT_FILENO;
 	if (cmd->id != mini->cmds_count - 1)
 		fd = mini->pfds[cmd->id * 2 + 1];
@@ -52,11 +52,13 @@ int	builtin_redirects(t_sys *mini, t_cmd *cmd)
 	return (fd);
 }
 
-int		exec_builtin(t_sys *mini, t_cmd *cmd)
+int	exec_builtin(t_sys *mini, t_cmd *cmd)
 {
 	int		fd;
-	
+
 	fd = builtin_redirects(mini, cmd);
+	if (!cmd->clean[0])
+		return (SUCCESS);
 	if (!strcmp(cmd->clean[0], "echo"))
 		return (ft_echo(cmd->clean, fd));
 	else if (!strcmp(cmd->clean[0], "cd"))
@@ -73,7 +75,5 @@ int		exec_builtin(t_sys *mini, t_cmd *cmd)
 	else if (!strcmp(cmd->clean[0], "exit"))
 		ft_exit(cmd->clean, mini);
 	*/
-	
-		
 	return (SUCCESS);
 }

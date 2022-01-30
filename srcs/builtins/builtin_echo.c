@@ -6,13 +6,13 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 17:47:33 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/30 13:49:07 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 16:42:15 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int			size_arg(char **args)
+int	size_arg(char **args)
 {
 	int	size;
 
@@ -22,7 +22,7 @@ int			size_arg(char **args)
 	return (size);
 }
 
-int			ft_echo(char **args, int fd)
+int	ft_echo(char **args, int fd)
 {
 	int	i;
 	int	flag;

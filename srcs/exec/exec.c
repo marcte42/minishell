@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/30 14:08:59 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 18:41:47 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	child_redirects(t_sys *mini, t_cmd *cmd)
 	int		fd;
 	t_list	*lst;
 	t_rdr	*rdr;
-	
+
 	if (cmd->id != 0)
 		dup2(mini->pfds[(cmd->id - 1) * 2], STDIN_FILENO);
 	if (cmd->id != mini->cmds_count - 1)
@@ -30,24 +30,24 @@ void	child_redirects(t_sys *mini, t_cmd *cmd)
 			// yea we could add more security checks here
 			rdr = lst->content;
 			fd = open((char *)rdr->file, O_RDONLY);
-			dup2(fd, STDIN_FILENO); 
+			dup2(fd, STDIN_FILENO);
 			lst = lst->next;
 		}
 	}
 	if (cmd->r_out)
 	{
 		lst = cmd->r_out;
-		while (lst)	// same as above, security checks i think
+		while (lst)// same as above, security checks i think
 		{
 			rdr = lst->content;
-			if (rdr->type == 1)	// if rdr first
+			if (rdr->type == 1)// if rdr first
 				fd = open((char *)rdr->file, O_CREAT | O_RDWR | O_TRUNC, 0644);
 			else
 				fd = open((char *)rdr->file, O_CREAT | O_RDWR | O_APPEND, 0644);
 			// should we: if (fd == -1) return and free?
 			lst = lst->next;
 		}
-		dup2(fd, STDOUT_FILENO); // can it fail? yes rets (-1) if fail, secure it
+		dup2(fd, STDOUT_FILENO);// can it fail? yes rets (-1) if fail, secure it
 	}
 }
 
@@ -73,11 +73,11 @@ void	exec_path(t_sys *mini, char **clean)
 	}
 }
 
-int exec_child(t_sys *mini, t_cmd *cmd)
+int	exec_child(t_sys *mini, t_cmd *cmd)
 {
 	cmd->pid = fork();
 	if (cmd->pid == -1)
-		return (ERROR);	// make sure correct return
+		return (ERROR);// make sure correct return
 	if (cmd->pid == 0)
 	{
 		child_redirects(mini, cmd);
@@ -85,10 +85,10 @@ int exec_child(t_sys *mini, t_cmd *cmd)
 		if (!cmd->clean)
 			exit (1);
 		exec_path(mini, cmd->clean);
-		write (1, "Command not found\n", 18);	// perror instead?
+		write (STDERR_FILENO, "Command not found\n", 18);// perror instead?
 		exit(127);
 	}
-	return (SUCCESS); // Je ne sais pas quel return on fait ici 
+	return (SUCCESS);// Je ne sais pas quel return on fait ici 
 }
 
 int	exec(t_list *cmds, t_sys *mini)
@@ -101,8 +101,8 @@ int	exec(t_list *cmds, t_sys *mini)
 	while (cmds)
 	{
 		cmd = cmds->content;
-		if (is_builtin(cmd->clean[0]))
-			exec_builtin(mini, cmd);
+		if (!cmd->clean[0] || is_builtin(cmd->clean[0]))
+			cmd->retval = exec_builtin(mini, cmd);
 		else
 			exec_child(mini, cmd);
 		cmds = cmds->next;
@@ -110,6 +110,6 @@ int	exec(t_list *cmds, t_sys *mini)
 	close_pfds(mini);
 	i = -1;
 	while (++i < mini->cmds_count)
-		wait(&mini->status);	//waitpid maybe? 
-	return (mini->status);
+		wait(&mini->retval);//waitpid maybe? 
+	return (mini->retval);
 }

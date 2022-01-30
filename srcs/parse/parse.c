@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/30 14:13:04 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 19:09:49 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ t_list	*parse_pipes(char *line)
 	return (lst);
 }
 
-int handle_heredoc(t_rdr *rdr, char *argv, int id)
+int	handle_heredoc(t_rdr *rdr, char *argv, int id)
 {
 	int		fd;
 	char	*buffer;
 	char	*heredoc_name;
-	
+
 	heredoc_name = ft_strjoin("/tmp/", ft_strjoin(argv, ft_itoa(id)));
 	if (!heredoc_name)
 		return (ERROR);
@@ -75,11 +75,11 @@ int handle_heredoc(t_rdr *rdr, char *argv, int id)
 	return (SUCCESS);
 }
 
-int add_r_in(t_cmd *cmd, char *argv, int type)
+int	add_r_in(t_cmd *cmd, char *argv, int type)
 {
 	t_rdr	*rdr;
 	t_list	*node;
-	
+
 	rdr = malloc(sizeof(rdr));
 	if (!rdr)
 		return (ERROR);
@@ -103,11 +103,11 @@ int add_r_in(t_cmd *cmd, char *argv, int type)
 	return (SUCCESS);
 }
 
-int add_r_out(t_cmd *cmd, char *argv, int type)
+int	add_r_out(t_cmd *cmd, char *argv, int type)
 {
 	t_rdr	*rdr;
 	t_list	*node;
-	
+
 	rdr = malloc(sizeof(rdr));
 	if (!rdr)
 		return (0);
@@ -123,10 +123,15 @@ int add_r_out(t_cmd *cmd, char *argv, int type)
 	return (SUCCESS);
 }
 
-int add_redirect(t_cmd *cmd, char *argv, char *type_char)
+int	add_redirect(t_cmd *cmd, char *argv, char *type_char)
 {
 	int		type;
 
+	if (!argv)
+	{
+		ft_putstr_fd("minishell: syntax error\n", STDERR_FILENO);
+		return (ERROR);
+	}
 	type = 1;
 	if (!ft_strcmp(type_char, "<<") || !ft_strcmp(type_char, ">>"))
 		type = 2;
@@ -144,9 +149,9 @@ int	parse_redirects(t_cmd *cmd)
 	i = 0;
 	if (!cmd)
 		return (0);
-	while (cmd->argv[i])// i have a strtab_len(), if len 0 we return?
+	while (cmd->argv[i]) // i have a strtab_len(), if len 0 we return?
 		i++;
-	cmd->clean = malloc((i + 1) * sizeof(char *));// ft_calloc
+	cmd->clean = malloc((i + 1) * sizeof(char *));
 	if (!cmd->clean)
 		return (0);
 	i = -1;
@@ -182,14 +187,15 @@ int	parse_args(t_list *cmds)
 		if (!raw_space)
 			return (ERROR);
 		cmd->argv = ft_split_constraint(raw_space, ' ', is_inquotes);
-		parse_redirects(cmd);
+		if (!parse_redirects(cmd))
+			return (ERROR);
 		free(raw_space);
 		cmds = cmds->next;
 	}
 	return (SUCCESS);
 }
 
-int parse(char *line, t_sys *mini)
+int	parse(char *line, t_sys *mini)
 {
 	if (!line)
 		return (ERROR);
@@ -198,9 +204,9 @@ int parse(char *line, t_sys *mini)
 		ft_putstr("error: unclosed quotes\n");
 		return (ERROR);
 	}
-		
+
 	line = parse_env(line, mini->env);
-	if(!line)
+	if (!line)
 		return (ERROR);
 	mini->cmds = parse_pipes(line);
 	if (!mini->cmds)
