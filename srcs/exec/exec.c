@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/30 12:59:25 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 13:03:35 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,10 @@ void	child_redirects(t_sys *mini, t_cmd *cmd)
 	t_list	*lst;
 	t_rdr	*rdr;
 	
-	// On commence par rediriger quoi qu'il arrive dans les pipes
 	if (cmd->id != 0)
 		dup2(mini->pfds[(cmd->id - 1) * 2], STDIN_FILENO);
 	if (cmd->id != mini->cmds_count - 1)
 		dup2(mini->pfds[cmd->id * 2 + 1], STDOUT_FILENO);
-
-	// Si on a des redirections entrantes ou sortantes alors on redirige les fd
 	if (cmd->r_in)
 	{
 		lst = cmd->r_in;
@@ -95,7 +92,7 @@ int exec_child(t_sys *mini, t_cmd *cmd)
 		write (1, "Command not found\n", 18);	// perror instead?
 		exit(127);
 	}
-	return (SUCCESS);
+	return (SUCCESS); // Je ne sais pas quel return on fait ici 
 }
 
 int	exec(t_list *cmds, t_sys *mini)

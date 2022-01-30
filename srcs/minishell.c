@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 11:55:02 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/30 12:33:05 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 13:37:29 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,10 @@ int	main(int ac, char **av, char *env[])
 //		signal(SIGQUIT, SIG_IGN);
 		line = readline("$> ");
 		if (!line)
+		{
+			write(1, "exit\n", 5);
 			return (0);
+		}
 		add_history(line);
 		if (!parse(line, &mini))
 		{

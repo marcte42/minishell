@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 12:27:18 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/30 12:52:39 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 13:33:40 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int		close_pfds(t_sys *mini);
 
 int		is_builtin(char *cmd);
 int		exec_builtin(t_sys *mini, t_cmd *cmd);
-int		ft_echo(char **args);
+int		ft_echo(char **args, int fd);
 
 
 void	free_sys(t_sys *mini);
