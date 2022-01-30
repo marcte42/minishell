@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/29 19:36:45 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 12:49:55 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,10 +174,13 @@ int	parse_args(t_list *cmds)
 {
 	t_cmd	*cmd;
 	char	*raw_space;
+	int		i;
 
+	i = 0;
 	while (cmds)
 	{
 		cmd = cmds->content;
+		cmd->id = i++;
 		raw_space = add_space(cmd->raw);
 		if (!raw_space)
 			return (ERROR);

@@ -6,23 +6,23 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/29 20:18:35 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 12:59:25 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	child_redirects(t_list *cmds, t_cmd *cmd, int *fds, int j)
+void	child_redirects(t_sys *mini, t_cmd *cmd)
 {
 	int		fd;
 	t_list	*lst;
 	t_rdr	*rdr;
 	
 	// On commence par rediriger quoi qu'il arrive dans les pipes
-	if (j != 0)
-		dup2(fds[(j - 1) * 2], STDIN_FILENO);
-	if (cmds->next)
-		dup2(fds[j * 2 + 1], STDOUT_FILENO);
+	if (cmd->id != 0)
+		dup2(mini->pfds[(cmd->id - 1) * 2], STDIN_FILENO);
+	if (cmd->id != mini->cmds_count - 1)
+		dup2(mini->pfds[cmd->id * 2 + 1], STDOUT_FILENO);
 
 	// Si on a des redirections entrantes ou sortantes alors on redirige les fd
 	if (cmd->r_in)
@@ -54,7 +54,7 @@ void	child_redirects(t_list *cmds, t_cmd *cmd, int *fds, int j)
 	}
 }
 
-void	exec_path(char **tokens, t_sys *mini)
+void	exec_path(t_sys *mini, char **tokens)
 {
 	char	**paths;
 	char	*path_to_bin;
@@ -80,41 +80,39 @@ void	exec_path(char **tokens, t_sys *mini)
 	}
 }
 
-int exec_child(t_sys *mini, t_cmd *cmd, int j)
+int exec_child(t_sys *mini, t_cmd *cmd)
 {
 	cmd->pid = fork();
 	if (cmd->pid == -1)
 		return (ERROR);	// make sure correct return
 	if (cmd->pid == 0)
 	{
-		child_redirects(mini->cmds, cmd, mini->pfds, j);
+		child_redirects(mini, cmd);
 		close_pfds(mini);
 		if (!cmd->clean)
 			exit (1);
-		exec_path(cmd->clean, mini);
+		exec_path(mini, cmd->clean);
 		write (1, "Command not found\n", 18);	// perror instead?
 		exit(127);
 	}
+	return (SUCCESS);
 }
 
 int	exec(t_list *cmds, t_sys *mini)
 {
 	t_cmd	*cmd;
 	int		i;
-	int		j;
 
 	if (!init_pfds(mini))
 		return (ERROR);
-	j = 0;
 	while (cmds)
 	{
 		cmd = cmds->content;
 		if (is_builtin(cmd->clean[0]))
-			exec_builtin(mini, cmd, j);
+			exec_builtin(mini, cmd);
 		else
-			exec_child(mini, cmd, j);
+			exec_child(mini, cmd);
 		cmds = cmds->next;
-		j++;
 	}
 	close_pfds(mini);
 	i = -1;

@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 11:55:02 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/30 00:12:50 by me               ###   ########.fr       */
+/*   Updated: 2022/01/30 12:33:05 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,12 @@ int	main(int ac, char **av, char *env[])
 {
 	char	*line;
 	t_sys	mini;
-	struct sigaction    s1;
+	// struct sigaction    s1;
 
 	//g_sig_exit = -1;
 
-	s1.sa_handler = &signal_handler;
-	sigaction(SIGINT, &s1, NULL);
+	// s1.sa_handler = &signal_handler;
+	// sigaction(SIGINT, &s1, NULL);
 	// I'm an idiot, you can't do a Sigaction on Sigquit, or is it Sigterm it doesn't work on...
 	// either way doesn't really matter have a better way of dealing with it...
 //	sigaction(SIGQUIT, &s1, NULL);

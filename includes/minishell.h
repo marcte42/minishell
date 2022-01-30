@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 12:27:18 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/29 20:14:23 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 12:52:39 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct		s_rdr
 
 typedef struct		s_cmd
 {
+	int		id;				// L'id dans la ligne de commande 0, 1, 2,...
 	pid_t	pid;			// L'id du process de la commande 
 	char	*raw;			// Ligne brute	
 	char	**argv;			// Tableau de char** avec la commande, les arguments et les redirs
@@ -85,7 +86,7 @@ int		init_pfds(t_sys *mini);
 int		close_pfds(t_sys *mini);
 
 int		is_builtin(char *cmd);
-int		exec_builtin(t_sys *mini, t_cmd *cmd, int j);
+int		exec_builtin(t_sys *mini, t_cmd *cmd);
 int		ft_echo(char **args);
 
 

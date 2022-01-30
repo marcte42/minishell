@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 19:38:24 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/29 20:14:37 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 12:52:32 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,8 @@ int			is_builtin(char *cmd)
 	}
 }*/
 
-int		exec_builtin(t_sys *mini, t_cmd *cmd, int j)
+int		exec_builtin(t_sys *mini, t_cmd *cmd)
 {
-	(void) j;
 	(void) mini;
 	
 	if (!strcmp(cmd->clean[0], "echo"))
