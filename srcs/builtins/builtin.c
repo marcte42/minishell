@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 19:38:24 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/30 14:45:16 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 15:31:57 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,6 @@ int			is_builtin(char *cmd)
 	}
 	return (0);
 }
-
-/*void		ft_env(t_sys *mini)
-{
-	while (mini->env)
-	{
-		printf("%s\n", mini->env->content);
-		mini->env = mini->env->next;
-	}
-}*/
 
 int	builtin_redirects(t_sys *mini, t_cmd *cmd)
 {
@@ -72,17 +63,17 @@ int		exec_builtin(t_sys *mini, t_cmd *cmd)
 		return (ft_cd(mini, cmd->clean));
 	else if (!strcmp(cmd->clean[0], "pwd"))
 		return (ft_pwd(fd));
+	else if (!strcmp(cmd->clean[0], "env"))
+		return (ft_env(mini, fd));
+	else if (!strcmp(cmd->clean[0], "export"))
+		return (ft_export(cmd->clean, mini->env));
 	else if (!strcmp(cmd->clean[0], "unset"))
 		return (ft_unset(cmd->clean, mini->env));
-
-	/*else if (!strcmp(cmd->clean[0], "export"))
-		ft_export(cmd->clean, mini->env);
-	
+	/*
 	else if (!strcmp(cmd->clean[0], "exit"))
 		ft_exit(cmd->clean, mini);
-
-	else if (!strcmp(cmd->clean[0], "env"))
-		ft_env(mini);*/
+	*/
+	
 		
 	return (SUCCESS);
 }

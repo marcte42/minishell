@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 12:27:18 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/30 14:43:16 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 15:32:12 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ t_list	*init_env(char **env);
 int		init_sys(t_sys *mini, char **env);
 int		parse(char *line, t_sys *mini);
 char	*parse_env(char *line, t_list *env);
+char	*get_key(char *s);
 char	**env_to_tab(t_list *env);
 int		control_quotes(char *str);
 int		is_inquotes(char *s, char *c);
@@ -90,6 +91,8 @@ int		exec_builtin(t_sys *mini, t_cmd *cmd);
 int		ft_echo(char **args, int fd);
 int		ft_cd(t_sys *mini, char **args);
 int		ft_pwd(int fd);
+int		ft_env(t_sys *mini, int fd);
+int		ft_export(char	**args, t_list *env);
 int		ft_unset(char **args, t_list *env);
 
 
