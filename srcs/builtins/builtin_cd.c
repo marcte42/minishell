@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 11:08:56 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/30 16:40:25 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 19:15:18 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	go_to_home(t_list *env)
 	path = get_path(env, "HOME=");
 	if (!path)
 	{
-		printf("cd : HOME not set\n");
+		ft_putstr_fd("cd : HOME not set\n", STDERR_FILENO);
 		return (0);
 	}
 	tmp = ft_strchr(path, '=') + 1;

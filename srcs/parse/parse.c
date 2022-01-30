@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/30 19:09:49 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 19:24:03 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,6 @@ int	parse_redirects(t_cmd *cmd)
 	i = -1;
 	while (cmd->argv[++i])
 	{
-		trim_quotes(cmd->argv[i]);
 		if (!ft_strcmp(cmd->argv[i], "<") || !ft_strcmp(cmd->argv[i], "<<")
 			|| !ft_strcmp(cmd->argv[i], ">") || !ft_strcmp(cmd->argv[i], ">>"))
 		{
@@ -166,6 +165,7 @@ int	parse_redirects(t_cmd *cmd)
 				return (ERROR);
 			continue ;
 		}
+		trim_quotes(cmd->argv[i]);
 		cmd->clean[j++] = cmd->argv[i];
 	}
 	cmd->clean[j] = NULL;

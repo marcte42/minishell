@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/11 13:09:53 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/30 16:41:43 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 19:15:36 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	ft_export(char	**args, t_list *env)
 			error = -3;
 		if (error <= 0)
 		{
-			printf("error\n");
+			ft_putstr_fd("error\n", STDERR_FILENO);
 			return (0);
 		}
 		new = check_in_env(env, args[1], error);
