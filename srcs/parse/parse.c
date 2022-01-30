@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/30 12:49:55 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 13:09:31 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ t_list	*parse_pipes(char *line)
 	return (lst);
 }
 
-int handle_heredoc(t_rdr *rdr, char *argv)
+int handle_heredoc(t_rdr *rdr, char *argv, int id)
 {
 	int		fd;
 	char	*buffer;
 	char	*heredoc_name;
 	
-	heredoc_name = ft_strjoin("/tmp/", argv);
+	heredoc_name = ft_strjoin("/tmp/", ft_strjoin(argv, ft_itoa(id)));
 	if (!heredoc_name)
 		return (ERROR);
 	rdr->file = heredoc_name;
@@ -87,7 +87,7 @@ int add_r_in(t_cmd *cmd, char *argv, int type)
 	rdr->file = argv;
 	if (type == 2)
 	{
-		if (!handle_heredoc(rdr, argv))
+		if (!handle_heredoc(rdr, argv, cmd->id))
 		{
 			free (rdr);
 			return (ERROR);
