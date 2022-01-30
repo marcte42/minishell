@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 12:27:18 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/30 13:33:40 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 14:01:57 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*parse_env(char *line, t_list *env);
 char	**env_to_tab(t_list *env);
 int		control_quotes(char *str);
 int		is_inquotes(char *s, char *c);
-char	*trim_quotes(char *str);
+void    trim_quotes(char *str);
 char	*add_space(char *str);
 void	print_list(t_list *cmds);
 

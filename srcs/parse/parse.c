@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/30 13:09:31 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 14:04:20 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,6 @@ int	parse_redirects(t_cmd *cmd)
 {
 	int		i;
 	int		j;
-	char	*tmp;
 
 	j = 0;
 	i = 0;
@@ -153,9 +152,7 @@ int	parse_redirects(t_cmd *cmd)
 	i = -1;
 	while (cmd->argv[++i])
 	{
-		tmp = cmd->argv[i];
-		cmd->argv[i] = trim_quotes(cmd->argv[i]);
-		free(tmp);
+		trim_quotes(cmd->argv[i]);
 		if (!ft_strcmp(cmd->argv[i], "<") || !ft_strcmp(cmd->argv[i], "<<")
 			|| !ft_strcmp(cmd->argv[i], ">") || !ft_strcmp(cmd->argv[i], ">>"))
 		{

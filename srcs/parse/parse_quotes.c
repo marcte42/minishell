@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/01 20:47:04 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/29 16:56:40 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 14:05:54 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,29 +65,32 @@ int	control_quotes(char *str)
 	return (!open);
 }
 
-char	*trim_quotes(char *str)
+void trim_quote(char *str, int *i)
 {
-	int		len;
-	char	*newstr;
-
-	if (str[0] == '\"' || str[0] == '\'')
-	{
-		len = strlen(str);
-		if (len == 1 || str[0] != str[len - 1])
-			return (NULL);
-		else
-		{
-			newstr = malloc((len - 1) * sizeof(char));
-			if (!newstr)
-				return (NULL);
-			strncpy(newstr, &str[1], len - 2);
-			newstr[len - 2] = 0;
-			return (newstr);
-		}
-	}
-	newstr = ft_strdup(str);
-	if (!newstr)
-		return (NULL);
-	return (newstr);
+    ft_memmove(&str[*i], &str[*i + 1], strlen(&str[*i]));
+    (*i)--;
 }
 
+void    trim_quotes(char *str)
+{
+    int i;
+    int s_quote;
+    int d_quote;
+
+    if (!str)
+        return ;
+    s_quote = 0;
+    d_quote = 0;
+    i = -1;
+    while (str[++i])
+    {
+        if (str[i] == '\'' && !d_quote && ++s_quote)
+            trim_quote(str, &i);
+        else if (str[i] == '\"' && !s_quote && ++d_quote)
+            trim_quote(str, &i);
+        else if (str[i] == '\'' && !d_quote && s_quote--)
+            trim_quote(str, &i);
+        else if (str[i] == '\"' && !s_quote && d_quote--)
+            trim_quote(str, &i);
+    }
+}
