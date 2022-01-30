@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 17:47:33 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/30 13:35:17 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 13:49:07 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ int			ft_echo(char **args, int fd)
 		{
 			ft_putstr_fd(args[i], fd);
 			if (args[i + 1] && args[i][0] != '\0')
-				write(fd, " ",1);
+				ft_putchar_fd(' ', fd);
 			i++;
 		}
 	}
 	if (flag == 0)
-		write(fd, "\n", 1);
+		ft_putchar_fd('\n', fd);
 	return (SUCCESS);
 }
