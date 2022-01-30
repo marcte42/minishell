@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 16:36:47 by me                #+#    #+#             */
-/*   Updated: 2022/01/30 20:17:22 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 20:37:59 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	free_sys(t_sys *mini)
 		cmd = cmds->content;
 		if (cmd->raw)
 			free(cmd->raw);
-		ft_free_strtab(cmd->argv);
+		ft_freestrtab(cmd->argv);
 		free(cmd->clean);
 		ft_lstclear(&cmd->r_in, free);
 		ft_lstclear(&cmd->r_in, free);

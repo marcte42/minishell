@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 11:55:02 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/30 20:00:41 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 20:27:23 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int	main(int ac, char **av, char *env[])
 		line = readline("$> ");
 		if (!line)
 		{
-			free_sys(&mini);
+			//free_sys(&mini);
 			ft_putstr_fd("exit\n", STDERR_FILENO);
 			return (0);
 		}
