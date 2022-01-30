@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 19:38:24 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/30 14:24:42 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 14:36:44 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,9 @@ int		exec_builtin(t_sys *mini, t_cmd *cmd)
 		return (ft_echo(cmd->clean, fd));
 	else if (!strcmp(cmd->clean[0], "cd"))
 		return (ft_cd(mini, cmd->clean));
-	/*else if (!strcmp(cmd->clean[0], "pwd"))
-		ft_pwd();
-	else if (!strcmp(cmd->clean[0], "export"))
+	else if (!strcmp(cmd->clean[0], "pwd"))
+		ft_pwd(fd);
+	/*else if (!strcmp(cmd->clean[0], "export"))
 		ft_export(cmd->clean, mini->env);
 	else if (!strcmp(cmd->clean[0], "unset"))
 		ft_unset(cmd->clean, mini->env);

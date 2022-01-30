@@ -6,19 +6,20 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 21:19:11 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/29 11:34:47 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 14:38:29 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_pwd(void)
+int	ft_pwd(int fd)
 {
 	char cwd[PATH_MAX];
 
 	if (getcwd(cwd, PATH_MAX))
 	{
-		printf("%s\n", cwd);
+		ft_putstr_fd(cwd, fd);
+		ft_putchar_fd('\n', fd);
 	}
-    exit (0);
+    return (SUCCESS);
 }
