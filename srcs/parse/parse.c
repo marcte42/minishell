@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/30 19:24:03 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/30 19:41:02 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,7 @@ int	parse(char *line, t_sys *mini)
 		return (ERROR);
 	if (!control_quotes(line))
 	{
-		ft_putstr("error: unclosed quotes\n");
+		ft_putstr("minishell: syntax error\n");
 		return (ERROR);
 	}
 
