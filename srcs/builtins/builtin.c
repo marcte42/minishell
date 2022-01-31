@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 19:38:24 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/30 18:02:37 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/31 20:07:11 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int	builtin_redirects(t_sys *mini, t_cmd *cmd)
 			lst = lst->next;
 		}
 	}
+	if (fd < 0)
+		ft_putstr_fd("error: unable to write\n", STDERR_FILENO);
 	return (fd);
 }
 
