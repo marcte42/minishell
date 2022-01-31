@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/31 20:24:32 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/31 20:28:07 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	exec_path(t_sys *mini, char **clean)
 
 	if (open(clean[0], O_RDONLY) > 0)
 		execve(clean[0], clean, env_to_tab(mini->env));
-	paths = ft_split(ft_getenv("PATH"), ':');
+	paths = ft_split(ft_getenv("PATH", mini->env), ':');
 	if (!paths)
 		return ;
 	i = -1;
