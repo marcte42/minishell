@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 12:27:18 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/30 20:00:12 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/31 20:27:43 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ typedef struct		s_cmd
 	char	**clean;		// Tableau de char** avec juste la commande et les args
 	t_list	*r_in;			// Liste chainee avec toutes les redirections entrantes
 	t_list	*r_out;			// Liste chainee avec toutes les redirections sortantes
-	int		retval;
+	int		retval;			// Valeur renvoyee par le process enfant ou le builtin
 }					t_cmd;
 
 typedef struct		s_var
@@ -75,6 +75,7 @@ t_list	*init_env(char **env);
 int		init_sys(t_sys *mini, char **env);
 int		parse(char *line, t_sys *mini);
 char	*parse_env(char *line, t_list *env);
+char	*ft_getenv (char *key, t_list *env);
 char	*get_key(char *s);
 char	**env_to_tab(t_list *env);
 int		control_quotes(char *str);

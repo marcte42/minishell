@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/30 18:41:47 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/31 20:28:07 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,9 @@ void	exec_path(t_sys *mini, char **clean)
 
 	if (open(clean[0], O_RDONLY) > 0)
 		execve(clean[0], clean, env_to_tab(mini->env));
-	paths = ft_split(getenv("PATH"), ':');
+	paths = ft_split(ft_getenv("PATH", mini->env), ':');
+	if (!paths)
+		return ;
 	i = -1;
 	while (paths[++i])
 	{
@@ -71,6 +73,10 @@ void	exec_path(t_sys *mini, char **clean)
 			execve(path_to_bin, clean, env_to_tab(mini->env)); // is it a problem if env_to_tab fails?
 		free(path_to_bin);
 	}
+	i = -1;
+	while (paths[++i])
+		free(paths[i]);
+	free(paths);
 }
 
 int	exec_child(t_sys *mini, t_cmd *cmd)

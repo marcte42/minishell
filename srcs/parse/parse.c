@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/31 16:55:06 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/31 19:45:39 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,43 +48,54 @@ t_list	*parse_pipes(char *line)
 	return (lst);
 }
 
-int	handle_heredoc(t_rdr *rdr, char *argv, int id)
+int	handle_heredoc(t_rdr *rdr, char **argv, int id)
 {
 	int		fd;
 	char	*buffer;
 	char	*heredoc_name;
-
-	heredoc_name = ft_strjoin("/tmp/", ft_strjoin(argv, ft_itoa(id)));
+	char	*name;
+	char	*index;
+	
+	index = ft_itoa(id);
+	name = ft_strjoin(*argv, index);
+	free(index);
+	heredoc_name = ft_strjoin("/tmp/", name);
+	free(name);
 	if (!heredoc_name)
 		return (ERROR);
-	rdr->file = heredoc_name;
 	fd = open(heredoc_name, O_WRONLY | O_CREAT | O_TRUNC, 0600);
 	if (!fd)
 		return (ERROR);
 	while (1)
 	{
 		buffer = readline("> ");
-		if (!buffer || !ft_strcmp(buffer, argv))
+		if (!buffer || !ft_strcmp(buffer, *argv))
 			break ;
 		write(fd, buffer, ft_strlen(buffer));
 		write(fd, "\n", 1);
+		free(buffer);
 	}
+	free(*argv);
+	*argv = heredoc_name;
+	rdr->file = heredoc_name;
 	if (!buffer)
 		write(1, "warning: here-document delimited by end-of-file\n", 48);
+	else
+		free(buffer);
 	close (fd);
 	return (SUCCESS);
 }
 
-int	add_r_in(t_cmd *cmd, char *argv, int type)
+int	add_r_in(t_cmd *cmd, char **argv, int type)
 {
 	t_rdr	*rdr;
 	t_list	*node;
 
-	rdr = malloc(sizeof(rdr));
+	rdr = malloc(sizeof(t_rdr));
 	if (!rdr)
 		return (ERROR);
 	rdr->type = type;
-	rdr->file = argv;
+	rdr->file = *argv;
 	if (type == 2)
 	{
 		if (!handle_heredoc(rdr, argv, cmd->id))
@@ -103,16 +114,16 @@ int	add_r_in(t_cmd *cmd, char *argv, int type)
 	return (SUCCESS);
 }
 
-int	add_r_out(t_cmd *cmd, char *argv, int type)
+int	add_r_out(t_cmd *cmd, char **argv, int type)
 {
 	t_rdr	*rdr;
 	t_list	*node;
 
-	rdr = malloc(sizeof(rdr));
+	rdr = malloc(sizeof(t_rdr));
 	if (!rdr)
 		return (0);
 	rdr->type = type;
-	rdr->file = argv;
+	rdr->file = *argv;
 	node = ft_lstnew(rdr);
 	if (!node)
 	{
@@ -123,11 +134,11 @@ int	add_r_out(t_cmd *cmd, char *argv, int type)
 	return (SUCCESS);
 }
 
-int	add_redirect(t_cmd *cmd, char *argv, char *type_char)
+int	add_redirect(t_cmd *cmd, char **argv, char *type_char)
 {
 	int		type;
 
-	if (!argv)
+	if (!*argv)
 	{
 		ft_putstr_fd("minishell: syntax error\n", STDERR_FILENO);
 		return (ERROR);
@@ -161,7 +172,7 @@ int	parse_redirects(t_cmd *cmd)
 			|| !ft_strcmp(cmd->argv[i], ">") || !ft_strcmp(cmd->argv[i], ">>"))
 		{
 			i++;
-			if (!add_redirect(cmd, cmd->argv[i], cmd->argv[i - 1]))
+			if (!add_redirect(cmd, &cmd->argv[i], cmd->argv[i - 1]))
 				return (ERROR);
 			continue ;
 		}

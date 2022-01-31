@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 16:36:47 by me                #+#    #+#             */
-/*   Updated: 2022/01/31 17:08:12 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/31 20:11:32 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	free_sys(t_sys *mini)
 	t_cmd	*cmd;
 	int		i;
 	
-	ft_lstclear(&mini->env, free);
 	tmp = mini->cmds;
 	while (tmp)
 	{
