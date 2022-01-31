@@ -45,7 +45,7 @@ static int	update_oldpwd(t_list *env)
 	oldpwd = ft_strjoin("OLDPWD=", cwd);
 	if (!oldpwd)
 		return (0);
-	add_env(oldpwd, env);
+	add_env(oldpwd, env);	// secure this!
 	free(oldpwd);
 	return (1);
 }
@@ -89,7 +89,7 @@ int	ft_cd(t_sys *mini, char **args)
 {
 	int	ret;
 
-	update_oldpwd(mini->env);
+	update_oldpwd(mini->env);		// secure? i think we need to return an error if this didnt' work?
 	if (!args[1])
 		return (go_to_home(mini->env));
 	if (ft_strcmp(args[1], "-") == 0)

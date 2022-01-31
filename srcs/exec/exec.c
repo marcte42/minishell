@@ -68,7 +68,7 @@ void	exec_path(t_sys *mini, char **clean)
 		path_to_bin = ft_strjoin(tmp, clean[0]);
 		free(tmp);
 		if (open(path_to_bin, O_RDONLY) > 0)
-			execve(path_to_bin, clean, env_to_tab(mini->env));
+			execve(path_to_bin, clean, env_to_tab(mini->env)); // is it a problem if env_to_tab fails?
 		free(path_to_bin);
 	}
 }

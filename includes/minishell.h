@@ -98,6 +98,7 @@ int		ft_unset(char **args, t_list *env);
 
 
 void	free_sys(t_sys *mini);
+void	reset_free_sys(t_sys *mini);
 void	print_cmds(t_list *cmds);
 
 void	signal_handler(int sig);

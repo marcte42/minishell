@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+//works fine if frees of t_sys are correct.
+
 int	ft_env(t_sys *mini, int fd)
 {
 	t_list	*tmp;

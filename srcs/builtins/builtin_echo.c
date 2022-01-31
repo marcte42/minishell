@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+// seems good to me...
+
 int	size_arg(char **args)
 {
 	int	size;
@@ -36,7 +38,7 @@ int	ft_echo(char **args, int fd)
 			flag = 1;
 			i++;
 		}
-		while (args[i])
+		while (args[i])	// do we maybe want to reset i to 1 and skip if args[i] == "-n" ? NO -n only works in first possition
 		{
 			ft_putstr_fd(args[i], fd);
 			if (args[i + 1] && args[i][0] != '\0')
