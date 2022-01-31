@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:38:15 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/30 20:12:18 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/31 16:42:41 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ int	init_pfds(t_sys *mini)
 	if (!mini->pfds)
 		return (ERROR);
 	i = -1;
-	while (++i < mini->cmds_count)
-		if (pipe(&mini->pfds[i * 2]) == -1)
+	while (++i < mini->cmds_count - 1)
+		if (pipe(&(mini->pfds[i * 2])) == -1)
 			return (ERROR);
 	return (SUCCESS);
 }

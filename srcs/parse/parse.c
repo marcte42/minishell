@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/30 19:41:02 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/31 16:55:06 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,9 +187,9 @@ int	parse_args(t_list *cmds)
 		if (!raw_space)
 			return (ERROR);
 		cmd->argv = ft_split_constraint(raw_space, ' ', is_inquotes);
+		free(raw_space);
 		if (!parse_redirects(cmd))
 			return (ERROR);
-		free(raw_space);
 		cmds = cmds->next;
 	}
 	return (SUCCESS);
