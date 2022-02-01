@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 12:27:18 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/01 21:04:51 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/01 22:07:40 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void    trim_quotes(char *str);
 char	*add_space(char *str);
 void	print_list(t_list *cmds);
 
-int		exec(t_list *cmds, t_sys *mini);
+int		exec(t_sys *mini);
 int		init_pfds(t_sys *mini);
 int		close_pfds(t_sys *mini);
 
@@ -97,7 +97,7 @@ int		ft_pwd(int fd);
 int		ft_env(t_sys *mini, int fd);
 int		ft_export(char	**args, t_list *env);
 int		ft_unset(char **args, t_list *env);
-
+int		ft_exit(char **args, t_sys *mini);
 
 void	free_sys(t_sys *mini);
 void	reset_free_sys(t_sys *mini);
@@ -105,5 +105,7 @@ void	print_cmds(t_list *cmds);
 
 void	signal_handler(int sig);
 void	signal_handler_2(int sig);
+
+int		is_dir(char *path);
 
 #endif

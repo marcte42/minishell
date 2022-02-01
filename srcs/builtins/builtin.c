@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 19:38:24 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/01 15:32:11 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/01 22:47:23 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ int	builtin_redirects(t_sys *mini, t_cmd *cmd)	// not sure i understand this fun
 			lst = lst->next;
 		}
 	}
-	if (fd < 0)
-		ft_putstr_fd("error: unable to write\n", STDERR_FILENO);
 	return (fd);
 }
 
@@ -73,9 +71,7 @@ int	exec_builtin(t_sys *mini, t_cmd *cmd)
 		return (ft_export(cmd->clean, mini->env));
 	else if (!strcmp(cmd->clean[0], "unset"))
 		return (ft_unset(cmd->clean, mini->env));
-	/*
 	else if (!strcmp(cmd->clean[0], "exit"))
-		ft_exit(cmd->clean, mini);
-	*/
+		return (ft_exit(cmd->clean, mini));
 	return (SUCCESS);
 }

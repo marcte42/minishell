@@ -6,26 +6,38 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/01 21:06:00 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/01 22:52:28 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_dir(char *path)
+void	ft_wait(t_list *cmds)
 {
-	int	fd;
+	t_cmd	*cmd;
 
-	errno = 0;
-	fd = open(path, O_WRONLY);
-	if (errno == EISDIR)
-		return (1);
-	if (fd > 0)
-		close(fd);
-	return (0);
+	signal(SIGINT, signal_handler_2);
+	signal(SIGQUIT, SIG_IGN);
+	while (cmds)
+	{
+		cmd = cmds->content;
+		if (cmd->pid != 0)
+		{
+			if (waitpid(cmd->pid, &cmd->retval, 0) == -1)
+				perror(NULL);
+			if (WIFEXITED(cmd->retval))
+				cmd->retval = WEXITSTATUS(cmd->retval);
+			/*if (WIFSIGNALED(cmd->retval))
+				cmd->retval = WTERMSIG(cmd->retval) + 128;*/
+		}
+		cmds = cmds->next;
+		printf("cmd = %s\t\tpid = %d\t\tretval = %d\t\t\n", cmd->clean[0], cmd->pid, cmd->retval);
+	}
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, SIG_IGN);
 }
 
-void	child_redirects(t_sys *mini, t_cmd *cmd)
+int	child_redirects(t_sys *mini, t_cmd *cmd)
 {
 	int		fd;
 	t_list	*lst;
@@ -62,6 +74,7 @@ void	child_redirects(t_sys *mini, t_cmd *cmd)
 		}
 		dup2(fd, STDOUT_FILENO);// can it fail? yes rets (-1) if fail, secure it
 	}
+	return (0);
 }
 
 void	exec_path(t_sys *mini, char **clean)
@@ -117,13 +130,14 @@ int	exec_child(t_sys *mini, t_cmd *cmd)
 	return (SUCCESS);// Je ne sais pas quel return on fait ici 
 }
 
-int	exec(t_list *cmds, t_sys *mini)
+int	exec(t_sys *mini)
 {
+	t_list	*cmds;
 	t_cmd	*cmd;
-	int		i;
 
 	if (!init_pfds(mini))
 		return (ERROR);
+	cmds = mini->cmds;
 	while (cmds)
 	{
 		cmd = cmds->content;
@@ -134,12 +148,9 @@ int	exec(t_list *cmds, t_sys *mini)
 		cmds = cmds->next;
 	}
 	close_pfds(mini);
-	signal(SIGINT, signal_handler_2);
-	signal(SIGQUIT, SIG_IGN);
-	i = -1;
-	while (++i < mini->cmds_count)
-		wait(&mini->retval);//waitpid maybe?
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, SIG_IGN);
+	ft_wait(mini->cmds);
+	cmd = ft_lstlast(mini->cmds)->content;
+	mini->retval = cmd->retval;
+	printf("$? = %d\n", mini->retval);
 	return (mini->retval);
 }

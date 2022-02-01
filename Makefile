@@ -21,7 +21,7 @@ SRCS_BUILT	=	builtin.c \
 				builtin_env.c \
 				builtin_unset.c \
 				builtin_export.c \
-				#builtin_exit.c \
+				builtin_exit.c \
 
 DIR_EXEC	=	$(DIR_SRCS)exec/
 SRCS_EXEC	=	exec.c \

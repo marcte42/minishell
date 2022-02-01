@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 11:55:02 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/01 21:07:01 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/01 23:08:30 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int	main(int ac, char **av, char *env[])
 			continue ;
 		}
 //		exec(mini.cmds, &mini);
-		if (exec(mini.cmds, &mini) != 0)
+		if (!exec(&mini))
 		{
 		//	free_sys(&mini);	// same as parse error, don't we need t_list env if not exiting?
 			// i was correct
@@ -126,11 +126,17 @@ int	main(int ac, char **av, char *env[])
 			free(line);
 			continue ;
 		}
-
-	//	ft_putstr_fd("made it to end of main loop\n", 1);
-	//	ft_env(&mini, 1);
+		if (mini.exit)
+		{
+			ft_putstr_fd("exit\n", STDERR_FILENO);
+			return (mini.retval);
+		}	
 		reset_free_sys(&mini);
 		free(line);
+		
+	//	ft_putstr_fd("made it to end of main loop\n", 1);
+	//	ft_env(&mini, 1);
+		
 	}
 	// free_sys(&mini); // put this here? would that even do anything?
 	//where exactly do we exit and where does that value get returned?

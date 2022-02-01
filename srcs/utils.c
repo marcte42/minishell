@@ -6,11 +6,24 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:33:50 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/29 11:44:49 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/01 21:38:53 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	is_dir(char *path)
+{
+	int	fd;
+
+	errno = 0;
+	fd = open(path, O_WRONLY);
+	if (errno == EISDIR)
+		return (1);
+	if (fd > 0)
+		close(fd);
+	return (0);
+}
 
 void	print_cmds(t_list *cmds)
 {
