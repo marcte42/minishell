@@ -14,6 +14,8 @@
 
 // seems good to me...
 
+// BUt there is a double free somewhere when we echo $HOME or any env var...
+
 int	size_arg(char **args)
 {
 	int	size;

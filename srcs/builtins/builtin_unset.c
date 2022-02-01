@@ -14,7 +14,9 @@
 
 void	free_elem(t_list *env)
 {
-	free(env->content);
+	// could add if...
+	if (env && env->content)
+		free(env->content);
 	free(env);
 }
 
@@ -45,8 +47,8 @@ int	ft_unset(char **args, t_list *env)
 	}
 	while (env && env->next)
 	{
-		if (ft_strncmp(args[1],
-				env->next->content, value_size(env->next->content)) == 0)
+		if (ft_strncmp(args[1], env->next->content, \
+			value_size(env->next->content)) == 0)
 		{
 			tmp = env->next->next;
 			free_elem(env->next);

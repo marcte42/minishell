@@ -12,6 +12,11 @@
 
 #include "minishell.h"
 
+// CD has to update PWD
+	// prolly look at export and unstet and reuse some of those functions
+
+// Prolly needs some securing, especially if we keep the bonus features.
+
 char	*get_path(t_list *env, char *var)
 {
 	char	*path;
@@ -19,7 +24,7 @@ char	*get_path(t_list *env, char *var)
 	while (env)
 	{
 		if (ft_strncmp(var, env->content, 5) == 0)
-			path = ft_strjoin(var, ft_strchr(env->content, '=') + 1);
+			path = ft_strjoin(var, ft_strchr(env->content, '=') + 1);	// i would be surprized if secure...
 		env = env->next;
 	}
 	return (path);
@@ -64,7 +69,7 @@ static int	go_to_home(t_list *env)
 		return (0);
 	}
 	tmp = ft_strchr(path, '=') + 1;
-	ret = chdir(tmp);
+	ret = chdir(tmp);	// update PWD
 	free(path);
 	return (ret);
 }
@@ -81,9 +86,11 @@ static int	go_to_prev(t_list *env)
 		return (0);
 	}
 	update_oldpwd(env);
-	ret = chdir(path);
+	ret = chdir(path);	// update PWD
 	return (ret);
 }
+
+// Technically i think this handles too many options, but i don't see any reason to remove the features so...
 
 int	ft_cd(t_sys *mini, char **args)
 {
@@ -95,6 +102,7 @@ int	ft_cd(t_sys *mini, char **args)
 	if (ft_strcmp(args[1], "-") == 0)
 		ret = go_to_prev(mini->env);
 	else
-		ret = chdir(args[1]);
+		ret = chdir(args[1]);		// handles . and .. i think, yes, that is correct.
+	// update PWD
 	return (ret);
 }

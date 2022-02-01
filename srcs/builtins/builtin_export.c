@@ -12,12 +12,21 @@
 
 #include "minishell.h"
 
-int	check_valid_env(char *env)
+// no idea what the correct exit codes are for this builtin
+
+// Ok here's what i understand so far:
+// you don't want the first char of an env var to be a digit
+// but it's fine after that.
+// there has to be a =
+//
+
+
+int	check_valid_env(char *env)		// checks if the requested env is a valid format, so like no = and only 
 {
 	int	i;
 
 	i = 0;
-	if (ft_isdigit(env[i]) == 1)
+	if (ft_isdigit(env[i]) == 1)	// i'll be honest i don't see the point of this...
 		return (0);
 	while (env[i] && env[i] != '=')
 	{
@@ -30,14 +39,14 @@ int	check_valid_env(char *env)
 	return (1);
 }
 
-int	check_in_env(t_list *env, char *args, int error)
+int	check_in_env(t_list *env, char *args, int error)	// why do we send error?
 {
 	char	*var;
 	char	*env_name;
 
 	var = get_key(args);
-	if (error == 2)
-		return (1);
+	if (error == 2)		// this seems fucking dumb... and we aren't freeing...
+		return (1);		// just replace with free var
 	else
 	{
 		while (env && env->next)
@@ -45,8 +54,8 @@ int	check_in_env(t_list *env, char *args, int error)
 			env_name = get_key(env->content);
 			if (ft_strcmp(var, env_name) == 0)
 			{
-				free(env->content);
-				env->content = ft_strdup(args);
+				free(env->content);		// marc said there was a problem with this
+				env->content = ft_strdup(args);	// doesn't work cuz ours 
 				return (1);
 			}
 			env = env->next;
@@ -78,8 +87,9 @@ int	ft_export(char	**args, t_list *env)
 	}
 	else
 	{
+		printf("args[1]: %s\n", args[1]);
 		error = check_valid_env(args[1]);
-		if (args[1][0] == '=')
+		if (args[1][0] == '=')	// seems redundant, could prolly rework this shit...
 			error = -3;
 		if (error <= 0)
 		{
