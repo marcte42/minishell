@@ -135,7 +135,7 @@ int	main(int ac, char **av, char *env[])
 	// free_sys(&mini); // put this here? would that even do anything?
 	//where exactly do we exit and where does that value get returned?
 	// should we change the conditions of the loop to exit when certain exit status are returned?
-	ft_lstclear(&mini.env, free);
+//	ft_lstclear(&mini.env, free);
 	// works cuz break
 	// also need to clear_history()
 	return (0);
