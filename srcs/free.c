@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 16:36:47 by me                #+#    #+#             */
-/*   Updated: 2022/01/31 20:11:32 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/01 15:33:02 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,8 @@ void	free_sys(t_sys *mini)
 	ft_lstclear(&mini->cmds, free);
 	free(mini->cmds);
 	if (mini->pfds)
+	{
 		free(mini->pfds);
+		mini->pfds = NULL;
+	}
 }

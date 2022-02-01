@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/31 20:28:07 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/01 15:06:56 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,16 @@ void	child_redirects(t_sys *mini, t_cmd *cmd)
 void	exec_path(t_sys *mini, char **clean)
 {
 	char	**paths;
+	char	*env;
 	char	*path_to_bin;
 	char	*tmp;
 	int		i;
 
 	if (open(clean[0], O_RDONLY) > 0)
 		execve(clean[0], clean, env_to_tab(mini->env));
-	paths = ft_split(ft_getenv("PATH", mini->env), ':');
+	env = ft_getenv("PATH", mini->env);
+	paths = ft_split(env, ':');
+	free(env);
 	if (!paths)
 		return ;
 	i = -1;

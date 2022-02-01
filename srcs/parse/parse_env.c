@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:28:11 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/30 16:33:04 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/01/31 21:00:44 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ char	*expand_env(char *line, char *start, char *value)
 // Retourne un char* avec la valeur associee a la key
 // Si la key n'a pas ete trouvee on retourne un char* vide ""
 // Si une erreur se produit on retourne un NULL
-char	*ft_getenv (char *key, t_list *env)
+char	*ft_getenv(char *key, t_list *env)
 {
 	char	*value;
 	int		value_len;
