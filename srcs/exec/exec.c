@@ -6,11 +6,24 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/01 15:06:56 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/01 21:06:00 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	is_dir(char *path)
+{
+	int	fd;
+
+	errno = 0;
+	fd = open(path, O_WRONLY);
+	if (errno == EISDIR)
+		return (1);
+	if (fd > 0)
+		close(fd);
+	return (0);
+}
 
 void	child_redirects(t_sys *mini, t_cmd *cmd)
 {
@@ -59,7 +72,7 @@ void	exec_path(t_sys *mini, char **clean)
 	char	*tmp;
 	int		i;
 
-	if (open(clean[0], O_RDONLY) > 0)
+	if (access(clean[0], F_OK | X_OK) == 0 && !is_dir(clean[0]))
 		execve(clean[0], clean, env_to_tab(mini->env));
 	env = ft_getenv("PATH", mini->env);
 	paths = ft_split(env, ':');
@@ -72,7 +85,7 @@ void	exec_path(t_sys *mini, char **clean)
 		tmp = ft_strjoin(paths[i], "/");
 		path_to_bin = ft_strjoin(tmp, clean[0]);
 		free(tmp);
-		if (open(path_to_bin, O_RDONLY) > 0)
+		if (access(path_to_bin, F_OK | X_OK) == 0 && !is_dir(path_to_bin))
 			execve(path_to_bin, clean, env_to_tab(mini->env)); // is it a problem if env_to_tab fails?
 		free(path_to_bin);
 	}
