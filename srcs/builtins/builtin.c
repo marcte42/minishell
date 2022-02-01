@@ -14,7 +14,7 @@
 
 int	is_builtin(char *cmd)
 {
-	char	*builtin[] = {"pwd", "cd", "echo", "export", "unset", "exit", "env", NULL};
+	char	*builtin[] = {"pwd", "cd", "echo", "export", "unset", "exit", "env", NULL}; // pas a la norm :(
 	int		i;
 
 	i = 0;
@@ -27,7 +27,7 @@ int	is_builtin(char *cmd)
 	return (0);
 }
 
-int	builtin_redirects(t_sys *mini, t_cmd *cmd)
+int	builtin_redirects(t_sys *mini, t_cmd *cmd)	// not sure i understand this function
 {
 	int		fd;
 	t_list	*lst;

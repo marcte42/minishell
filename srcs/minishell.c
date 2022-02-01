@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 11:55:02 by pravry            #+#    #+#             */
-/*   Updated: 2022/01/31 20:55:41 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/01 19:50:49 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,12 +112,29 @@ int	main(int ac, char **av, char *env[])
 		add_history(line);
 		if (!(*line) || !parse(line, &mini))
 		{
-			free_sys(&mini);
+		//	free_sys(&mini);	// but since contiune wouldn't we need t_list env anyway?
+			reset_free_sys(&mini);
+			free(line);
 			continue ;
 		}
-		exec(mini.cmds, &mini);
-		free_sys(&mini);
+//		exec(mini.cmds, &mini);
+		if (exec(mini.cmds, &mini) != 0)
+		{
+		//	free_sys(&mini);	// same as parse error, don't we need t_list env if not exiting?
+			// i was correct
+			reset_free_sys(&mini);
+			free(line);
+			continue ;
+		}
+
+	//	ft_putstr_fd("made it to end of main loop\n", 1);
+	//	ft_env(&mini, 1);
+		reset_free_sys(&mini);
+		free(line);
 	}
-	ft_lstclear(&mini.env, free);
+	// free_sys(&mini); // put this here? would that even do anything?
+	//where exactly do we exit and where does that value get returned?
+	// should we change the conditions of the loop to exit when certain exit status are returned?
+//	ft_lstclear(&mini.env, free);
 	return (0);
 }
