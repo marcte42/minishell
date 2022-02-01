@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/01 22:52:28 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/01 23:14:36 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	ft_wait(t_list *cmds)
 				cmd->retval = WTERMSIG(cmd->retval) + 128;*/
 		}
 		cmds = cmds->next;
-		printf("cmd = %s\t\tpid = %d\t\tretval = %d\t\t\n", cmd->clean[0], cmd->pid, cmd->retval);
 	}
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, SIG_IGN);
