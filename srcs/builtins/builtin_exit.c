@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:19:25 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/01 23:10:07 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/02 10:35:38 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,7 @@ int	ft_exit(char **args, t_sys *mini)
 		ft_putendl_fd(": numeric argument required\n", STDERR_FILENO);
 		return (255);
 	}
+	if (!args[1])
+		return (0);
 	return (ft_atoi(args[1]));
 }
