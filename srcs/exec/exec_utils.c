@@ -35,3 +35,14 @@ int	init_pfds(t_sys *mini)
 			return (ERROR);
 	return (SUCCESS);
 }
+
+int	is_valid_file(char *file)
+{
+    struct stat sb;
+
+    if (access(file, F_OK | R_OK) == -1 || stat(file, &sb) == -1)
+        return (0);
+    if ((sb.st_mode & S_IFMT) == S_IFREG)
+        return (1);
+    return (0);
+}

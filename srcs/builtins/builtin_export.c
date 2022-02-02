@@ -6,22 +6,20 @@
 /*   By: me <erlazo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 21:19:56 by me                #+#    #+#             */
-/*   Updated: 2022/02/02 17:39:15 by erlazo           ###   ########.fr       */
+/*   Updated: 2022/02/02 18:34:44 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// in BASH if export test and run export no args it prints " test "
-// but if export test= and run export no args it prints " test="" "
-// fuck...
 
+// might need to modify
 int	check_valid_env(char *env)		// checks if the requested env is a valid format, so like no = and only 
 {
 	int	i;
 
 	i = 0;
-	if (ft_isdigit(env[0]) == 1 || env[0] == '=')	// i'll be honest i don't see the point of this...
+	if (ft_isdigit(env[0]) == 1 || env[0] == '=')
 		return (0);
 	while (env[i] && env[i] != '=')
 	{
@@ -29,43 +27,36 @@ int	check_valid_env(char *env)		// checks if the requested env is a valid format
 			return (0);
 		i++;
 	}
-	if (env[i] != '=' || i == (int)ft_strlen(env))
-		return (0);
+//	if (env[i] != '=' || i == (int)ft_strlen(env))
+//	if (i == (int)ft_strlen(env))
+//		return (0);
 	return (1);
 }
 
 // contents has a strings
 
-int	replace_env(t_list *env, char *args)	// why do we send error?
+int	replace_env(t_list *env, char *args)
 {
-	t_list	*node;	// it seemed to work fine without node...
 	char	*var;
 	char	*env_name;
 
 	if (!env || !args)
 		return (ERROR);
-	node = env;
 	var = get_key(args);
-
-//	while (env && env->next)
-	while (node)
+	while (env)
 	{	
-		env_name = get_key(node->content);	// do i need to free env_name if failure? it'll just get freed at the end anyway...
-	//	printf("env_name: %s\nnode->content: %s\n", env_name, (char *)node->content);
+		env_name = get_key(env->content);
 		if (ft_strcmp(var, env_name) == 0)
 		{
-		//	printf("env_name: %s\nnode->content: %s\n", env_name, (char *)node->content);
-			free(node->content);
-			node->content = ft_strdup(args);
-			if (!node->content)
-			{
-				free(env_name);
-				free(var);	// free 1 env too? YES do that
+			free(env->content);
+			env->content = ft_strdup(args);
+			free(env_name);
+			free(var);	// free 1 env too? YES do that
+			if (!env->content)
 				return (ERROR);
-			}
 			return (SUCCESS);
 		}
-		node = node->next;
+		env = env->next;
 		free(env_name);
 	}
 	free(var);
@@ -77,7 +68,6 @@ int	env_add(char *arg, t_list *env)
 	t_list	*node;
 	char	*tmp;
 
-//	printf("making a new node, arg: %s\n", arg);
 	tmp = ft_strdup(arg);
 	if (!tmp)
 		return (ERROR);
@@ -88,23 +78,8 @@ int	env_add(char *arg, t_list *env)
 		return (ERROR);
 	}
 	ft_lstadd_back(&env, node);
-//	printf("contents: %s\n", (char*)node->content);
 	return (SUCCESS);
 }
-
-/*
-int	get_value(char *env, int)
-{
-	int	i;
-
-	if (!env)
-		return (0);
-	i = 
-
-
-	return 
-}
-*/
 
 t_list	*ft_lstdup(t_list *lst)
 {
@@ -127,6 +102,7 @@ t_list	*ft_lstdup(t_list *lst)
 }
 
 // just used for testing
+/*
 t_list	*test_list(char *str)
 {
 	t_list	*new;
@@ -146,6 +122,7 @@ t_list	*test_list(char *str)
 	free(tab);
 	return (ret);
 }
+*/
 
 
 t_list	*sort_t_list(t_list *lst)
@@ -163,31 +140,22 @@ t_list	*sort_t_list(t_list *lst)
 	prev = ret;
 	while (ret && ret->next)
 	{
-//		printf("sort list top main loop\n");
 		next = ret->next;
 		if (ft_strcmp(ret->content, next->content) > 0)
 		{
-
-//			printf("sort list swapping %s and %s\n", ret->content, next->content);
-
+			ret->next = next->next;
+			next->next = ret;
 			if (ret == first)
 			{
-				ret->next = next->next;
-				next->next = ret;
 				first = next;
 				prev = first;
 			}
 			else
-			{
 				prev->next = next;
-				ret->next = next->next;
-				next->next = ret;
-			}	
 			ret = first;
 		}
 		else
 		{
-//			printf("sort list moving forward\n");
 			prev = ret;
 			ret = ret->next;
 			next = ret->next;
@@ -202,25 +170,15 @@ int	print_envs(t_list *env)
 	char	*key;
 	char	*value;
 
-	// prolly should send a sorted list
-
 	if (!env)
-		return (SUCCESS);	// do we print an empty line? no i think we just move on to the next one
-
-	// create a new sorted list...
-//	tmp = env;
+		return (0);	// do we print an empty line? no i think we just move on to the next one
 	tmp = sort_t_list(env);
-
-//	tmp = sort_t_list(test_list("a c b"));
-//	print_list(tmp);
-//	return (0);
-
 	value = NULL;
 	while (tmp)
 	{	// decide how to handle this...
 		key = get_key(tmp->content);
 		if (!key)
-			return (ERROR);
+			return (1);
 	//	value = ft_substr(tmp->content, ft_strlen(key) + 1, ft_strlen(tmp->content) - ft_strlen(key) - 1);
 //		if (!key || !value)
 //			return (ERROR);
@@ -239,36 +197,48 @@ int	print_envs(t_list *env)
 		ft_scott_free(&value, 1);
 		tmp = tmp->next;
 	}
-	//free(tmp);		//do this ?
 	ft_lstclear(&tmp, free);
-	return (SUCCESS);
+	return (0);
 }
 
 // do i want to check if the Env Var already exists?
+// Are the returns correct
+
+// in BASH if export test and run export no args it prints " test "
+// but if export test= and run export no args it prints " test="" "
+// fuck...
 
 int	ft_export(char	**args, t_list *env)
 {
-//	int	error;
-	int	new;
-
-	new = 0;
-	if (!args[1])	// so far so good
-	{
-		//put_sorted_env(env);
+	int	ret;
+	int	i;
+	
+	ret = 0;
+	if (!args[1])
 		return (print_envs(env));
-	//	return (SUCCESS);
-	}
 	else
 	{
-		//printf("args[1]: %s\n", args[1]);
-		if (!check_valid_env(args[1]))
-			return (ERROR);	// error or do nothing? so SUCCESS?
-		
-		if (!replace_env(env, args[1]))
+		i = 0;
+		while (args[++i])
 		{
-			if (!env_add(args[1], env))	// love the redundancy
-				return (ERROR);
+			if (!check_valid_env(args[i]))
+			{
+				ret = 1;
+			//	return (ERROR);	// error or do nothing? so SUCCESS?
+				ft_putstr_fd("Error: Export not a valid identifier\n", 2);
+				continue ;
+			}
+			if (!replace_env(env, args[i]))
+			{
+				if (!env_add(args[i], env))	// love the redundancy
+				{
+					ret = 1;
+					continue ;
+				}
+					//return (ret);
+			}
 		}
 	}
-	return (SUCCESS);
+//	printf("ret: %d\n", ret);
+	return (ret);
 }
