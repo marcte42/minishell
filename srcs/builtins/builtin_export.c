@@ -6,7 +6,7 @@
 /*   By: me <erlazo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 21:19:56 by me                #+#    #+#             */
-/*   Updated: 2022/02/02 01:40:05 by me               ###   ########.fr       */
+/*   Updated: 2022/02/02 17:39:15 by erlazo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,95 @@ int	get_value(char *env, int)
 }
 */
 
+t_list	*ft_lstdup(t_list *lst)
+{
+	t_list *nlist;
+	t_list	*new;
+
+	nlist = NULL;
+	while (lst)
+	{
+		new = ft_lstnew(lst->content);
+		if (!new)
+		{
+			ft_lstclear(&nlist, free);
+			return (NULL);
+		}
+		ft_lstadd_back(&nlist, new);
+		lst = lst->next;
+	}
+	return (nlist);
+}
+
+// just used for testing
+t_list	*test_list(char *str)
+{
+	t_list	*new;
+	t_list	*ret;
+	int		i;
+	char	**tab;
+
+	ret = NULL;
+	tab = ft_split(str, ' ');
+	i = 0;
+	while (tab[i])
+	{
+		new = ft_lstnew(tab[i]);
+		ft_lstadd_back(&ret, new);
+		++i;
+	}
+	free(tab);
+	return (ret);
+}
+
+
+t_list	*sort_t_list(t_list *lst)
+{
+	t_list	*ret;
+	t_list	*prev;
+	t_list	*next;
+	t_list	*first;
+
+	if (!lst || !lst->next)
+		return (NULL);	// but in this case the list is sorted...
+
+	ret = ft_lstdup(lst);
+	first = ret;
+	prev = ret;
+	while (ret && ret->next)
+	{
+//		printf("sort list top main loop\n");
+		next = ret->next;
+		if (ft_strcmp(ret->content, next->content) > 0)
+		{
+
+//			printf("sort list swapping %s and %s\n", ret->content, next->content);
+
+			if (ret == first)
+			{
+				ret->next = next->next;
+				next->next = ret;
+				first = next;
+				prev = first;
+			}
+			else
+			{
+				prev->next = next;
+				ret->next = next->next;
+				next->next = ret;
+			}	
+			ret = first;
+		}
+		else
+		{
+//			printf("sort list moving forward\n");
+			prev = ret;
+			ret = ret->next;
+			next = ret->next;
+		}
+	}
+	return (first);
+}
 
 int	print_envs(t_list *env)
 {
@@ -119,7 +208,13 @@ int	print_envs(t_list *env)
 		return (SUCCESS);	// do we print an empty line? no i think we just move on to the next one
 
 	// create a new sorted list...
-	tmp = env;
+//	tmp = env;
+	tmp = sort_t_list(env);
+
+//	tmp = sort_t_list(test_list("a c b"));
+//	print_list(tmp);
+//	return (0);
+
 	value = NULL;
 	while (tmp)
 	{	// decide how to handle this...
@@ -134,14 +229,18 @@ int	print_envs(t_list *env)
 		if (ft_strlen(tmp->content) > ft_strlen(key))
 		{
 			ft_putstr_fd("=\"", STDOUT_FILENO);
-	//		value = ft_substr(tmp->content, ft_strlen(key) + 1, ft_strlen(tmp->content) - ft_strlen(key) - 1);
+			value = ft_substr(tmp->content, ft_strlen(key) + 1, ft_strlen(tmp->content) - ft_strlen(key) - 1);
 			ft_putstr_fd(value, STDOUT_FILENO);		// in theory this works for when env var is empty
-			ft_putstr_fd("\"\n", STDOUT_FILENO);
+			ft_putstr_fd("\"", STDOUT_FILENO);
 		}
+		ft_putstr_fd("\n", STDOUT_FILENO);
+
 		free(key);
 		ft_scott_free(&value, 1);
 		tmp = tmp->next;
 	}
+	//free(tmp);		//do this ?
+	ft_lstclear(&tmp, free);
 	return (SUCCESS);
 }
 
