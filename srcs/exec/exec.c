@@ -66,7 +66,7 @@ int	child_redirects(t_sys *mini, t_cmd *cmd)
 			rdr = lst->content;
 			if (rdr->type == 1)// if rdr first
 				fd = open((char *)rdr->file, O_CREAT | O_RDWR | O_TRUNC, 0644);
-			else
+			else	// These FD's need to be closed
 				fd = open((char *)rdr->file, O_CREAT | O_RDWR | O_APPEND, 0644);
 			// should we: if (fd == -1) return and free?
 			lst = lst->next;
@@ -85,7 +85,7 @@ void	exec_path(t_sys *mini, char **clean)
 	int		i;
 
 	if (access(clean[0], F_OK | X_OK) == 0 && !is_dir(clean[0]))
-		execve(clean[0], clean, env_to_tab(mini->env));
+		execve(clean[0], clean, env_to_tab(mini->env));	// What happens if env_to_tab fails? if all is freed in it, we should be good, make sure that's the case
 	env = ft_getenv("PATH", mini->env);
 	paths = ft_split(env, ':');
 	free(env);

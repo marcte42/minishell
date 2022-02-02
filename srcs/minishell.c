@@ -123,16 +123,17 @@ int	main(int ac, char **av, char *env[])
 		//	free_sys(&mini);	// same as parse error, don't we need t_list env if not exiting?
 			// i was correct
 			reset_free_sys(&mini);
-			free(line);
+			ft_scott_free(&line, 0);
 			continue ;
 		}
 		if (mini.exit)
 		{
+			// free things
 			ft_putstr_fd("exit\n", STDERR_FILENO);
 			return (mini.retval);
 		}	
 		reset_free_sys(&mini);
-		free(line);
+	//	free(line);
 		
 	//	ft_putstr_fd("made it to end of main loop\n", 1);
 	//	ft_env(&mini, 1);

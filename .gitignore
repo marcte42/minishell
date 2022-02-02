@@ -4,3 +4,4 @@ objs
 minishell
 libft.a
 42-minishell_bash_tester_2022
+minishell.dSYM/

@@ -91,7 +91,7 @@ char	*expand_env(char *line, char *start, char *value)
 	if (value)
 		ft_strcat(tmp_line, value);
 	ft_strcat(tmp_line, &start[key_len + 1]);
-	free(line);
+	//free(line);		// This line if fucking things up!!!!!
 	return (tmp_line);
 }
 
@@ -103,12 +103,16 @@ char	*ft_getenv(char *key, t_list *env)
 {
 	char	*value;
 	int		value_len;
+	char	*ptr;
 
 	while (env)
 	{
 		if (!ft_strncmp(key, env->content, ft_strlen(key)))
 		{
-			value_len = ft_strlen(ft_strchr(env->content, '=') + 1);
+			ptr = ft_strchr(env->content, '=');
+			if (!ptr)
+				return (ft_strdup(""));
+			value_len = ft_strlen(ptr + 1);
 			value = malloc((value_len + 1) * sizeof(char));
 			if (!value)
 				return (NULL);

@@ -173,15 +173,14 @@ int	print_envs(t_list *env)
 	if (!env)
 		return (0);	// do we print an empty line? no i think we just move on to the next one
 	tmp = sort_t_list(env);
+	if (!tmp)
+		tmp = env;
 	value = NULL;
 	while (tmp)
 	{	// decide how to handle this...
 		key = get_key(tmp->content);
 		if (!key)
 			return (1);
-	//	value = ft_substr(tmp->content, ft_strlen(key) + 1, ft_strlen(tmp->content) - ft_strlen(key) - 1);
-//		if (!key || !value)
-//			return (ERROR);
 		ft_putstr_fd("declare -x ", STDOUT_FILENO);	// double check that this is the right message on Linux too.
 		ft_putstr_fd(key, STDOUT_FILENO);
 		if (ft_strlen(tmp->content) > ft_strlen(key))
@@ -204,9 +203,6 @@ int	print_envs(t_list *env)
 // do i want to check if the Env Var already exists?
 // Are the returns correct
 
-// in BASH if export test and run export no args it prints " test "
-// but if export test= and run export no args it prints " test="" "
-// fuck...
 
 int	ft_export(char	**args, t_list *env)
 {
@@ -224,18 +220,13 @@ int	ft_export(char	**args, t_list *env)
 			if (!check_valid_env(args[i]))
 			{
 				ret = 1;
-			//	return (ERROR);	// error or do nothing? so SUCCESS?
 				ft_putstr_fd("Error: Export not a valid identifier\n", 2);
 				continue ;
 			}
 			if (!replace_env(env, args[i]))
 			{
 				if (!env_add(args[i], env))	// love the redundancy
-				{
 					ret = 1;
-					continue ;
-				}
-					//return (ret);
 			}
 		}
 	}
