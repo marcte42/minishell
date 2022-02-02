@@ -89,13 +89,20 @@ int		exec(t_sys *mini);
 int		init_pfds(t_sys *mini);
 int		close_pfds(t_sys *mini);
 
+/*
+**		Builtins
+*/
+
 int		is_builtin(char *cmd);
 int		exec_builtin(t_sys *mini, t_cmd *cmd);
 int		ft_echo(char **args, int fd);
 int		ft_cd(t_sys *mini, char **args);
 int		ft_pwd(int fd);
 int		ft_env(t_sys *mini, int fd);
+
 int		ft_export(char	**args, t_list *env);
+//int		ft_export(char	**args, t_list *env, t_sys *mini);
+
 int		ft_unset(char **args, t_list *env);
 int		ft_exit(char **args, t_sys *mini);
 
