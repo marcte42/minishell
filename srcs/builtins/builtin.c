@@ -68,7 +68,7 @@ int	exec_builtin(t_sys *mini, t_cmd *cmd)
 	else if (!ft_strcmp(cmd->clean[0], "env"))
 		return (ft_env(mini, fd));
 	else if (!ft_strcmp(cmd->clean[0], "export"))
-		return (ft_export(cmd->clean, mini->env));
+		return (ft_export(cmd->clean, mini->env, fd));
 	else if (!ft_strcmp(cmd->clean[0], "unset"))
 		return (ft_unset(cmd->clean, mini->env));
 	else if (!ft_strcmp(cmd->clean[0], "exit"))

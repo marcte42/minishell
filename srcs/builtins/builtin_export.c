@@ -6,7 +6,7 @@
 /*   By: me <erlazo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 21:19:56 by me                #+#    #+#             */
-/*   Updated: 2022/02/02 18:34:44 by erlazo           ###   ########.fr       */
+/*   Updated: 2022/02/03 03:56:33 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,12 @@ int	check_valid_env(char *env)		// checks if the requested env is a valid format
 }
 
 // contents has a strings
-
+// could move this to CD, would save space here
 int	replace_env(t_list *env, char *args)
 {
 	char	*var;
 	char	*env_name;
+	char	*tmp;
 
 	if (!env || !args)
 		return (ERROR);
@@ -49,11 +50,13 @@ int	replace_env(t_list *env, char *args)
 		if (ft_strcmp(var, env_name) == 0)
 		{
 			free(env->content);
-			env->content = ft_strdup(args);
+			tmp = ft_strdup(args);
+		//	env->content = ft_strdup(args);
 			free(env_name);
-			free(var);	// free 1 env too? YES do that
-			if (!env->content)
-				return (ERROR);
+			free(var);				// free 1 env too? YES do that
+			if (!tmp)
+				return (ERROR);		// return success? just failed to update the thing...
+			env->content = tmp;
 			return (SUCCESS);
 		}
 		env = env->next;
@@ -63,7 +66,7 @@ int	replace_env(t_list *env, char *args)
 	return (ERROR);
 }
 
-int	env_add(char *arg, t_list *env)
+int	add_env_elem(char *arg, t_list *env)
 {
 	t_list	*node;
 	char	*tmp;
@@ -164,7 +167,7 @@ t_list	*sort_t_list(t_list *lst)
 	return (first);
 }
 
-int	print_envs(t_list *env)
+int	print_envs(t_list *env, int fd)
 {
 	t_list	*tmp;
 	char	*key;
@@ -181,16 +184,16 @@ int	print_envs(t_list *env)
 		key = get_key(tmp->content);
 		if (!key)
 			return (1);
-		ft_putstr_fd("declare -x ", STDOUT_FILENO);	// double check that this is the right message on Linux too.
-		ft_putstr_fd(key, STDOUT_FILENO);
+		ft_putstr_fd("declare -x ", fd);	// double check that this is the right message on Linux too.
+		ft_putstr_fd(key, fd);
 		if (ft_strlen(tmp->content) > ft_strlen(key))
 		{
-			ft_putstr_fd("=\"", STDOUT_FILENO);
+			ft_putstr_fd("=\"", fd);
 			value = ft_substr(tmp->content, ft_strlen(key) + 1, ft_strlen(tmp->content) - ft_strlen(key) - 1);
-			ft_putstr_fd(value, STDOUT_FILENO);		// in theory this works for when env var is empty
-			ft_putstr_fd("\"", STDOUT_FILENO);
+			ft_putstr_fd(value, fd);		// in theory this works for when env var is empty
+			ft_putstr_fd("\"", fd);
 		}
-		ft_putstr_fd("\n", STDOUT_FILENO);
+		ft_putstr_fd("\n", fd);
 
 		free(key);
 		ft_scott_free(&value, 1);
@@ -204,14 +207,14 @@ int	print_envs(t_list *env)
 // Are the returns correct
 
 
-int	ft_export(char	**args, t_list *env)
+int	ft_export(char	**args, t_list *env, int fd)
 {
 	int	ret;
 	int	i;
 	
 	ret = 0;
 	if (!args[1])
-		return (print_envs(env));
+		return (print_envs(env, fd));
 	else
 	{
 		i = 0;
@@ -220,12 +223,12 @@ int	ft_export(char	**args, t_list *env)
 			if (!check_valid_env(args[i]))
 			{
 				ret = 1;
-				ft_putstr_fd("Error: Export not a valid identifier\n", 2);
+				ft_putstr_fd("Error: Export not a valid identifier\n", 2);		// 2 or fd?
 				continue ;
 			}
 			if (!replace_env(env, args[i]))
 			{
-				if (!env_add(args[i], env))	// love the redundancy
+				if (!add_env_elem(args[i], env))	// love the redundancy
 					ret = 1;
 			}
 		}

@@ -99,7 +99,13 @@ int		ft_echo(char **args, int fd);
 int		ft_cd(t_sys *mini, char **args);
 int		ft_pwd(int fd);
 int		ft_env(t_sys *mini, int fd);
-int		ft_export(char	**args, t_list *env);
+
+int		update_pwds(t_list *env, char *new_pwd_path);
+int		go_to_path(t_list *env, char *path);
+int		replace_env(t_list *env, char *args);
+int		add_env_elem(char *arg, t_list *env);
+int		ft_export(char	**args, t_list *env, int fd);
+
 int		ft_unset(char **args, t_list *env);
 int		ft_exit(char **args, t_sys *mini);
 
