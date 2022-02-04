@@ -36,6 +36,7 @@ SRCS_PARSE	=	parse.c \
 # may move these to be in the SRCS folder, if the cors are gonna get all annoying about it...
 DIR_MINILIB	=	./minilib/
 SRCS_MINILIB	=	error_funcs.c \
+					list_funcs_more.c \
 					nlist_funcs.c \
 					nlstdel_n_one.c \
 					ilist_funcs.c \

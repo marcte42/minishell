@@ -67,9 +67,3 @@ t_list	*ft_lstnew(void *content)
 	elem->next = NULL;
 	return (elem);
 }
-
-void	ft_print_list_elem(t_list *elem)
-{
-	ft_putstr((char *)elem->content);
-	ft_putchar('\n');
-}

@@ -28,55 +28,30 @@ int	ft_findchar(char *str, char c)
 	return (-1);
 }
 
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	while ((char)*s1 && (char)*s2 && (char)*s1 == (char)*s2)
-	{
-		++s1;
-		++s2;
-	}
-	return ((unsigned char)*s1 - (unsigned char)*s2);
-}
-
-size_t	ft_strlen(const char *s)
-{
-	size_t		a;
-
-	a = 0;
-	if (s)
-	{
-		while (s[a])
-			++a;
-	}
-	return (a);
-}
-
-void	ft_bzero(void *s, size_t n)
-{
-	unsigned int	a;
-	unsigned char	*str;
-
-	a = 0;
-	str = s;
-	while (a < n)
-	{
-		str[a] = '\0';
-		++a;
-	}
-}
-
-char	*ft_strchr(const char *s, int c)
+char	*ft_mstrjoin(char *s1, char *s2)
 {
 	int		a;
-	char	*tmp;
+	int		c;
+	char	*ret;
 
-	tmp = (char *)s;
+	ret = NULL;
+	if (!s1 && !s2)
+		return (NULL);
+	a = ft_strlen(s1) + ft_strlen(s2) + 1;
+	ret = (char *)ft_calloc(a, sizeof(char));
+	if (!ret)
+		return (NULL);
 	a = 0;
-	while (tmp[a] || (tmp[a] == '\0' && (char)c == '\0'))
+	c = 0;
+	while (s1 && s1[c])
 	{
-		if (tmp[a] == (char)c)
-			return (&tmp[a]);
-		++a;
+		ret[a++] = s1[c];
+		++c;
 	}
-	return (NULL);
+	while (s2 && *s2)
+	{
+		ret[a++] = *s2;
+		++s2;
+	}
+	return (ret);
 }

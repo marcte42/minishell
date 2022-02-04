@@ -98,6 +98,10 @@ int		exec_builtin(t_sys *mini, t_cmd *cmd);
 int		ft_echo(char **args, int fd);
 int		ft_cd(t_sys *mini, char **args);
 int		ft_pwd(int fd);
+
+int		check_valid_env(char *env);
+char	*get_value_of_key(t_list *env, char *key);
+int		replace_env(t_list *env, char *args);
 int		ft_env(t_sys *mini, int fd);
 
 int		update_pwds(t_list *env, char *new_pwd_path);
