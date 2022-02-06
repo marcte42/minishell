@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 12:27:18 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/06 13:44:51 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 14:42:44 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,6 @@ typedef struct		s_sys
 	int		retval;			// Valeur finale de retour d'execution
 	int		exit;			// Flag pour le builtin exit
 }					t_sys;
-
-typedef struct		s_env
-{
-	char	*raw;
-	char	*key;
-	char    *value;
-}					t_env;
 
 typedef struct		s_rdr
 {
