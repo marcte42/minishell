@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 19:38:24 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/01 22:47:23 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 16:27:28 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,36 +27,11 @@ int	is_builtin(char *cmd)
 	return (0);
 }
 
-int	builtin_redirects(t_sys *mini, t_cmd *cmd)	// not sure i understand this function
-{
-	int		fd;
-	t_list	*lst;
-	t_rdr	*rdr;
-
-	fd = STDOUT_FILENO;
-	if (cmd->id != mini->cmds_count - 1)
-		fd = mini->pfds[cmd->id * 2 + 1];
-	if (cmd->r_out)
-	{
-		lst = cmd->r_out;
-		while (lst)
-		{
-			rdr = lst->content;
-			if (rdr->type == 1)
-				fd = open((char *)rdr->file, O_CREAT | O_RDWR | O_TRUNC, 0644);
-			else
-				fd = open((char *)rdr->file, O_CREAT | O_RDWR | O_APPEND, 0644);
-			lst = lst->next;
-		}
-	}
-	return (fd);
-}
-
 int	exec_builtin(t_sys *mini, t_cmd *cmd)
 {
 	int		fd;
 
-	fd = builtin_redirects(mini, cmd);
+	fd = cmd->fd_out;
 	if (!cmd->clean[0])
 		return (SUCCESS);
 	if (!ft_strcmp(cmd->clean[0], "echo"))

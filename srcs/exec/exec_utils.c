@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:38:15 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/06 14:31:17 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 16:38:09 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	close_pfds(t_sys *mini)
 
 	i = -1;
 	while (++i < 2 * (mini->cmds_count - 1))
-		close(mini->pfds[i]);// does close work on fd = -1? in error case
+		close(mini->pfds[i]);
 	return (SUCCESS);
 }
 
@@ -36,13 +36,73 @@ int	init_pfds(t_sys *mini)
 	return (SUCCESS);
 }
 
-int	is_valid_file(char *file)
+int	is_valid_in(char *file)
 {
-    struct stat sb;
+	struct stat	sb;
 
-    if (access(file, F_OK | R_OK) == -1 || stat(file, &sb) == -1)
-        return (0);
-    if ((sb.st_mode & S_IFMT) == S_IFREG)
-        return (1);
-    return (0);
+	if (access(file, F_OK | R_OK) == -1 || stat(file, &sb) == -1)
+		return (0);
+	if ((sb.st_mode & S_IFMT) == S_IFREG)
+		return (1);
+	return (0);
+}
+
+int	get_fd_in(t_sys *mini, t_cmd *cmd)
+{
+	int		fd;
+	t_list	*lst;
+	t_rdr	*rdr;
+
+	fd = STDIN_FILENO;
+	if (cmd->id != 0)
+		fd = mini->pfds[(cmd->id - 1) * 2];
+	if (cmd->r_in)
+	{
+		lst = cmd->r_in;
+		while (lst)
+		{
+			rdr = lst->content;
+			fd = open((char *)rdr->file, O_RDONLY);
+			if (fd == -1)
+			{
+				ft_putstr_fd("minishell: ", STDERR_FILENO);
+				ft_putstr_fd(rdr->file, STDERR_FILENO);
+				ft_putstr_fd(": ", STDERR_FILENO);
+				ft_putendl_fd(strerror(errno), STDERR_FILENO);
+				return (fd);
+			}
+			lst = lst->next;
+		}
+	}
+	return (fd);
+}
+
+int	get_fd_out(t_sys *mini, t_cmd *cmd)
+{
+	int		fd;
+	t_list	*lst;
+	t_rdr	*rdr;
+
+	fd = STDOUT_FILENO;
+	if (cmd->id != mini->cmds_count - 1)
+		fd = mini->pfds[cmd->id * 2 + 1];
+	if (cmd->r_out)
+	{
+		lst = cmd->r_out;
+		while (lst)
+		{
+			rdr = lst->content;
+			fd = open((char *)rdr->file, O_CREAT | O_WRONLY);
+			if (fd == -1)
+			{
+				ft_putstr_fd("minishell: ", STDERR_FILENO);
+				ft_putstr_fd(rdr->file, STDERR_FILENO);
+				ft_putstr_fd(": ", STDERR_FILENO);
+				ft_putendl_fd(strerror(errno), STDERR_FILENO);
+				return (fd);
+			}
+			lst = lst->next;
+		}
+	}
+	return (fd);
 }

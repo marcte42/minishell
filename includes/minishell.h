@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 12:27:18 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/06 14:42:44 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 16:40:20 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ typedef struct		s_cmd
 	char	**clean;		// Tableau de char** avec juste la commande et les args
 	t_list	*r_in;			// Liste chainee avec toutes les redirections entrantes
 	t_list	*r_out;			// Liste chainee avec toutes les redirections sortantes
+	int		fd_in;
+	int		fd_out;
 	int		retval;			// Valeur renvoyee par le process enfant ou le builtin
 }					t_cmd;
 
@@ -122,6 +124,8 @@ void	signal_handler(int sig);
 void	signal_handler_2(int sig);
 
 int		is_dir(char *path);
-int		is_valid_file(char *file);
+int		is_valid_in(char *file);
+int		get_fd_in(t_sys *mini, t_cmd *cmd);
+int		get_fd_out(t_sys *mini, t_cmd *cmd);
 
 #endif
