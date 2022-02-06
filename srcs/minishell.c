@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 11:55:02 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/06 21:32:23 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 21:53:36 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ int	main(int ac, char **av, char *env[])
 		add_history(mini.line);
 		if (!parse(&mini))
 		{
+			mini.retval = 2;
 			free_sys(&mini);
 			continue ;
 		}
