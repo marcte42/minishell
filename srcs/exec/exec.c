@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/06 12:14:14 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 14:24:19 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	child_redirects(t_sys *mini, t_cmd *cmd)
 			rdr = lst->content;
 			if (rdr->type == 1)// if rdr first
 				fd = open((char *)rdr->file, O_CREAT | O_RDWR | O_TRUNC, 0644);
-			else
+			else	// These FD's need to be closed
 				fd = open((char *)rdr->file, O_CREAT | O_RDWR | O_APPEND, 0644);
 			// should we: if (fd == -1) return and free?
 			lst = lst->next;

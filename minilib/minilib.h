@@ -51,8 +51,11 @@ int			ft_ibzero(void *s, size_t n);
 **		List Funcs More
 */
 
+void		ft_print_list_elem(t_list *elem);
 int			ft_print_full_list(t_list *lst);
 void		ft_lstdel_str_elem(void *data);
+t_list		*ft_lstdup(t_list *lst);
+t_list		*generate_list(char *str);
 
 /*
 **		nList Funcs
@@ -84,6 +87,7 @@ int			ft_nlstdel_n_one(t_nlist **lst, int n);
 */
 
 int			ft_findchar(char *str, char c);
+char		*ft_mstrjoin(char *s1, char *s2);
 
 /*
 **		Error Funcs
@@ -94,7 +98,7 @@ long		ft_error_msg_fd(char *str, int fd, int ret);
 long		ft_scott_free(char **str, int ret);
 
 // This does not belong here but here it is
-void	ft_putnbrnl_fd(int nbr, int fd);
+void		ft_putnbrnl_fd(int nbr, int fd);
 
 /*
 **		Tab Funcs

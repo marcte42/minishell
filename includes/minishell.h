@@ -106,10 +106,17 @@ int		exec_builtin(t_sys *mini, t_cmd *cmd);
 int		ft_echo(char **args, int fd);
 int		ft_cd(t_sys *mini, char **args);
 int		ft_pwd(int fd);
+
+int		check_valid_env(char *env);
+char	*get_value_of_key(t_list *env, char *key);
+int		replace_env(t_list *env, char *args);
 int		ft_env(t_sys *mini, int fd);
 
-int		ft_export(char	**args, t_list *env);
-//int		ft_export(char	**args, t_list *env, t_sys *mini);
+int		update_pwds(t_list *env, char *new_pwd_path);
+int		go_to_path(t_list *env, char *path);
+int		replace_env(t_list *env, char *args);
+int		add_env_elem(char *arg, t_list *env);
+int		ft_export(char	**args, t_list *env, int fd);
 
 int		ft_unset(char **args, t_list *env);
 int		ft_exit(char **args, t_sys *mini);
@@ -122,5 +129,6 @@ void	signal_handler(int sig);
 void	signal_handler_2(int sig);
 
 int		is_dir(char *path);
+int		is_valid_file(char *file);
 
 #endif

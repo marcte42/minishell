@@ -36,6 +36,7 @@ SRCS_PARSE	=	parse.c \
 # may move these to be in the SRCS folder, if the cors are gonna get all annoying about it...
 DIR_MINILIB	=	./minilib/
 SRCS_MINILIB	=	error_funcs.c \
+					list_funcs_more.c \
 					nlist_funcs.c \
 					nlstdel_n_one.c \
 					ilist_funcs.c \
@@ -78,8 +79,8 @@ ALL_INCS	=	$(INCS) $(LIBFT_INCS) $(MINILIB_INCS)
 ALL_LIBS	=	-lreadline -L$(DIR_LIBFT) -lft
 
 #TMP for compiling readline lib on mac
-#ALL_INCS	=	$(INCS) $(LIBFT_INCS) $(MINILIB_INCS) -I${shell brew --prefix readline}/include
-#ALL_LIBS	=	-lreadline -L$(shell brew --prefix readline)/lib -L$(DIR_LIBFT) -lft
+ALL_INCS	=	$(INCS) $(LIBFT_INCS) $(MINILIB_INCS) -I${shell brew --prefix readline}/include
+ALL_LIBS	=	-lreadline -L$(shell brew --prefix readline)/lib -L$(DIR_LIBFT) -lft
 
 
 DIR_OBJ		=	./objs/

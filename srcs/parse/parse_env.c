@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:28:11 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/06 13:58:34 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 14:25:16 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ char	*expand_env(char *line, char *start, char *key, char *value)
 	if (value)
 		ft_strcat(tmp_line, value);
 	ft_strcat(tmp_line, &start[key_len + 1]);
-	free(line);
+	//free(line);		// This line if fucking things up!!!!!
 	return (tmp_line);
 }
 
