@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/06 21:16:53 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 21:57:08 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ int	exec_child(t_sys *mini, t_cmd *cmd)
 		if (!cmd->clean)
 			exit (1);
 		exec_path(mini, cmd->clean);
-		ft_putstr_fd("Command not found\n", STDERR_FILENO);
+		ft_putstr_fd(cmd->clean[0], STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
 		exit(127);
 	}
 	return (SUCCESS);
