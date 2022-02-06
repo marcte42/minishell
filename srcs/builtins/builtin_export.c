@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 21:19:56 by me                #+#    #+#             */
-/*   Updated: 2022/02/06 22:49:45 by me               ###   ########.fr       */
+/*   Updated: 2022/02/06 23:32:18 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	print_envs(t_list *env, int fd)
 		key = get_key(tmp->content);
 		if (!key)
 			return (1);
-		ft_putstr_fd("declare -x ", fd);	// double check that this is the right message on Linux too.
+		ft_putstr_fd("declare -x ", fd);
 		ft_putstr_fd(key, fd);
 		if (ft_strlen(tmp->content) > ft_strlen(key))
 		{
@@ -127,9 +127,8 @@ int	ft_export(char	**args, t_list *env, int fd)
 		{
 			if (!check_valid_env(args[i]))
 			{
-				// i could do ret = ft_error_msg_fd(..., 2, 1); lol
 				ret = 1;
-				ft_putstr_fd("Error: Export not a valid identifier\n", 2);		// 2 or fd?
+				ft_putstr_fd("Error: Export not a valid identifier\n", 2);
 				continue ;
 			}
 			if (!replace_env(env, args[i]) && !add_env_elem(args[i], env))

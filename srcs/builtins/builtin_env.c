@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 21:19:11 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/06 22:48:52 by me               ###   ########.fr       */
+/*   Updated: 2022/02/06 23:30:57 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ char	*get_value_of_key(t_list *env, char *key)
 	return (value);
 }
 
-	// go over with marc, do we free a whole elem?
 int	replace_env(t_list *env, char *args)
 {
 	char	*var;
@@ -56,26 +55,29 @@ int	replace_env(t_list *env, char *args)
 	if (!env || !args)
 		return (ERROR);
 	var = get_key(args);
-	while (env)
+	while (env && var)
 	{	
 		env_name = get_key(env->content);
-		if (ft_strcmp(var, env_name) == 0)
+		if (env_name && ft_strcmp(var, env_name) == 0)
 		{
-			free(env->content);
 			tmp = ft_strdup(args);
-		//	env->content = ft_strdup(args);
-			free(env_name);
-			free(var);				// free 1 env too? YES do that
 			if (!tmp)
-				return (ERROR);		// return success? just failed to update the thing...
+			{
+				free(env->content);
+				free(env_name);
+				free(var);
+				return (0);
+			}
+			free(env->content);
+			free(env_name);
+			free(var);
 			env->content = tmp;
-			return (SUCCESS);
+			return (1);
 		}
 		env = env->next;
 		ft_scott_free(&env_name, 1);
 	}
-	ft_scott_free(&var, 1);
-	return (ERROR);
+	return (ft_scott_free(&var, 0));
 }
 
 int	ft_env(t_sys *mini, int fd)

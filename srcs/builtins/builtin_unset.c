@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/23 14:40:38 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/06 23:11:45 by me               ###   ########.fr       */
+/*   Updated: 2022/02/06 23:19:18 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int	ft_unset(char **args, t_list *env)
 	while (args[++i])
 	{
 		elem = env;
-	//	if (ft_strncmp(args[i], env->content, value_size(env->content)) == 0)
 		if (ft_strncmp(args[i], elem->content, value_size(elem->content)) == 0)
 		{
 			elem = env->next;
@@ -56,11 +55,8 @@ int	ft_unset(char **args, t_list *env)
 			env = elem;
 			continue ;
 		}
-	//	while (env && env->next)
 		while (elem && elem->next)
 		{
-//			if (ft_strncmp(args[i], env->next->content, \
-//				value_size(env->next->content)) == 0)
 			if (ft_strncmp(args[i], elem->next->content, \
 				value_size(elem->next->content)) == 0)
 			{
@@ -68,16 +64,7 @@ int	ft_unset(char **args, t_list *env)
 				free_elem(elem->next);
 				elem->next = tmp;
 				continue ;
-			//	return (0);
-/*
-				tmp = env->next->next;
-				free_elem(env->next);
-				env->next = tmp;
-				continue ;
-			//	return (0);
-*/
 			}
-			//env = env->next;
 			elem = elem->next;
 		}
 	}
