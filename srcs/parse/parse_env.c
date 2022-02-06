@@ -6,24 +6,11 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:28:11 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/31 21:00:44 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 13:58:34 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	ft_envlen(t_list *env)
-{
-	int	i;
-
-	i = 0;
-	while (env)
-	{
-		env = env->next;
-		i++;
-	}
-	return (i);
-}
 
 char	**env_to_tab(t_list *env)
 {
@@ -31,7 +18,7 @@ char	**env_to_tab(t_list *env)
 	int		i;
 
 	i = 0;
-	tab = malloc(sizeof(char *) * (ft_envlen(env) + 1));
+	tab = malloc(sizeof(char *) * (ft_lstsize(env) + 1));
 	if (!tab)
 		return (NULL);
 	while (env)
@@ -57,6 +44,8 @@ char	*get_key(char *s)
 	int		len;
 	char	*key;
 
+	if (*s == '?')
+		return (ft_strdup("?"));
 	len = 0;
 	i = -1;
 	while (s[++i] && (ft_isalnum(s[i]) || s[i] == '_'))
@@ -68,7 +57,32 @@ char	*get_key(char *s)
 	return (key);
 }
 
-char	*expand_env(char *line, char *start, char *value)
+// ft_getenv
+// Retourne un char* avec la valeur associee a la key
+// Si la key n'a pas ete trouvee on retourne un char* vide ""
+// Si une erreur se produit on retourne un NULL
+char	*ft_getenv(t_sys *mini, char *key, t_list *env)
+{
+	char	*env_key;
+	
+	if (ft_strcmp(key, "?") == 0)
+		return (ft_itoa(mini->retval));
+	while (env)
+	{
+		env_key = get_key(env->content);
+		if (!env_key)
+			return (NULL);
+		if (ft_strcmp(key, env_key) == 0)
+		{
+			free(env_key);
+			return (ft_strdup(ft_strchr(env->content, '=') + 1));
+		}
+		env = env->next;
+	}
+	return (ft_strdup(""));
+}
+
+char	*expand_env(char *line, char *start, char *key, char *value)
 {
 	char	*tmp_line;
 	int		key_len;
@@ -76,10 +90,7 @@ char	*expand_env(char *line, char *start, char *value)
 	int		value_len;
 	int		i;
 
-	key_len = 0;
-	i = 0;
-	while (start[++i] && (ft_isalnum(start[i]) || start[i] == '_'))
-		key_len++;
+	key_len = ft_strlen(key);
 	line_len = ft_strlen(line);
 	value_len = ft_strlen(value);
 	tmp_line = ft_calloc((line_len - key_len + value_len), sizeof(char));
@@ -95,36 +106,7 @@ char	*expand_env(char *line, char *start, char *value)
 	return (tmp_line);
 }
 
-// ft_getenv 
-// Retourne un char* avec la valeur associee a la key
-// Si la key n'a pas ete trouvee on retourne un char* vide ""
-// Si une erreur se produit on retourne un NULL
-char	*ft_getenv(char *key, t_list *env)
-{
-	char	*value;
-	int		value_len;
-
-	while (env)
-	{
-		if (!ft_strncmp(key, env->content, ft_strlen(key)))
-		{
-			value_len = ft_strlen(ft_strchr(env->content, '=') + 1);
-			value = malloc((value_len + 1) * sizeof(char));
-			if (!value)
-				return (NULL);
-			ft_strcpy(value, ft_strchr(env->content, '=') + 1);
-			return (value);
-		}
-		env = env->next;
-	}
-	value = malloc(1 * sizeof(char));
-	if (!value)
-		return (NULL);
-	value[0] = 0;
-	return (value);
-}
-
-char	*parse_env(char *line, t_list *env)
+char	*parse_env(t_sys *mini, char *line, t_list *env)
 {
 	int		i;
 	char	*key;
@@ -139,11 +121,11 @@ char	*parse_env(char *line, t_list *env)
 			key = get_key(&line[i + 1]);
 			if (!key)
 				return (NULL);
-			value = ft_getenv(key, env);
-			free(key);
+			value = ft_getenv(mini, key, env);
 			if (!value)
 				return (NULL);
-			line = expand_env(line, &line[i], value);
+			line = expand_env(line, &line[i], key, value);
+			free(key);
 			free(value);
 			if (!line)
 				return (NULL);

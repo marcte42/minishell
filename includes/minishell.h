@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 12:27:18 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/01 22:07:40 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 13:44:51 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 
 typedef struct		s_sys
 {
+	char	*line;			// Ligne recuperee par readline
 	t_list	*env;			// Liste chainee avec les variables d'env
 	t_list	*cmds;			// Liste chainee avec les commandes
 	int		cmds_count;		// Nombre de commandes a executer
@@ -45,6 +46,13 @@ typedef struct		s_sys
 	int		retval;			// Valeur finale de retour d'execution
 	int		exit;			// Flag pour le builtin exit
 }					t_sys;
+
+typedef struct		s_env
+{
+	char	*raw;
+	char	*key;
+	char    *value;
+}					t_env;
 
 typedef struct		s_rdr
 {
@@ -74,9 +82,9 @@ typedef struct		s_var
 
 t_list	*init_env(char **env);
 int		init_sys(t_sys *mini, char **env);
-int		parse(char *line, t_sys *mini);
-char	*parse_env(char *line, t_list *env);
-char	*ft_getenv (char *key, t_list *env);
+int		parse(t_sys *mini);
+char	*parse_env(t_sys *mini, char *line, t_list *env);
+char	*ft_getenv(t_sys *mini, char *key, t_list *env);
 char	*get_key(char *s);
 char	**env_to_tab(t_list *env);
 int		control_quotes(char *str);

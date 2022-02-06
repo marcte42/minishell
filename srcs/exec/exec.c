@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/06 11:10:16 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 12:14:14 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	exec_path(t_sys *mini, char **clean)
 
 	if (access(clean[0], F_OK | X_OK) == 0 && !is_dir(clean[0]))
 		execve(clean[0], clean, env_to_tab(mini->env));
-	env = ft_getenv("PATH", mini->env);
+	env = ft_getenv(mini, "PATH", mini->env);
 	paths = ft_split(env, ':');
 	free(env);
 	if (!paths)
@@ -134,7 +134,7 @@ int	exec(t_sys *mini)
 	t_list	*cmds;
 	t_cmd	*cmd;
 
-	if (!init_pfds(mini))
+	if (mini->cmds_count > 1 && !init_pfds(mini))
 		return (ERROR);
 	cmds = mini->cmds;
 	while (cmds)

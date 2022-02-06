@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 11:55:02 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/01 23:08:30 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 13:41:30 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ void	signal_handler_2(int sig)
 
 int	main(int ac, char **av, char *env[])
 {
-	char	*line;
 	t_sys	mini;
 
 	signal(SIGINT, signal_handler);	// sort out how to do sigaction instead
@@ -93,7 +92,6 @@ int	main(int ac, char **av, char *env[])
 	signal(SIGQUIT, SIG_IGN);
 	if (!init_sys(&mini, env))
 		return (127); 			// Message d'erreur a definir en cas de non initialisation
-	line = NULL;
 	if (ac != 1 || av[0][1] == '1')
 		return (0);
 	while (1)
@@ -103,37 +101,28 @@ int	main(int ac, char **av, char *env[])
 //		sigaction(SIGQUIT, &s1, NULL);
 		signal(SIGINT, signal_handler);
 		signal(SIGQUIT, SIG_IGN);
-		line = readline("$> ");
-		if (!line)
+		mini.line = readline("$> ");
+		if (!mini.line)
 		{
 			ft_putstr_fd("exit\n", STDERR_FILENO);
 			break ;
 		}
-		add_history(line);
-		if (!(*line) || !parse(line, &mini))
+		if (!*(mini.line))
 		{
-		//	free_sys(&mini);	// but since contiune wouldn't we need t_list env anyway?
-			reset_free_sys(&mini);
-			free(line);
+			free(mini.line);
 			continue ;
 		}
-//		exec(mini.cmds, &mini);
-		if (!exec(&mini))
-		{
-		//	free_sys(&mini);	// same as parse error, don't we need t_list env if not exiting?
-			// i was correct
-			reset_free_sys(&mini);
-			free(line);
-			continue ;
-		}
+		add_history(mini.line);
+		parse(&mini);
+		exec(&mini);
 		if (mini.exit)
 		{
 			ft_putstr_fd("exit\n", STDERR_FILENO);
+			ft_lstclear(&mini.env, free);
+			free_sys(&mini);
 			return (mini.retval);
 		}	
-		reset_free_sys(&mini);
-		free(line);
-		
+		free_sys(&mini);		
 	//	ft_putstr_fd("made it to end of main loop\n", 1);
 	//	ft_env(&mini, 1);
 		

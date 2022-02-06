@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/31 19:45:39 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 11:57:40 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,20 +206,18 @@ int	parse_args(t_list *cmds)
 	return (SUCCESS);
 }
 
-int	parse(char *line, t_sys *mini)
+int	parse(t_sys *mini)
 {
-	if (!line)
-		return (ERROR);
-	if (!control_quotes(line))
+	if (!control_quotes(mini->line))
 	{
 		ft_putstr("minishell: syntax error\n");
 		return (ERROR);
 	}
 
-	line = parse_env(line, mini->env);
-	if (!line)
+	mini->line = parse_env(mini, mini->line, mini->env);
+	if (!mini->line)
 		return (ERROR);
-	mini->cmds = parse_pipes(line);
+	mini->cmds = parse_pipes(mini->line);
 	if (!mini->cmds)
 		return (ERROR);
 	if (!parse_args(mini->cmds))
