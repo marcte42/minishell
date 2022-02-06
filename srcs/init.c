@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 10:36:47 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/06 21:01:02 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 22:46:00 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ t_list	*init_env(char **env)
 
 int		init_sys(t_sys *mini, char **env)
 {
+	rl_outstream = stderr;
 	ft_bzero(mini, sizeof(t_sys));
 	mini->env = init_env(env);
 	if (!mini->env)
