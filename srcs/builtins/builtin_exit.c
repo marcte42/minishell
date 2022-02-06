@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:19:25 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/06 16:54:53 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 22:01:58 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	ft_exit(char **args, t_sys *mini)
 		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
 		return (1);
 	}
-	mini->exit = 1;
+	if (mini->cmds_count == 1)
+		mini->exit = 1;
 	if (args[1] && ft_strisnum(args[1]) == 0)
 	{
 		ft_putstr_fd("exit\n", STDERR_FILENO);
