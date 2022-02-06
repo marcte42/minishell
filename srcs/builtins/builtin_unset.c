@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/23 14:40:38 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/06 19:09:21 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 19:37:49 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	value_size(char *value)
 	int	size;
 
 	size = 0;
-	while (*value != '=')
+	while (*value && *value != '=')
 	{
 		size++;
 		value++;
