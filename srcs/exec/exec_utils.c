@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:38:15 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/06 17:10:09 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 21:04:10 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ int	init_pfds(t_sys *mini)
 	return (SUCCESS);
 }
 
-int	is_valid_in(char *file)
+int	is_binary(char *file)
 {
 	struct stat	sb;
 
-	if (access(file, F_OK | R_OK) == -1 || stat(file, &sb) == -1)
+	if (access(file, F_OK | X_OK) == -1 || stat(file, &sb) == -1)
 		return (0);
 	if ((sb.st_mode & S_IFMT) == S_IFREG)
 		return (1);

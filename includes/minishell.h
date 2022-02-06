@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 12:27:18 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/06 17:06:20 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 21:03:42 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ void	signal_handler(int sig);
 void	signal_handler_2(int sig);
 
 int		is_dir(char *path);
-int		is_valid_in(char *file);
+int		is_binary(char *file);
 int		get_fd_in(t_sys *mini, t_cmd *cmd);
 int		get_fd_out(t_sys *mini, t_cmd *cmd);
 void	minishell_error(char *file);

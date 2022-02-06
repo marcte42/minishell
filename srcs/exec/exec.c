@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/06 17:02:53 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 21:16:53 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	ft_wait(t_list *cmds)
 				perror(NULL);
 			if (WIFEXITED(cmd->retval))
 				cmd->retval = WEXITSTATUS(cmd->retval);
+			if (WIFSIGNALED(cmd->retval))
+				cmd->retval = WTERMSIG(cmd->retval) + 128;
 		}
 		cmds = cmds->next;
 	}
@@ -51,7 +53,7 @@ void	exec_path(t_sys *mini, char **clean)
 	char	*tmp;
 	int		i;
 
-	if (is_valid_in(clean[0]))
+	if (is_binary(clean[0]))
 		execve(clean[0], clean, env_to_tab(mini->env));
 	env = ft_getenv(mini, "PATH", mini->env);
 	paths = ft_split(env, ':');
@@ -64,7 +66,7 @@ void	exec_path(t_sys *mini, char **clean)
 		tmp = ft_strjoin(paths[i], "/");
 		path_to_bin = ft_strjoin(tmp, clean[0]);
 		free(tmp);
-		if (is_valid_in(path_to_bin))
+		if (is_binary(path_to_bin))
 			execve(path_to_bin, clean, env_to_tab(mini->env));
 		free(path_to_bin);
 	}

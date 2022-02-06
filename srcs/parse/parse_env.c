@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:28:11 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/06 18:43:53 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 21:02:43 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	**env_to_tab(t_list *env)
 {
-	char	**tab;	
+	char	**tab;
 	int		i;
 
 	i = 0;
@@ -107,6 +107,7 @@ char	*expand_env(char *line, char *start, char *key, char *value)
 	if (value)
 		ft_strcat(tmp_line, value);
 	ft_strcat(tmp_line, &start[key_len + 1]);
+	free(line);
 	return (tmp_line);
 }
 
@@ -126,7 +127,6 @@ char	*parse_env(t_sys *mini, char *line, t_list *env)
 			if (!key)
 				return (NULL);
 			value = ft_getenv(mini, key, env);
-			
 			if (!value)
 				return (NULL);
 			line = expand_env(line, &line[i], key, value);

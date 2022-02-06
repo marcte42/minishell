@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/06 16:42:08 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 21:11:41 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,9 @@ int	add_redirect(t_cmd *cmd, char **argv, char *type_char)
 {
 	int		type;
 
-	if (!*argv)
+	if (!*argv || !ft_strcmp(*argv, "<") || !ft_strcmp(*argv, "<<")
+			|| !ft_strcmp(*argv, ">") || !ft_strcmp(*argv, ">>")
+			|| !ft_strcmp(*argv, "|"))
 	{
 		ft_putstr_fd("minishell: syntax error\n", STDERR_FILENO);
 		return (ERROR);
