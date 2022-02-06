@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/01 23:14:36 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 11:10:16 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int	exec_child(t_sys *mini, t_cmd *cmd)
 		write (STDERR_FILENO, "Command not found\n", 18);// perror instead?
 		exit(127);
 	}
-	return (SUCCESS);// Je ne sais pas quel return on fait ici 
+	return (SUCCESS);
 }
 
 int	exec(t_sys *mini)
@@ -150,6 +150,5 @@ int	exec(t_sys *mini)
 	ft_wait(mini->cmds);
 	cmd = ft_lstlast(mini->cmds)->content;
 	mini->retval = cmd->retval;
-	printf("$? = %d\n", mini->retval);
 	return (mini->retval);
 }

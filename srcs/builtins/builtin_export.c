@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: me <erlazo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 21:19:56 by me                #+#    #+#             */
-/*   Updated: 2022/02/02 01:40:05 by me               ###   ########.fr       */
+/*   Updated: 2022/02/02 10:28:25 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,9 +150,9 @@ int	print_envs(t_list *env)
 int	ft_export(char	**args, t_list *env)
 {
 //	int	error;
-	int	new;
+	// int	new;
 
-	new = 0;
+	// new = 0;
 	if (!args[1])	// so far so good
 	{
 		//put_sorted_env(env);
