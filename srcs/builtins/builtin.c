@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 19:38:24 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/06 16:27:28 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 22:45:52 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,17 @@
 
 int	is_builtin(char *cmd)
 {
-	char	*builtin[] = {"pwd", "cd", "echo", "export", "unset", "exit", "env", NULL}; // pas a la norm :(
+	char	*builtin[8];
 	int		i;
 
+	builtin[0] = "pwd\0";
+	builtin[1] = "cd\0";
+	builtin[2] = "echo\0";
+	builtin[3] = "export\0";
+	builtin[4] = "unset\0";
+	builtin[5] = "exit\0";
+	builtin[6] = "env\0";
+	builtin[7] = NULL;
 	i = 0;
 	while (builtin[i])
 	{

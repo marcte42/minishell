@@ -6,13 +6,11 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 21:19:11 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/03 23:35:53 by me               ###   ########.fr       */
+/*   Updated: 2022/02/06 22:48:52 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-//works fine if frees of t_sys are correct.
 
 int	check_valid_env(char *env)
 {
@@ -27,14 +25,9 @@ int	check_valid_env(char *env)
 			return (0);
 		i++;
 	}
-//	if (env[i] != '=' || i == (int)ft_strlen(env))
-//	if (i == (int)ft_strlen(env))
-//		return (0);
 	return (1);
 }
 
-
-	// returns only the value, not the whole thing!
 char	*get_value_of_key(t_list *env, char *key)
 {
 	char	*value;
@@ -53,8 +46,7 @@ char	*get_value_of_key(t_list *env, char *key)
 	return (value);
 }
 
-// contents has a strings
-// could move this to CD, would save space here
+	// go over with marc, do we free a whole elem?
 int	replace_env(t_list *env, char *args)
 {
 	char	*var;
@@ -80,9 +72,9 @@ int	replace_env(t_list *env, char *args)
 			return (SUCCESS);
 		}
 		env = env->next;
-		free(env_name);
+		ft_scott_free(&env_name, 1);
 	}
-	free(var);
+	ft_scott_free(&var, 1);
 	return (ERROR);
 }
 

@@ -3,18 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: me <erlazo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/10 17:47:33 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/01 22:29:08 by mterkhoy         ###   ########.fr       */
+/*   Created: 2022/02/06 22:37:23 by me                #+#    #+#             */
+/*   Updated: 2022/02/06 22:38:01 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// seems good to me...
-
-// BUt there is a double free somewhere when we echo $HOME or any env var...
 
 int	size_arg(char **args)
 {
@@ -40,7 +36,7 @@ int	ft_echo(char **args, int fd)
 			flag = 1;
 			i++;
 		}
-		while (args[i])	// do we maybe want to reset i to 1 and skip if args[i] == "-n" ? NO -n only works in first possition
+		while (args[i])
 		{
 			ft_putstr_fd(args[i], fd);
 			if (args[i + 1] && args[i][0] != '\0')
