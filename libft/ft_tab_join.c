@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_tab_join.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pravry <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 12:01:48 by pravry            #+#    #+#             */
-/*   Updated: 2021/05/27 13:51:24 by pravry           ###   ########.fr       */
+/*   Updated: 2021/12/19 21:09:46 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static char	**join_next(char **new, char **tmp, size_t i, size_t tmp_len)
 	return (new);
 }
 
-char		**ft_tab_join(char **tab, char **tmp)
+char	**ft_tab_join(char **tab, char **tmp)
 {
 	char	**new;
 	size_t	tab_len;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strisnum.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pravry <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/01 11:13:17 by pravry            #+#    #+#             */
-/*   Updated: 2021/07/01 11:15:06 by pravry           ###   ########.fr       */
+/*   Updated: 2021/12/19 20:57:53 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ft_strisnum(const char *str)
 {
 	int	i;
-	
+
 	i = 0;
 	if (str == NULL)
 		return (0);

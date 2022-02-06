@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi_long.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pravry <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 12:11:42 by pravry            #+#    #+#             */
-/*   Updated: 2021/05/27 13:51:54 by pravry           ###   ########.fr       */
+/*   Updated: 2021/12/19 21:09:11 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ long long	ft_atoi_long(const char *nptr)
 	i = 0;
 	sign = 1;
 	res = 0;
-	while (nptr[i] == '\n' || nptr[i] == ' ' || nptr[i] == '\f' ||
-			nptr[i] == '\r' || nptr[i] == '\t' || nptr[i] == '\v')
+	while (nptr[i] == '\n' || nptr[i] == ' ' || nptr[i] == '\f'
+		|| nptr[i] == '\r' || nptr[i] == '\t' || nptr[i] == '\v')
 		i++;
 	if (nptr[i] == '+' || nptr[i] == '-')
 	{

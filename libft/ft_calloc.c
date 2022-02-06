@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pravry <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 21:48:01 by pravry            #+#    #+#             */
-/*   Updated: 2020/01/06 19:34:05 by pravry           ###   ########.fr       */
+/*   Updated: 2021/12/19 21:10:44 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,5 @@ void	*ft_calloc(size_t count, size_t size)
 		ptr[i] = 0;
 		i++;
 	}
-	return ((void*)ptr);
+	return ((void *)ptr);
 }

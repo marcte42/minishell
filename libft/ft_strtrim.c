@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pravry <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/27 19:35:44 by pravry            #+#    #+#             */
-/*   Updated: 2019/12/08 17:41:24 by pravry           ###   ########.fr       */
+/*   Updated: 2021/12/19 21:04:05 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	ft_check(char s, char const *set)
 
 static int	ft_start(const char *s, const char *set)
 {
-	int start;
+	int	start;
 	int	i;
 
 	i = 0;
@@ -58,7 +58,7 @@ static int	ft_end(const char *s, const char *set)
 	return (end);
 }
 
-char		*ft_strtrim(char const *s1, char const *set)
+char	*ft_strtrim(char const *s1, char const *set)
 {
 	char	*tmp;
 	int		i;
@@ -70,7 +70,8 @@ char		*ft_strtrim(char const *s1, char const *set)
 		return (ft_strdup(""));
 	if (s1[i] == '\0')
 	{
-		if (!(tmp = malloc(1)))
+		tmp = malloc(1);
+		if (!tmp)
 			return (NULL);
 		tmp[0] = '\0';
 		return (tmp);

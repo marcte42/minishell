@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pravry <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/07 14:26:31 by pravry            #+#    #+#             */
-/*   Updated: 2019/12/08 17:53:28 by pravry           ###   ########.fr       */
+/*   Updated: 2021/12/19 22:58:42 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,11 @@ static int	ft_size_itoa(int n)
 	return (size);
 }
 
-char		*ft_itoa(int n)
+void	compose_string(int tmp, char *res, int size, int neg)
 {
-	char			*res;
-	int				i;
-	int				size;
-	int				neg;
-	unsigned int	tmp;
+	int	i;
 
-	size = ft_size_itoa(n);
-	neg = (n < 0 ? 1 : 0);
 	i = 1;
-	if (!((res = (char *)malloc(sizeof(char) * (size + 1)))))
-		return (NULL);
-	tmp = (n < 0 ? -n : n);
 	if (tmp == 0)
 		res[0] = '0';
 	while (tmp >= 1)
@@ -59,5 +50,25 @@ char		*ft_itoa(int n)
 	if (neg == 1)
 		res[0] = '-';
 	res[size] = '\0';
+}
+
+char	*ft_itoa(int n)
+{
+	char			*res;
+	int				size;
+	int				neg;
+	unsigned int	tmp;
+
+	size = ft_size_itoa(n);
+	neg = 0;
+	if (n < 0)
+		neg = 1;
+	res = (char *)malloc(sizeof(char) * (size + 1));
+	if (!res)
+		return (NULL);
+	tmp = n;
+	if (n < 0)
+		tmp = -n;
+	compose_string(tmp, res, size, neg);
 	return (res);
 }

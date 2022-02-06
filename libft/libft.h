@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 12:23:04 by pravry            #+#    #+#             */
-/*   Updated: 2021/10/17 12:27:15 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 19:02:03 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdlib.h>
 # include <stddef.h>
 
-typedef struct		s_list
+typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
@@ -44,7 +44,7 @@ size_t				ft_strlcat(char *dst, const char *src, size_t size);
 size_t				ft_strlen(const char *s);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 char				*ft_strnstr(const char *haytack, const char *needle,
-	size_t len);
+						size_t len);
 int					ft_tolower(int c);
 int					ft_strisnum(const char *str);
 int					ft_toupper(int c);
@@ -56,10 +56,10 @@ char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strtrim(char const *s1, char const *set);
 char				**ft_split(char const *s, char c);
-char                **ft_split_constraint(char *s, char c,
-                    int (*constraint)(char *s, char *c));
+char				**ft_split_constraint(char *s, char c,
+						int (*constraint)(char *s, char *c));
 char				*ft_itoa(int n);
-char				*ft_strmapi(char const *s, char(*f)(unsigned int, char));
+char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void				ft_putnbr_fd(int n, int fd);
 void				ft_putendl_fd(char *s, int fd);
 void				ft_putstr_fd(char *s, int fd);

@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/06 11:57:40 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 16:42:08 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	handle_heredoc(t_rdr *rdr, char **argv, int id)
 	char	*heredoc_name;
 	char	*name;
 	char	*index;
-	
+
 	index = ft_itoa(id);
 	name = ft_strjoin(*argv, index);
 	free(index);
@@ -160,7 +160,7 @@ int	parse_redirects(t_cmd *cmd)
 	i = 0;
 	if (!cmd)
 		return (0);
-	while (cmd->argv[i]) // i have a strtab_len(), if len 0 we return?
+	while (cmd->argv[i])
 		i++;
 	cmd->clean = malloc((i + 1) * sizeof(char *));
 	if (!cmd->clean)
@@ -213,7 +213,6 @@ int	parse(t_sys *mini)
 		ft_putstr("minishell: syntax error\n");
 		return (ERROR);
 	}
-
 	mini->line = parse_env(mini, mini->line, mini->env);
 	if (!mini->line)
 		return (ERROR);

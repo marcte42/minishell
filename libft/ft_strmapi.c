@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pravry <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/07 14:56:57 by pravry            #+#    #+#             */
-/*   Updated: 2019/12/08 17:18:36 by pravry           ###   ########.fr       */
+/*   Updated: 2021/12/19 21:01:10 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	ft_len(char const *s)
 {
-	int len;
+	int	len;
 
 	len = 0;
 	while (*s)
@@ -25,7 +25,7 @@ static int	ft_len(char const *s)
 	return (len);
 }
 
-char		*ft_strmapi(char const *s, char (*f)(unsigned int, char))
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
 	char				*res;
 	unsigned int		i;

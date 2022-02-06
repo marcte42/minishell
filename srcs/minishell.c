@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 11:55:02 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/06 15:55:10 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 19:34:12 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,53 +86,45 @@ void	signal_handler_2(int sig)
 int	main(int ac, char **av, char *env[])
 {
 	t_sys	mini;
+	(void)	av;
 
-	signal(SIGINT, signal_handler);	// sort out how to do sigaction instead
-	// not clear if i also need to handle SIGQUIT...
+	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, SIG_IGN);
 	if (!init_sys(&mini, env))
-		return (127); 			// Message d'erreur a definir en cas de non initialisation
-	if (ac != 1 || av[0][1] == '1')
+		return (127);
+	if (ac != 1)
 		return (0);
 	while (1)
 	{
-		// this did not help, prolly get rid of it
-//		sigaction(SIGINT, &s1, NULL);
-//		sigaction(SIGQUIT, &s1, NULL);
 		signal(SIGINT, signal_handler);
 		signal(SIGQUIT, SIG_IGN);
 		mini.line = readline("$> ");
 		if (!mini.line)
 		{
 			ft_putstr_fd("exit\n", STDERR_FILENO);
+			free_sys(&mini);
 			break ;
 		}
 		if (!*(mini.line))
 		{
-			free(mini.line);
+			free_sys(&mini);
 			continue ;
 		}
 		add_history(mini.line);
-		parse(&mini);
+		if (!parse(&mini))
+		{
+			free_sys(&mini);
+			continue ;
+		}
 		mini.retval = exec(&mini);
 		if (mini.exit)
 		{
-			// free things
-			ft_putstr_fd("exit\n", STDERR_FILENO);
 			ft_lstclear(&mini.env, free);
 			free_sys(&mini);
 			return (mini.retval);
-		}	
-		free_sys(&mini);		
-	//	ft_putstr_fd("made it to end of main loop\n", 1);
-	//	ft_env(&mini, 1);
-		
+		}
+		free_sys(&mini);
 	}
-	// free_sys(&mini); // put this here? would that even do anything?
-	//where exactly do we exit and where does that value get returned?
-	// should we change the conditions of the loop to exit when certain exit status are returned?
 	ft_lstclear(&mini.env, free);
-	// works cuz break
-	// also need to clear_history()
 	return (0);
 }

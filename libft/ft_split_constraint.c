@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split_constraint.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/06 19:02:20 by mterkhoy          #+#    #+#             */
+/*   Updated: 2022/02/06 19:04:41 by mterkhoy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
 static void	ft_free(int i, char **result)
@@ -13,7 +25,7 @@ static void	ft_free(int i, char **result)
 static int	ft_size_malloc(char *s, char c, int (*constraint)(char *s, char *c))
 {
 	int	i;
-	int count;
+	int	count;
 
 	count = 0;
 	i = 0;
@@ -34,7 +46,8 @@ static char	*ft_line(char *s, char c, int (*constraint)(char *s, char *c))
 	i = 0;
 	while (s[i] && (s[i] != c || constraint(s, &s[i])))
 		i++;
-	if (!(line = (char *)malloc(sizeof(char) * (i + 1))))
+	line = (char *)malloc(sizeof(char) * (i + 1));
+	if (!line)
 		return (NULL);
 	i = 0;
 	while (s[i] && (s[i] != c || constraint(s, &s[i])))
@@ -46,11 +59,11 @@ static char	*ft_line(char *s, char c, int (*constraint)(char *s, char *c))
 	return (line);
 }
 
-char    **ft_split_constraint(char *s, char c, int (*constraint)(char *s, char *c))
+char	**ft_split_constraint(char *s, char c, int (*constraint)(char *s, char *c))
 {
 	char	**result;
 	int		i;
-    int     j;
+	int		j;
 
 	if (!(result = (char **)malloc(sizeof(char *) *
 	(ft_size_malloc((char *)s, c, constraint) + 1))))
@@ -69,9 +82,7 @@ char    **ft_split_constraint(char *s, char c, int (*constraint)(char *s, char *
 				return (NULL);
 			}
 			while (s[j] && (s[j] != c || constraint(s, &s[j])))
-            {
 				j++;
-            }
 		}
 	}
 	result[i] = 0;

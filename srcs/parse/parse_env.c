@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:28:11 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/06 14:43:41 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 18:43:53 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ char	*get_key(char *s)
 char	*ft_getenv(t_sys *mini, char *key, t_list *env)
 {
 	char	*env_key;
-	
+	char	*ptr;
+
 	if (ft_strcmp(key, "?") == 0)
 		return (ft_itoa(mini->retval));
 	while (env)
@@ -75,7 +76,10 @@ char	*ft_getenv(t_sys *mini, char *key, t_list *env)
 		if (ft_strcmp(key, env_key) == 0)
 		{
 			free(env_key);
-			return (ft_strdup(ft_strchr(env->content, '=') + 1));
+			ptr = ft_strchr(env->content, '=');
+			if (!ptr)
+				return (ft_strdup(""));
+			return (ft_strdup(ptr + 1));
 		}
 		free(env_key);
 		env = env->next;
@@ -103,7 +107,6 @@ char	*expand_env(char *line, char *start, char *key, char *value)
 	if (value)
 		ft_strcat(tmp_line, value);
 	ft_strcat(tmp_line, &start[key_len + 1]);
-	//free(line);		// This line if fucking things up!!!!!
 	return (tmp_line);
 }
 
@@ -123,6 +126,7 @@ char	*parse_env(t_sys *mini, char *line, t_list *env)
 			if (!key)
 				return (NULL);
 			value = ft_getenv(mini, key, env);
+			
 			if (!value)
 				return (NULL);
 			line = expand_env(line, &line[i], key, value);

@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/01 20:47:04 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/30 16:36:04 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/06 19:33:08 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ int	control_quotes(char *str)
 					break ;
 				}
 			}
+			if (!str[i])
+				return (0);
 		}
 	}
 	return (!open);
