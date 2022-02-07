@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/06 21:57:08 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/07 19:29:16 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	ft_wait(t_list *cmds)
 				perror(NULL);
 			if (WIFEXITED(cmd->retval))
 				cmd->retval = WEXITSTATUS(cmd->retval);
-			if (WIFSIGNALED(cmd->retval))
+			else if (WIFSIGNALED(cmd->retval))
 				cmd->retval = WTERMSIG(cmd->retval) + 128;
 		}
 		cmds = cmds->next;
