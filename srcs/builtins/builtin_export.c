@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 21:19:56 by me                #+#    #+#             */
-/*   Updated: 2022/02/07 04:25:52 by me               ###   ########.fr       */
+/*   Updated: 2022/02/07 04:29:56 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,8 @@ int	print_envs(t_list *env, int fd)
 {
 	t_list	*tmp;
 	char	*key;
-	char	*value;
 
-	if (!env)		// Unecessary
-		return (0);	// unless we want to return 1? no cuz you can have no env vars and that's fine right?
 	tmp = sort_t_list(env);
-	value = NULL;
 	while (tmp)
 	{
 		key = get_key(tmp->content);
@@ -77,26 +73,22 @@ int	print_envs(t_list *env, int fd)
 		if (ft_strlen(tmp->content) > ft_strlen(key))
 		{
 			ft_putstr_fd("=\"", fd);
-			value = ft_substr(tmp->content, ft_strlen(key) + 1, \
-					ft_strlen(tmp->content) - ft_strlen(key) - 1);
-			ft_putstr_fd(value, fd);		// in theory this works for when env var is empty
+			ft_putstr_fd(&tmp->content[ft_strlen(key) + 1], fd);	// used to be value
 			ft_putstr_fd("\"", fd);
 		}
 		ft_putstr_fd("\n", fd);
-
 		free(key);
-		ft_scott_free(&value, 1);
 		tmp = tmp->next;
 	}
-	ft_lstclear(&tmp, free);	// works even if tmp = NULL
+	ft_lstclear(&tmp, free);
 	return (0);
 }
 
-int	ft_export(char	**args, t_list *env, int fd)
+int	ft_export(char **args, t_list *env, int fd)
 {
 	int	ret;
 	int	i;
-	
+
 	ret = 0;
 	if (!args[1])
 		return (print_envs(env, fd));
