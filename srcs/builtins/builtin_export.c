@@ -37,8 +37,8 @@ t_list	*sort_t_list(t_list *lst)
 	t_list	*first;
 	char	*tmp;
 
-	if (!lst || !lst->next)
-		return (lst);
+	if (!lst)
+		return (NULL);
 	ret = ft_lstdup(lst);
 	first = ret;
 	while (ret && ret->next)
@@ -61,7 +61,7 @@ int	print_envs(t_list *env, int fd)
 {
 	t_list	*tmp;
 	char	*key;
-	char 	*value;
+	char	*value;
 
 	tmp = sort_t_list(env);
 	while (tmp)
@@ -74,9 +74,8 @@ int	print_envs(t_list *env, int fd)
 		if (ft_strlen(tmp->content) > ft_strlen(key))
 		{
 			ft_putstr_fd("=\"", fd);
-			// ft_putstr_fd(&tmp->content[ft_strlen(key) + 1], fd);	// used to be value
 			value = tmp->content;
-			ft_putstr_fd(&value[ft_strlen(key) + 1], fd);	// used to be value
+			ft_putstr_fd(&value[ft_strlen(key) + 1], fd);
 			ft_putstr_fd("\"", fd);
 		}
 		ft_putstr_fd("\n", fd);
