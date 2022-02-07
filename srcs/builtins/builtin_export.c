@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 21:19:56 by me                #+#    #+#             */
-/*   Updated: 2022/02/07 04:29:56 by me               ###   ########.fr       */
+/*   Updated: 2022/02/07 19:22:44 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int	print_envs(t_list *env, int fd)
 {
 	t_list	*tmp;
 	char	*key;
+	char 	*value;
 
 	tmp = sort_t_list(env);
 	while (tmp)
@@ -73,7 +74,9 @@ int	print_envs(t_list *env, int fd)
 		if (ft_strlen(tmp->content) > ft_strlen(key))
 		{
 			ft_putstr_fd("=\"", fd);
-			ft_putstr_fd(&tmp->content[ft_strlen(key) + 1], fd);	// used to be value
+			// ft_putstr_fd(&tmp->content[ft_strlen(key) + 1], fd);	// used to be value
+			value = tmp->content;
+			ft_putstr_fd(&value[ft_strlen(key) + 1], fd);	// used to be value
 			ft_putstr_fd("\"", fd);
 		}
 		ft_putstr_fd("\n", fd);
