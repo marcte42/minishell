@@ -88,6 +88,16 @@ int	main(int ac, char **av, char *env[])
 	t_sys	mini;
 	(void)	av;
 
+	// for a tester
+	// ahhh no, we should prolly implement this anyway... it's the thing that lets us run in non interactive mode...
+/*
+	if (ac >= 3 && !ft_strncmp(av[1], "-c", 3))
+  	{
+		int exit_status = ft_launch_minishell(av[2]);
+		exit(exit_status);
+ 	}
+*/
+
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, SIG_IGN);
 	if (!init_sys(&mini, env))

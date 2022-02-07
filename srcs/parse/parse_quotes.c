@@ -69,7 +69,7 @@ int	control_quotes(char *str)
 
 void	trim_quote(char *str, int *i)
 {
-	ft_memmove(&str[*i], &str[*i + 1], strlen(&str[*i]));
+	ft_memmove(&str[*i], &str[*i + 1], ft_strlen(&str[*i]));
 	(*i)--;
 }
 
