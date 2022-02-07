@@ -113,7 +113,7 @@ int		replace_env(t_list *env, char *args);
 int		add_env_elem(char *arg, t_list *env);
 int		ft_export(char	**args, t_list *env, int fd);
 
-int		ft_unset(char **args, t_list *env);
+int		ft_unset(char **args, t_list **env);
 int		ft_exit(char **args, t_sys *mini);
 
 void	free_sys(t_sys *mini);

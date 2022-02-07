@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 21:19:11 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/06 23:30:57 by me               ###   ########.fr       */
+/*   Updated: 2022/02/07 03:11:07 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,36 +48,31 @@ char	*get_value_of_key(t_list *env, char *key)
 
 int	replace_env(t_list *env, char *args)
 {
-	char	*var;
+	char	*key;
 	char	*env_name;
 	char	*tmp;
 
 	if (!env || !args)
 		return (ERROR);
-	var = get_key(args);
-	while (env && var)
+	key = get_key(args);
+	while (env && key)
 	{	
 		env_name = get_key(env->content);
-		if (env_name && ft_strcmp(var, env_name) == 0)
+		if (env_name && ft_strcmp(key, env_name) == 0)
 		{
+			free(env_name);
+			free(key);
 			tmp = ft_strdup(args);
 			if (!tmp)
-			{
-				free(env->content);
-				free(env_name);
-				free(var);
 				return (0);
-			}
 			free(env->content);
-			free(env_name);
-			free(var);
 			env->content = tmp;
 			return (1);
 		}
 		env = env->next;
 		ft_scott_free(&env_name, 1);
 	}
-	return (ft_scott_free(&var, 0));
+	return (ft_scott_free(&key, 0));
 }
 
 int	ft_env(t_sys *mini, int fd)

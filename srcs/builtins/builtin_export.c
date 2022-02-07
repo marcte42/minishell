@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 21:19:56 by me                #+#    #+#             */
-/*   Updated: 2022/02/06 23:32:18 by me               ###   ########.fr       */
+/*   Updated: 2022/02/07 04:25:52 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,41 +33,26 @@ int	add_env_elem(char *arg, t_list *env)
 t_list	*sort_t_list(t_list *lst)
 {
 	t_list	*ret;
-	t_list	*prev;
 	t_list	*next;
 	t_list	*first;
+	char	*tmp;
 
 	if (!lst || !lst->next)
 		return (lst);
-//		return (NULL);	// but in this case the list is sorted...	return lst?
-
 	ret = ft_lstdup(lst);
-//	if (!ret)
-//		return (NULL);	// not necessary, will just return first which is null
 	first = ret;
-	prev = ret;
 	while (ret && ret->next)
 	{
 		next = ret->next;
 		if (ft_strcmp(ret->content, next->content) > 0)
 		{
-			ret->next = next->next;
-			next->next = ret;
-			if (ret == first)
-			{
-				first = next;
-				prev = first;
-			}
-			else
-				prev->next = next;
+			tmp = ret->content;
+			ret->content = next->content;
+			next->content = tmp;
 			ret = first;
 		}
 		else
-		{
-			prev = ret;
 			ret = ret->next;
-			next = ret->next;
-		}
 	}
 	return (first);
 }
@@ -78,11 +63,9 @@ int	print_envs(t_list *env, int fd)
 	char	*key;
 	char	*value;
 
-	if (!env)
-		return (0);
+	if (!env)		// Unecessary
+		return (0);	// unless we want to return 1? no cuz you can have no env vars and that's fine right?
 	tmp = sort_t_list(env);
-//	if (!tmp)
-//		tmp = env;	// is that what we want?	No, we already send the og list if it's already sorted
 	value = NULL;
 	while (tmp)
 	{
@@ -108,9 +91,6 @@ int	print_envs(t_list *env, int fd)
 	ft_lstclear(&tmp, free);	// works even if tmp = NULL
 	return (0);
 }
-
-// do i want to check if the Env Var already exists?
-// Are the returns correct
 
 int	ft_export(char	**args, t_list *env, int fd)
 {

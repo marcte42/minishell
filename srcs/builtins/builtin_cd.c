@@ -6,7 +6,7 @@
 /*   By: me <erlazo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 00:30:06 by me                #+#    #+#             */
-/*   Updated: 2022/02/06 23:19:36 by me               ###   ########.fr       */
+/*   Updated: 2022/02/07 03:36:46 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ int	update_pwds(t_list *env, char *new_pwd_path)
 	return (0);
 }
 
-// Technically i think this handles too many options, but i don't see any reason to remove the features so...
 int	ft_cd(t_sys *mini, char **args)
 {
 	if (!args[1])
