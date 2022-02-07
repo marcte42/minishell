@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/01 20:47:04 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/06 19:33:08 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/07 17:10:16 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,14 @@ int	control_quotes(char *str)
 	return (!open);
 }
 
-void	trim_quote(char *str, int *i)
+void	trim_quote(char *str, int *i, int *is_open)
 {
-	ft_memmove(&str[*i], &str[*i + 1], ft_strlen(&str[*i]));
+	memmove(&str[*i], &str[*i + 1], strlen(&str[*i]));
 	(*i)--;
+	if (*is_open != 0)
+		*is_open = 0;
+	else
+		*is_open = 1;
 }
 
 void	trim_quotes(char *str)
@@ -86,13 +90,9 @@ void	trim_quotes(char *str)
 	i = -1;
 	while (str[++i])
 	{
-		if (str[i] == '\'' && !d_quote && ++s_quote)
-			trim_quote(str, &i);
-		else if (str[i] == '\"' && !s_quote && ++d_quote)
-			trim_quote(str, &i);
-		else if (str[i] == '\'' && !d_quote && s_quote--)
-			trim_quote(str, &i);
-		else if (str[i] == '\"' && !s_quote && d_quote--)
-			trim_quote(str, &i);
+		if (str[i] == '\'' && !d_quote)
+			trim_quote(str, &i, &s_quote);
+		else if (str[i] == '\"' && !s_quote)
+			trim_quote(str, &i, &d_quote);
 	}
 }

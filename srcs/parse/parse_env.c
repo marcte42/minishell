@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:28:11 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/06 21:02:43 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/07 17:36:59 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,8 @@ char	*parse_env(t_sys *mini, char *line, t_list *env)
 	i = -1;
 	while (line[++i])
 	{
-		if (line[i] == '$' && line[i + 1] && !ft_isspace(line[i + 1])
-			&& is_inquotes(line, &line[i]) != 1)
+		if (line[i] == '$' && line[i + 1] && is_inquotes(line, &line[i]) != 1 
+			&& (ft_isalnum(line[i + 1]) || line[i + 1] == '?'))
 		{
 			key = get_key(&line[i + 1]);
 			if (!key)
