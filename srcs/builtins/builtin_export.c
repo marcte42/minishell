@@ -100,7 +100,9 @@ int	ft_export(char **args, t_list *env, int fd)
 			if (!check_valid_env(args[i]))
 			{
 				ret = 1;
-				ft_putstr_fd("Error: Export not a valid identifier\n", 2);
+				ft_putstr_fd("Error: Export \'", 2);
+				ft_putstr_fd(args[i], 2);
+				ft_putstr_fd("\' not a valid identifier\n", 2);
 				continue ;
 			}
 			if (!replace_env(env, args[i]) && !add_env_elem(args[i], env))

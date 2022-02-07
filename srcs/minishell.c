@@ -106,8 +106,8 @@ int	main(int ac, char **av, char *env[])
 		return (0);
 	while (1)
 	{
-		signal(SIGINT, signal_handler);
-		signal(SIGQUIT, SIG_IGN);
+//		signal(SIGINT, signal_handler);
+//		signal(SIGQUIT, SIG_IGN);
 		mini.line = readline("$> ");
 		if (!mini.line)
 		{
