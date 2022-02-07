@@ -39,7 +39,7 @@ int	ft_echo(char **args, int fd)
 		while (args[i])
 		{
 			ft_putstr_fd(args[i], fd);
-			if (args[i + 1] && args[i][0] != '\0')
+			if (args[i + 1])
 				ft_putchar_fd(' ', fd);
 			i++;
 		}
