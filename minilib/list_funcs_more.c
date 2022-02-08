@@ -6,7 +6,7 @@
 /*   By: me <erlazo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 20:41:51 by me                #+#    #+#             */
-/*   Updated: 2022/01/19 05:47:13 by me               ###   ########.fr       */
+/*   Updated: 2022/02/08 23:54:41 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,27 @@ void	ft_lstdel_str_elem(void *data)
 {
 	if (!data)
 		return ;
-	free((char*)data);
+	free((char *)data);
 }
 
 t_list	*ft_lstdup(t_list *lst)
 {
-	t_list *nlist;
+	t_list	*nlist;
 	t_list	*new;
+	char	*str;
 
 	nlist = NULL;
+	str = NULL;
 	while (lst)
 	{
+/*		str = ft_strdup(lst->content);
+		if (!str)
+		{
+			ft_lstclear(&nlist, free);
+			return (NULL);
+		}
+*/
+//		new = ft_lstnew(str);
 		new = ft_lstnew(lst->content);
 		if (!new)
 		{
@@ -55,6 +65,21 @@ t_list	*ft_lstdup(t_list *lst)
 		lst = lst->next;
 	}
 	return (nlist);
+}
+
+void	*ft_lstdel_elems(t_list **lst)
+{
+	t_list *tmp;
+
+	if (!lst || !*lst)
+		return (NULL);
+	while (*lst)
+	{
+		tmp = (*lst)->next;
+		free(*lst);
+		*lst = tmp;
+	}
+	return (NULL);
 }
 
 t_list	*generate_list(char *str)

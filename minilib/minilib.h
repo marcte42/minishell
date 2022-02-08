@@ -6,7 +6,7 @@
 /*   By: ericlazo <erlazo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/10 19:33:21 by ericlazo          #+#    #+#             */
-/*   Updated: 2022/01/29 14:07:36 by me               ###   ########.fr       */
+/*   Updated: 2022/02/08 23:53:49 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <stdlib.h>
 # include <string.h>
 
-//# include "minishell.h"
 # include "libft.h"
 
 typedef struct s_nlist
@@ -57,6 +56,8 @@ void		ft_lstdel_str_elem(void *data);
 t_list		*ft_lstdup(t_list *lst);
 t_list		*generate_list(char *str);
 
+void		*ft_lstdel_elems(t_list **lst);
+
 /*
 **		nList Funcs
 */
@@ -74,7 +75,6 @@ t_ilist		*ft_ilstnew(int num);
 int			ft_ilstadd_back(t_ilist **lst, t_ilist *new);
 int			ft_ilstadd_front(t_ilist **lst, t_ilist *new);
 int			ft_ilstdel_all(t_ilist **lst);
-
 
 /*
 **		Stand Alone nList Funcs
@@ -96,8 +96,6 @@ char		*ft_mstrjoin(char *s1, char *s2);
 long		ft_error_msg(char *str, int ret);
 long		ft_error_msg_fd(char *str, int fd, int ret);
 long		ft_scott_free(char **str, int ret);
-
-// This does not belong here but here it is
 void		ft_putnbrnl_fd(int nbr, int fd);
 
 /*

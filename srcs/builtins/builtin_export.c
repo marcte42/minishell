@@ -60,15 +60,21 @@ t_list	*sort_t_list(t_list *lst)
 int	print_envs(t_list *env, int fd)
 {
 	t_list	*tmp;
+	t_list	*first;
 	char	*key;
 	char	*value;
 
 	tmp = sort_t_list(env);
+	first = tmp;
 	while (tmp)
 	{
 		key = get_key(tmp->content);
 		if (!key)
+		{
+			ft_lstdel_elems(&first);
+		//	ft_lstclear(&first, free);
 			return (1);
+		}
 		ft_putstr_fd("declare -x ", fd);
 		ft_putstr_fd(key, fd);
 		if (ft_strlen(tmp->content) > ft_strlen(key))
@@ -82,7 +88,8 @@ int	print_envs(t_list *env, int fd)
 		free(key);
 		tmp = tmp->next;
 	}
-	ft_lstclear(&tmp, free);
+	ft_lstdel_elems(&first);
+//	ft_lstclear(&first, free);
 	return (0);
 }
 

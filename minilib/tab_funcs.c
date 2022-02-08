@@ -6,7 +6,7 @@
 /*   By: ericlazo <erlazo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/10 19:59:16 by ericlazo          #+#    #+#             */
-/*   Updated: 2022/01/24 18:42:28 by erlazo           ###   ########.fr       */
+/*   Updated: 2022/02/08 23:52:42 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	strtab_len(char **tab)
 	int	i;
 
 	if (!tab)
-		return (-1);	// or shoult it be 0?
+		return (-1);
 	i = 0;
 	while (tab[i])
 		++i;

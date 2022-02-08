@@ -33,28 +33,6 @@ void	signal_handler_2(int sig)
 	}
 }
 
-void	signal_handler_heredoc(int sig)
-{
-	if (sig == SIGINT)
-	{
-		ft_putstr_fd("\n", 2);
-	//	free_from_signal(NULL);
-	//	exit(130);				// not sure this method is gonna work for us...
-	}
-	else if (sig == SIGQUIT)
-	{
-	//	printf("\r");
-		ft_putstr_fd("\r", 2);
-		rl_on_new_line();
-		rl_redisplay();
-		ft_putstr_fd("  \r", 2);
-	//	printf("  ");
-	//	printf("\r");
-		rl_on_new_line();
-		rl_redisplay();
-	}
-}
-
 int	main(int ac, char **av, char *env[])
 {
 	t_sys	mini;
@@ -82,6 +60,7 @@ int	main(int ac, char **av, char *env[])
 			continue ;
 		}
 		add_history(mini.line);
+//		run_minishell(&mini);
 		if (!parse(&mini))
 		{
 			mini.retval = 2;
@@ -93,12 +72,12 @@ int	main(int ac, char **av, char *env[])
 		{
 			ft_lstclear(&mini.env, free);
 			free_sys(&mini);
-		//	rl_clear_history();
+			rl_clear_history();
 			return (mini.retval);
 		}
 		free_sys(&mini);
 	}
 	ft_lstclear(&mini.env, free);
-//	rl_clear_history();
+	rl_clear_history();
 	return (0);
 }
