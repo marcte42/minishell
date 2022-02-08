@@ -6,7 +6,7 @@
 /*   By: me <erlazo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 00:30:06 by me                #+#    #+#             */
-/*   Updated: 2022/02/07 03:36:46 by me               ###   ########.fr       */
+/*   Updated: 2022/02/07 22:49:41 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,13 @@ int	go_to_path(t_list *env, char *path)
 
 	ret = chdir(path);
 	if (ret == -1)
-		return (1);	// some error message?
+	{
+		ft_putstr_fd("cd: ", 2);
+		ft_putstr_fd(path, 2);
+		return (ft_error_msg_fd(": No such file or directory\n", 2, 1));
+	}
 	if (getcwd(you_are_here, PATH_MAX) == NULL)
-		return (1);	// another error message?
+		return (1);
 	update_pwds(env, you_are_here);
 	return (0);
 }
