@@ -66,6 +66,8 @@ int	handle_heredoc(t_rdr *rdr, char **argv, int id)
 	fd = open(heredoc_name, O_WRONLY | O_CREAT | O_TRUNC, 0600);
 	if (!fd)
 		return (ERROR);
+//	signal(SIGINT, signal_handler_heredoc);
+//	signal(SIGQUIT, signal_handler_heredoc);
 	while (1)
 	{
 		buffer = readline("> ");
@@ -75,6 +77,8 @@ int	handle_heredoc(t_rdr *rdr, char **argv, int id)
 		write(fd, "\n", 1);
 		free(buffer);
 	}
+//	signal(SIGINT, signal_handler);
+//	signal(SIGQUIT, SIG_IGN);
 	free(*argv);
 	*argv = heredoc_name;
 	rdr->file = heredoc_name;
