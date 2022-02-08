@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 11:55:02 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/07 22:31:47 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/08 22:30:03 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int	main(int ac, char **av, char *env[])
 		}
 		if (!*(mini.line))
 		{
+			rl_redisplay();
 			free_sys(&mini);
 			continue ;
 		}
@@ -92,10 +93,12 @@ int	main(int ac, char **av, char *env[])
 		{
 			ft_lstclear(&mini.env, free);
 			free_sys(&mini);
+		//	rl_clear_history();
 			return (mini.retval);
 		}
 		free_sys(&mini);
 	}
 	ft_lstclear(&mini.env, free);
+//	rl_clear_history();
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:36:37 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/07 22:23:27 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/08 23:38:23 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	exec_path(t_sys *mini, char **clean)
 		execve(clean[0], clean, env_to_tab(mini->env));
 	env = ft_getenv(mini, "PATH", mini->env);
 	paths = ft_split(env, ':');
-	free(env);
+	ft_scott_free(&env, 0);
 	if (!paths)
 		return ;
 	i = -1;
@@ -65,14 +65,12 @@ void	exec_path(t_sys *mini, char **clean)
 	{
 		tmp = ft_strjoin(paths[i], "/");
 		path_to_bin = ft_strjoin(tmp, clean[0]);
-		free(tmp);
+		ft_scott_free(&tmp, 0);
 		if (is_binary(path_to_bin))
 			execve(path_to_bin, clean, env_to_tab(mini->env));
-		free(path_to_bin);
+		ft_scott_free(&path_to_bin, 0);
 	}
-	i = -1;
-	while (paths[++i])
-		free(paths[i]);
+	ft_free_strtab(paths);
 	free(paths);
 }
 

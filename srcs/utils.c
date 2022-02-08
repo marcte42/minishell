@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:33:50 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/01 21:38:53 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/08 23:39:57 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	print_cmds(t_list *cmds)
 	t_cmd	*cmd;
 	char	**tab;
 	int		i;
-	
+
 	while (cmds)
 	{
 		cmd = cmds->content;
@@ -42,7 +42,3 @@ void	print_cmds(t_list *cmds)
 		cmds = cmds->next;
 	}
 }
-
-
-
-
