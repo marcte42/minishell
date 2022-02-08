@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: me <erlazo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 22:37:23 by me                #+#    #+#             */
-/*   Updated: 2022/02/06 22:38:01 by me               ###   ########.fr       */
+/*   Updated: 2022/02/07 22:30:57 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_echo(char **args, int fd)
 		while (args[i])
 		{
 			ft_putstr_fd(args[i], fd);
-			if (args[i + 1] && args[i][0] != '\0')
+			if (args[i + 1])
 				ft_putchar_fd(' ', fd);
 			i++;
 		}

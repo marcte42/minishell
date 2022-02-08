@@ -6,11 +6,24 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/01 20:47:04 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/07 17:10:16 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/08 21:04:09 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	has_quotes(char *s)
+{
+	int i;
+
+	if (!s)
+		return (0);
+	i = -1;
+	while (s[++i])
+		if (s[i] == '\'' || s[i] == '\"')
+			return (1);
+	return (0);
+}
 
 int	is_inquotes(char *s, char *c)
 {

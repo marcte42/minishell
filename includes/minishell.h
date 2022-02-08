@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 12:27:18 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/06 21:03:42 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/08 21:04:37 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,13 @@ t_list	*init_env(char **env);
 int		init_sys(t_sys *mini, char **env);
 int		parse(t_sys *mini);
 char	*parse_env(t_sys *mini, char *line, t_list *env);
+char	*parse_env_heredoc(t_sys *mini, char *line, t_list *env);
 char	*ft_getenv(t_sys *mini, char *key, t_list *env);
 char	*get_key(char *s);
 char	**env_to_tab(t_list *env);
 int		control_quotes(char *str);
 int		is_inquotes(char *s, char *c);
+int		has_quotes(char *s);
 void    trim_quotes(char *str);
 char	*add_space(char *str);
 void	print_list(t_list *cmds);

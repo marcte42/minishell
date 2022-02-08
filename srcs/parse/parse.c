@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/06 21:53:00 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/08 21:22:15 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,14 @@ t_list	*parse_pipes(char *line)
 	return (lst);
 }
 
-int	handle_heredoc(t_rdr *rdr, char **argv, int id)
+int	handle_heredoc(t_sys *mini, t_rdr *rdr, char **argv, int id)
 {
 	int		fd;
 	char	*buffer;
 	char	*heredoc_name;
 	char	*name;
 	char	*index;
+	int		quote;
 
 	index = ft_itoa(id);
 	name = ft_strjoin(*argv, index);
@@ -63,12 +64,16 @@ int	handle_heredoc(t_rdr *rdr, char **argv, int id)
 	free(name);
 	if (!heredoc_name)
 		return (ERROR);
+	quote = has_quotes(*argv);
+	trim_quotes(*argv);
 	fd = open(heredoc_name, O_WRONLY | O_CREAT | O_TRUNC, 0600);
 	if (!fd)
 		return (ERROR);
 	while (1)
 	{
 		buffer = readline("> ");
+		if (buffer && !quote)
+			buffer = parse_env_heredoc(mini, buffer, mini->env);
 		if (!buffer || !ft_strcmp(buffer, *argv))
 			break ;
 		write(fd, buffer, ft_strlen(buffer));
@@ -79,14 +84,14 @@ int	handle_heredoc(t_rdr *rdr, char **argv, int id)
 	*argv = heredoc_name;
 	rdr->file = heredoc_name;
 	if (!buffer)
-		write(1, "warning: here-document delimited by end-of-file\n", 48);
+		ft_putstr_fd("warning: here-document delimited by end-of-file\n", 2);
 	else
 		free(buffer);
 	close (fd);
 	return (SUCCESS);
 }
 
-int	add_r_in(t_cmd *cmd, char **argv, int type)
+int	add_r_in(t_sys *mini, t_cmd *cmd, char **argv, int type)
 {
 	t_rdr	*rdr;
 	t_list	*node;
@@ -98,7 +103,7 @@ int	add_r_in(t_cmd *cmd, char **argv, int type)
 	rdr->file = *argv;
 	if (type == 2)
 	{
-		if (!handle_heredoc(rdr, argv, cmd->id))
+		if (!handle_heredoc(mini, rdr, argv, cmd->id))
 		{
 			free (rdr);
 			return (ERROR);
@@ -134,7 +139,7 @@ int	add_r_out(t_cmd *cmd, char **argv, int type)
 	return (SUCCESS);
 }
 
-int	add_redirect(t_cmd *cmd, char **argv, char *type_char)
+int	add_redirect(t_sys *mini, t_cmd *cmd, char **argv, char *type_char)
 {
 	int		type;
 
@@ -149,11 +154,11 @@ int	add_redirect(t_cmd *cmd, char **argv, char *type_char)
 	if (!ft_strcmp(type_char, "<<") || !ft_strcmp(type_char, ">>"))
 		type = 2;
 	if (!ft_strcmp(type_char, "<") || !ft_strcmp(type_char, "<<"))
-		return (add_r_in(cmd, argv, type));
+		return (add_r_in(mini, cmd, argv, type));
 	return (add_r_out(cmd, argv, type));
 }
 
-int	parse_redirects(t_cmd *cmd)
+int	parse_redirects(t_sys *mini, t_cmd *cmd)
 {
 	int		i;
 	int		j;
@@ -174,7 +179,7 @@ int	parse_redirects(t_cmd *cmd)
 			|| !ft_strcmp(cmd->argv[i], ">") || !ft_strcmp(cmd->argv[i], ">>"))
 		{
 			i++;
-			if (!add_redirect(cmd, &cmd->argv[i], cmd->argv[i - 1]))
+			if (!add_redirect(mini, cmd, &cmd->argv[i], cmd->argv[i - 1]))
 				return (ERROR);
 			continue ;
 		}
@@ -185,7 +190,7 @@ int	parse_redirects(t_cmd *cmd)
 	return (SUCCESS);
 }
 
-int	parse_args(t_list *cmds)
+int	parse_args(t_sys *mini, t_list *cmds)
 {
 	t_cmd	*cmd;
 	char	*raw_space;
@@ -201,7 +206,7 @@ int	parse_args(t_list *cmds)
 			return (ERROR);
 		cmd->argv = ft_split_constraint(raw_space, ' ', is_inquotes);
 		free(raw_space);
-		if (!parse_redirects(cmd))
+		if (!parse_redirects(mini, cmd))
 			return (ERROR);
 		cmds = cmds->next;
 	}
@@ -221,7 +226,7 @@ int	parse(t_sys *mini)
 	mini->cmds = parse_pipes(mini->line);
 	if (!mini->cmds)
 		return (ERROR);
-	if (!parse_args(mini->cmds))
+	if (!parse_args(mini, mini->cmds))
 		return (ERROR);
 	mini->cmds_count = ft_lstsize(mini->cmds);
 	return (SUCCESS);

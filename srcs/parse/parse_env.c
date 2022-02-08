@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:28:11 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/07 17:36:59 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/08 14:54:55 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,35 @@ char	*expand_env(char *line, char *start, char *key, char *value)
 	ft_strcat(tmp_line, &start[key_len + 1]);
 	free(line);
 	return (tmp_line);
+}
+
+char	*parse_env_heredoc(t_sys *mini, char *line, t_list *env)
+{
+	int		i;
+	char	*key;
+	char	*value;
+
+	i = -1;
+	while (line[++i])
+	{
+		if (line[i] == '$' && line[i + 1]
+			&& (ft_isalnum(line[i + 1]) || line[i + 1] == '?'))
+		{
+			key = get_key(&line[i + 1]);
+			if (!key)
+				return (NULL);
+			value = ft_getenv(mini, key, env);
+			if (!value)
+				return (NULL);
+			line = expand_env(line, &line[i], key, value);
+			free(key);
+			free(value);
+			if (!line)
+				return (NULL);
+			i = -1;
+		}
+	}
+	return (line);
 }
 
 char	*parse_env(t_sys *mini, char *line, t_list *env)
