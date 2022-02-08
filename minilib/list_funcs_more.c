@@ -76,33 +76,9 @@ void	*ft_lstdel_elems(t_list **lst)
 	while (*lst)
 	{
 		tmp = (*lst)->next;
+		*lst->content = NULL;
 		free(*lst);
 		*lst = tmp;
 	}
 	return (NULL);
-}
-
-t_list	*generate_list(char *str)
-{
-	t_list	*new;
-	t_list	*ret;
-	int		i;
-	char	**tab;
-
-	ret = NULL;
-	tab = ft_split(str, ' ');
-	i = 0;
-	while (tab[i])
-	{
-		new = ft_lstnew(tab[i]);
-		if (!new)
-		{
-			ft_lstclear(&ret, free);
-			return (NULL);
-		}
-		ft_lstadd_back(&ret, new);
-		++i;
-	}
-	free(tab);
-	return (ret);
 }

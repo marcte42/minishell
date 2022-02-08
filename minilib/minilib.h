@@ -54,8 +54,6 @@ void		ft_print_list_elem(t_list *elem);
 int			ft_print_full_list(t_list *lst);
 void		ft_lstdel_str_elem(void *data);
 t_list		*ft_lstdup(t_list *lst);
-t_list		*generate_list(char *str);
-
 void		*ft_lstdel_elems(t_list **lst);
 
 /*
