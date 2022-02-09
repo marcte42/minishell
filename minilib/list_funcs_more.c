@@ -67,18 +67,18 @@ t_list	*ft_lstdup(t_list *lst)
 	return (nlist);
 }
 
-void	*ft_lstdel_elems(t_list **lst)
+int	ft_lstdel_elems(t_list **lst, int ret)
 {
 	t_list *tmp;
 
 	if (!lst || !*lst)
-		return (NULL);
+		return (ret);
 	while (*lst)
 	{
 		tmp = (*lst)->next;
-		*lst->content = NULL;
+		(*lst)->content = NULL;
 		free(*lst);
 		*lst = tmp;
 	}
-	return (NULL);
+	return (ret);
 }

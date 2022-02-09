@@ -54,7 +54,7 @@ void		ft_print_list_elem(t_list *elem);
 int			ft_print_full_list(t_list *lst);
 void		ft_lstdel_str_elem(void *data);
 t_list		*ft_lstdup(t_list *lst);
-void		*ft_lstdel_elems(t_list **lst);
+int			ft_lstdel_elems(t_list **lst, int ret);
 
 /*
 **		nList Funcs

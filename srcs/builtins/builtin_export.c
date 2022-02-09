@@ -62,7 +62,7 @@ int	print_envs(t_list *env, int fd)
 	t_list	*tmp;
 	t_list	*first;
 	char	*key;
-	char	*value;
+//	char	*value;
 
 	tmp = sort_t_list(env);
 	first = tmp;
@@ -70,27 +70,22 @@ int	print_envs(t_list *env, int fd)
 	{
 		key = get_key(tmp->content);
 		if (!key)
-		{
-			ft_lstdel_elems(&first);
-		//	ft_lstclear(&first, free);
-			return (1);
-		}
+			return (ft_lstdel_elems(&first, 1));
 		ft_putstr_fd("declare -x ", fd);
 		ft_putstr_fd(key, fd);
 		if (ft_strlen(tmp->content) > ft_strlen(key))
 		{
 			ft_putstr_fd("=\"", fd);
-			value = tmp->content;
-			ft_putstr_fd(&value[ft_strlen(key) + 1], fd);
+			ft_putstr_fd(&((char *)tmp->content)[ft_strlen(key) + 1], fd);
+			//value = tmp->content;
+		//	ft_putstr_fd(&value[ft_strlen(key) + 1], fd);
 			ft_putstr_fd("\"", fd);
 		}
 		ft_putstr_fd("\n", fd);
 		free(key);
 		tmp = tmp->next;
 	}
-	ft_lstdel_elems(&first);
-//	ft_lstclear(&first, free);
-	return (0);
+	return (ft_lstdel_elems(&first, 0));
 }
 
 int	ft_export(char **args, t_list *env, int fd)
