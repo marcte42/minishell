@@ -18,7 +18,7 @@ void	signal_handler(int sig)
 	{
 		ft_putchar_fd('\n', 2);
 		rl_on_new_line();
-		rl_replace_line("", 0);	// doesn't exit in mac -lreadline library...
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }
@@ -33,11 +33,38 @@ void	signal_handler_2(int sig)
 	}
 }
 
+int	more_main(t_sys *mini)
+{
+	if (!*(mini->line))
+	{
+		rl_redisplay();
+		free_sys(mini);
+		return (1);
+	}
+	add_history(mini->line);
+	if (!parse(mini))
+	{
+		mini->retval = 2;
+		free_sys(mini);
+		return (1);
+	}
+	mini->retval = exec(mini);
+	if (mini->exit)
+	{
+		ft_lstclear(&mini->env, free);
+		free_sys(mini);
+		rl_clear_history();
+		return (0);
+	}
+	free_sys(mini);
+	return (1);
+}
+
 int	main(int ac, char **av, char *env[])
 {
 	t_sys	mini;
-	(void)	av;
 
+	(void)av;
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, SIG_IGN);
 	if (!init_sys(&mini, env))
@@ -53,29 +80,8 @@ int	main(int ac, char **av, char *env[])
 			free_sys(&mini);
 			break ;
 		}
-		if (!*(mini.line))
-		{
-			rl_redisplay();
-			free_sys(&mini);
-			continue ;
-		}
-		add_history(mini.line);
-//		run_minishell(&mini);
-		if (!parse(&mini))
-		{
-			mini.retval = 2;
-			free_sys(&mini);
-			continue ;
-		}
-		mini.retval = exec(&mini);
-		if (mini.exit)
-		{
-			ft_lstclear(&mini.env, free);
-			free_sys(&mini);
-			rl_clear_history();
+		if (!more_main(&mini))
 			return (mini.retval);
-		}
-		free_sys(&mini);
 	}
 	ft_lstclear(&mini.env, free);
 	rl_clear_history();

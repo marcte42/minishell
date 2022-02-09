@@ -62,7 +62,6 @@ int	print_envs(t_list *env, int fd)
 	t_list	*tmp;
 	t_list	*first;
 	char	*key;
-//	char	*value;
 
 	tmp = sort_t_list(env);
 	first = tmp;
@@ -77,8 +76,6 @@ int	print_envs(t_list *env, int fd)
 		{
 			ft_putstr_fd("=\"", fd);
 			ft_putstr_fd(&((char *)tmp->content)[ft_strlen(key) + 1], fd);
-			//value = tmp->content;
-		//	ft_putstr_fd(&value[ft_strlen(key) + 1], fd);
 			ft_putstr_fd("\"", fd);
 		}
 		ft_putstr_fd("\n", fd);
