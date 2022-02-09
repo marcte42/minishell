@@ -6,7 +6,7 @@
 /*   By: me <erlazo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 20:41:51 by me                #+#    #+#             */
-/*   Updated: 2022/01/19 05:47:13 by me               ###   ########.fr       */
+/*   Updated: 2022/02/08 23:54:41 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ void	ft_lstdel_str_elem(void *data)
 {
 	if (!data)
 		return ;
-	free((char*)data);
+	free((char *)data);
 }
 
 t_list	*ft_lstdup(t_list *lst)
 {
-	t_list *nlist;
+	t_list	*nlist;
 	t_list	*new;
 
 	nlist = NULL;
@@ -57,27 +57,18 @@ t_list	*ft_lstdup(t_list *lst)
 	return (nlist);
 }
 
-t_list	*generate_list(char *str)
+int	ft_lstdel_elems(t_list **lst, int ret)
 {
-	t_list	*new;
-	t_list	*ret;
-	int		i;
-	char	**tab;
+	t_list	*tmp;
 
-	ret = NULL;
-	tab = ft_split(str, ' ');
-	i = 0;
-	while (tab[i])
+	if (!lst || !*lst)
+		return (ret);
+	while (*lst)
 	{
-		new = ft_lstnew(tab[i]);
-		if (!new)
-		{
-			ft_lstclear(&ret, free);
-			return (NULL);
-		}
-		ft_lstadd_back(&ret, new);
-		++i;
+		tmp = (*lst)->next;
+		(*lst)->content = NULL;
+		free(*lst);
+		*lst = tmp;
 	}
-	free(tab);
 	return (ret);
 }

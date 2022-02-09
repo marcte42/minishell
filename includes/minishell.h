@@ -13,9 +13,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-//# include "../libft/libft.h"
 # include "libft.h"
-
 # include "minilib.h"
 
 # include <unistd.h>
@@ -127,7 +125,6 @@ void	print_cmds(t_list *cmds);
 
 void	signal_handler(int sig);
 void	signal_handler_2(int sig);
-void	signal_handler_heredoc(int sig);
 
 int		is_dir(char *path);
 int		is_binary(char *file);
