@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/09 13:24:15 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/09 20:45:04 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	tab_to_cmd_list(t_list **lst, char **tokens)
 		}
 		ft_lstadd_back(lst, node);
 	}
+	return (SUCCESS);
 }
 
 t_list	*parse_pipes(char *line)
@@ -48,8 +49,12 @@ t_list	*parse_pipes(char *line)
 	lst = NULL;
 	tokens = ft_split_constraint(line, '|', is_inquotes);
 	if (!tokens)
-		return (ERROR);
-	tab_to_cmd_list(&lst, tokens);
+		return (NULL);
+	if (!tab_to_cmd_list(&lst, tokens))
+	{
+		free(tokens);
+		return (NULL);
+	}
 	free(tokens);
 	return (lst);
 }

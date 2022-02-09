@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/09 13:45:19 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/09 20:42:49 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,11 @@ int	write_to_heredoc(t_sys *mini, int fd, char *argv, int quote)
 		if (!buffer || !ft_strcmp(buffer, argv))
 			break ;
 		if (buffer && !quote)
+		{
 			buffer = parse_env_heredoc(mini, buffer, mini->env);
+			if (!buffer)
+				return (ERROR);
+		}
 		write(fd, buffer, ft_strlen(buffer));
 		write(fd, "\n", 1);
 		free(buffer);
@@ -57,6 +61,7 @@ int	write_to_heredoc(t_sys *mini, int fd, char *argv, int quote)
 		ft_putstr_fd("warning: here-document delimited by end-of-file\n", 2);
 	else
 		free(buffer);
+	return (SUCCESS);
 }
 
 int	handle_heredoc(t_sys *mini, t_rdr *rdr, char **argv, int id)
@@ -70,7 +75,12 @@ int	handle_heredoc(t_sys *mini, t_rdr *rdr, char **argv, int id)
 		return (ERROR);
 	quote = has_quotes(*argv);
 	trim_quotes(*argv);
-	write_to_heredoc(mini, fd, *argv, quote);
+	if (!write_to_heredoc(mini, fd, *argv, quote))
+	{
+		free(*argv);
+		close (fd);
+		return (ERROR);
+	}
 	free(*argv);
 	*argv = heredoc_name;
 	rdr->file = heredoc_name;
