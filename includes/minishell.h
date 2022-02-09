@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 12:27:18 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/08 21:04:37 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/09 13:17:55 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,12 @@ typedef struct		s_var
 t_list	*init_env(char **env);
 int		init_sys(t_sys *mini, char **env);
 int		parse(t_sys *mini);
+t_list	*parse_pipes(char *line);
 char	*parse_env(t_sys *mini, char *line, t_list *env);
 char	*parse_env_heredoc(t_sys *mini, char *line, t_list *env);
 char	*ft_getenv(t_sys *mini, char *key, t_list *env);
+int		parse_redirects(t_sys *mini, t_cmd *cmd, int i, int j);
+int		handle_heredoc(t_sys *mini, t_rdr *rdr, char **argv, int id);
 char	*get_key(char *s);
 char	**env_to_tab(t_list *env);
 int		control_quotes(char *str);

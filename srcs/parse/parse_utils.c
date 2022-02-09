@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:46:21 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/01/29 17:20:51 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/08 22:50:36 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,12 @@ int	count_redirs(char *str)
 }
 
 	// double check secure frees
-char	*add_space(char *str)
+void	insert_space(char *str, char *new_str, int i, int j)
 {
-	char	*new_str;
-	int		i;
-	int		j;
-
-	new_str = malloc((strlen(str) + (count_redirs(str) * 2) + 1) * sizeof(char));
-	i = -1;
-	j = 0;
 	while (str[++i])
 	{
-		if (!is_inquotes(str, &str[i]) && (!strncmp(&str[i], "<<", 2) || !strncmp(&str[i], ">>", 2)))
+		if (!is_inquotes(str, &str[i]) && (!strncmp(&str[i], "<<", 2)
+				|| !strncmp(&str[i], ">>", 2)))
 		{
 			new_str[j] = ' ';
 			new_str[j + 1] = str[i];
@@ -81,7 +75,8 @@ char	*add_space(char *str)
 			i++;
 			j += 3;
 		}
-		else if (!is_inquotes(str, &str[i]) && (!strncmp(&str[i], "<", 1) || !strncmp(&str[i], ">", 1)))
+		else if (!is_inquotes(str, &str[i]) && (!strncmp(&str[i], "<", 1)
+				|| !strncmp(&str[i], ">", 1)))
 		{
 			new_str[j] = ' ';
 			new_str[j + 1] = str[i];
@@ -93,5 +88,16 @@ char	*add_space(char *str)
 		j++;
 	}
 	new_str[j] = 0;
+}
+
+char	*add_space(char *str)
+{
+	char	*new_str;
+
+	new_str = malloc((strlen(str) + (count_redirs(str) * 2) + 1)
+			* sizeof(char));
+	if (!new_str)
+		return (NULL);
+	insert_space(str, new_str, -1, 0);
 	return (new_str);
 }

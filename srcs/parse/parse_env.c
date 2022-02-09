@@ -6,86 +6,11 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:28:11 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/08 14:54:55 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/08 22:52:03 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	**env_to_tab(t_list *env)
-{
-	char	**tab;
-	int		i;
-
-	i = 0;
-	tab = malloc(sizeof(char *) * (ft_lstsize(env) + 1));
-	if (!tab)
-		return (NULL);
-	while (env)
-	{
-		tab[i] = ft_strdup(env->content);
-		if (!tab[i])
-		{
-			while (--i >= 0)
-				free(tab[i]);
-			free(tab);
-			return (NULL);
-		}
-		env = env->next;
-		i++;
-	}
-	tab[i] = 0;
-	return (tab);
-}
-
-char	*get_key(char *s)
-{
-	int		i;
-	int		len;
-	char	*key;
-
-	if (*s == '?')
-		return (ft_strdup("?"));
-	len = 0;
-	i = -1;
-	while (s[++i] && (ft_isalnum(s[i]) || s[i] == '_'))
-		len++;
-	key = malloc((len + 1) * sizeof(char));
-	if (!key)
-		return (NULL);
-	ft_strlcpy(key, s, len + 1);
-	return (key);
-}
-
-// ft_getenv
-// Retourne un char* avec la valeur associee a la key
-// Si la key n'a pas ete trouvee on retourne un char* vide ""
-// Si une erreur se produit on retourne un NULL
-char	*ft_getenv(t_sys *mini, char *key, t_list *env)
-{
-	char	*env_key;
-	char	*ptr;
-
-	if (ft_strcmp(key, "?") == 0)
-		return (ft_itoa(mini->retval));
-	while (env)
-	{
-		env_key = get_key(env->content);
-		if (!env_key)
-			return (NULL);
-		if (ft_strcmp(key, env_key) == 0)
-		{
-			free(env_key);
-			ptr = ft_strchr(env->content, '=');
-			if (!ptr)
-				return (ft_strdup(""));
-			return (ft_strdup(ptr + 1));
-		}
-		free(env_key);
-		env = env->next;
-	}
-	return (ft_strdup(""));
-}
 
 char	*expand_env(char *line, char *start, char *key, char *value)
 {
@@ -149,7 +74,7 @@ char	*parse_env(t_sys *mini, char *line, t_list *env)
 	i = -1;
 	while (line[++i])
 	{
-		if (line[i] == '$' && line[i + 1] && is_inquotes(line, &line[i]) != 1 
+		if (line[i] == '$' && line[i + 1] && is_inquotes(line, &line[i]) != 1
 			&& (ft_isalnum(line[i + 1]) || line[i + 1] == '?'))
 		{
 			key = get_key(&line[i + 1]);
