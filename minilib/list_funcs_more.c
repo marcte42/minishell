@@ -41,20 +41,10 @@ t_list	*ft_lstdup(t_list *lst)
 {
 	t_list	*nlist;
 	t_list	*new;
-	char	*str;
 
 	nlist = NULL;
-	str = NULL;
 	while (lst)
 	{
-/*		str = ft_strdup(lst->content);
-		if (!str)
-		{
-			ft_lstclear(&nlist, free);
-			return (NULL);
-		}
-*/
-//		new = ft_lstnew(str);
 		new = ft_lstnew(lst->content);
 		if (!new)
 		{
@@ -69,7 +59,7 @@ t_list	*ft_lstdup(t_list *lst)
 
 int	ft_lstdel_elems(t_list **lst, int ret)
 {
-	t_list *tmp;
+	t_list	*tmp;
 
 	if (!lst || !*lst)
 		return (ret);
