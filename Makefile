@@ -33,7 +33,6 @@ SRCS_PARSE	=	parse.c \
 				parse_quotes.c \
 				parse_utils.c \
 
-# may move these to be in the SRCS folder, if the cors are gonna get all annoying about it...
 DIR_MINILIB	=	./minilib/
 SRCS_MINILIB	=	error_funcs.c \
 					list_funcs_more.c \
@@ -42,25 +41,6 @@ SRCS_MINILIB	=	error_funcs.c \
 					ilist_funcs.c \
 					str_funcs.c \
 					tab_funcs.c \
-
-#SRCS_MINILIB	=	atoi_funcs.c \
-					big_str_funcs.c \
-					error_funcs.c \
-					ft_split.c \
-					ft_strjoin.c \
-					is_funcs.c \
-					list_funcs.c \
-					list_funcs_more.c \
-					nlist_funcs.c \
-					nlstdel_n_one.c \
-					ilist_funcs.c \
-					put_funcs.c \
-					str_funcs.c \
-					tab_funcs.c \
-					gnl.c \
-					gnl_utils.c \
-
-
 
 DIR_INC		=	./includes/
 INCS		=	-I$(DIR_INC)
@@ -86,17 +66,13 @@ ALL_LIBS	=	-lreadline -L$(shell brew --prefix readline)/lib -L$(DIR_LIBFT) -lft
 DIR_OBJ		=	./objs/
 
 OBJ_MINILIB	=	$(SRCS_MINILIB:.c=.o)
-#OBJ_SHELL	=	$(SRCS_SHELL:.c=.o) $(OBJ_MINILIB)
 
 OBJ_MAIN	=	$(SRCS_MAIN:.c=.o)
 OBJ_BUILT	=	$(SRCS_BUILT:.c=.o)
 OBJ_EXEC	=	$(SRCS_EXEC:.c=.o)
 OBJ_PARSE	=	$(SRCS_PARSE:.c=.o)
 
-#OBJ_ALL		=	$(OBJ_MAIN)  $(OBJ_EXEC) $(OBJ_PARSE) 
 OBJ_ALL		=	$(OBJ_MAIN) $(OBJ_BUILT) $(OBJ_EXEC) $(OBJ_PARSE) $(OBJ_MINILIB)
-#OBJ_ALL		=	$(OBJ_MAIN) $(OBJ_EXEC) $(OBJ_PARSE)
-#OBJ_ALL		=	$(OBJ_MAIN) $(OBJ_EXEC) $(OBJ_PARSE)
 OBJS_ALL	=	$(addprefix $(DIR_OBJ),$(OBJ_ALL))
 
 
