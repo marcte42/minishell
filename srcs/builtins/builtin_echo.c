@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 22:37:23 by me                #+#    #+#             */
-/*   Updated: 2022/02/07 22:30:57 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/09 23:56:20 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,27 @@ int	size_arg(char **args)
 	while (args[size])
 		size++;
 	return (size);
+}
+
+int	print_arg(char *arg, int fd)
+{
+	int		i;
+	char	**line;
+
+	line = ft_split(arg, ' ');
+	if (!line)
+		return (0);
+	i = 0;
+	while (line[i])
+	{
+		ft_putstr_fd(line[i], fd);
+		if (line[i + 1])
+			ft_putchar_fd(' ', fd);
+		++i;
+	}
+	ft_free_strtab(line);
+	free(line);
+	return (1);
 }
 
 int	ft_echo(char **args, int fd)
@@ -38,7 +59,7 @@ int	ft_echo(char **args, int fd)
 		}
 		while (args[i])
 		{
-			ft_putstr_fd(args[i], fd);
+			print_arg(args[i], fd);
 			if (args[i + 1])
 				ft_putchar_fd(' ', fd);
 			i++;
