@@ -60,13 +60,12 @@ int	count_redirs(char *str)
 	return (count);
 }
 
-	// double check secure frees
 void	insert_space(char *str, char *new_str, int i, int j)
-{
+{// double check secure frees
 	while (str[++i])
 	{
-		if (!is_inquotes(str, &str[i]) && (!strncmp(&str[i], "<<", 2)
-				|| !strncmp(&str[i], ">>", 2)))
+		if (!is_inquotes(str, &str[i]) && (!ft_strncmp(&str[i], "<<", 2)
+				|| !ft_strncmp(&str[i], ">>", 2)))
 		{
 			new_str[j] = ' ';
 			new_str[j + 1] = str[i];
@@ -75,8 +74,8 @@ void	insert_space(char *str, char *new_str, int i, int j)
 			i++;
 			j += 3;
 		}
-		else if (!is_inquotes(str, &str[i]) && (!strncmp(&str[i], "<", 1)
-				|| !strncmp(&str[i], ">", 1)))
+		else if (!is_inquotes(str, &str[i]) && (!ft_strncmp(&str[i], "<", 1)
+				|| !ft_strncmp(&str[i], ">", 1)))
 		{
 			new_str[j] = ' ';
 			new_str[j + 1] = str[i];
@@ -94,7 +93,7 @@ char	*add_space(char *str)
 {
 	char	*new_str;
 
-	new_str = malloc((strlen(str) + (count_redirs(str) * 2) + 1)
+	new_str = malloc((ft_strlen(str) + (count_redirs(str) * 2) + 1)
 			* sizeof(char));
 	if (!new_str)
 		return (NULL);

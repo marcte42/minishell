@@ -82,7 +82,7 @@ int	control_quotes(char *str)
 
 void	trim_quote(char *str, int *i, int *is_open)
 {
-	memmove(&str[*i], &str[*i + 1], strlen(&str[*i]));
+	ft_memmove(&str[*i], &str[*i + 1], ft_strlen(&str[*i]));
 	(*i)--;
 	if (*is_open != 0)
 		*is_open = 0;
