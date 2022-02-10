@@ -61,7 +61,7 @@ int	count_redirs(char *str)
 }
 
 void	insert_space(char *str, char *new_str, int i, int j)
-{// double check secure frees
+{
 	while (str[++i])
 	{
 		if (!is_inquotes(str, &str[i]) && (!ft_strncmp(&str[i], "<<", 2)

@@ -66,7 +66,6 @@ char	**ft_split_constraint(char *s, char c, int (*except)(char *s, char *c))
 	int		i;
 	int		j;
 
-	// make sure this is how calloc works
 	result = (char **)ft_calloc(sizeof(char *), \
 			(ft_size_malloc((char *)s, c, except) + 1));
 	if (!result)

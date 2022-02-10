@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 21:19:11 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/07 03:11:07 by me               ###   ########.fr       */
+/*   Updated: 2022/02/09 23:58:21 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@ int	check_valid_env(char *env)
 	int	i;
 
 	i = 0;
-	if (ft_isdigit(env[0]) == 1 || env[0] == '=')
+	if (ft_isdigit(env[0]) == 1 || env[0] == '=' || env[0] == '\0')
+	{
 		return (0);
+	}
 	while (env[i] && env[i] != '=')
 	{
-		if (ft_isalnum(env[i]) == 0)
+		if (ft_isalnum(env[i]) == 0 && env[i] != '_')
 			return (0);
 		i++;
 	}
