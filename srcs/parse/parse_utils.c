@@ -6,37 +6,11 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:46:21 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/08 22:50:36 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/10 15:46:32 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	print_list(t_list *cmds)
-{
-	t_cmd	*cmd;
-	t_rdr	*rdr;
-	int		i;
-
-	while (cmds)
-	{
-		cmd = cmds->content;
-		printf("Command :\n");
-		i = -1;
-		while (cmd->clean[++i])
-		{
-			printf("%s\n", cmd->clean[i]);
-		}
-		printf("R_IN :\n");
-		while (cmd->r_in)
-		{
-			rdr = cmd->r_in->content;
-			printf("%s %d -> \n", (char *) rdr->file, rdr->type);
-			cmd->r_in = cmd->r_in->next;
-		}
-		cmds = cmds->next;
-	}
-}
 
 int	count_redirs(char *str)
 {
