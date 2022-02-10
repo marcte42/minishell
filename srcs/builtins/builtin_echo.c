@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 22:37:23 by me                #+#    #+#             */
-/*   Updated: 2022/02/09 23:56:20 by me               ###   ########.fr       */
+/*   Updated: 2022/02/10 20:31:11 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,21 @@ int	print_arg(char *arg, int fd)
 	return (1);
 }
 
+int	is_flag(char *str)
+{
+	int	i;
+
+	if (!str)
+		return (0);
+	if (str[0] != '-')
+		return (0);
+	i = 1;
+	while (str[++i])
+		if (str[i] != 'n')
+			return (0);
+	return (1);
+}
+
 int	ft_echo(char **args, int fd)
 {
 	int	i;
@@ -52,7 +67,7 @@ int	ft_echo(char **args, int fd)
 	flag = 0;
 	if (size_arg(args) > 1)
 	{
-		while (args[i] && ft_strcmp(args[i], "-n") == 0)
+		while (args[i] && is_flag(args[i]))
 		{
 			flag = 1;
 			i++;
