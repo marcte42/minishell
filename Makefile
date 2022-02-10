@@ -1,7 +1,7 @@
 
 
 CC			=	gcc
-# CFLAGS		=	-g -Wall -Werror -Wextra
+CFLAGS		=	-g -Wall -Werror -Wextra
 
 NAME		=	minishell
 
@@ -61,8 +61,8 @@ ALL_INCS	=	$(INCS) $(LIBFT_INCS) $(MINILIB_INCS)
 ALL_LIBS	=	-lreadline -L$(DIR_LIBFT) -lft
 
 #TMP for compiling readline lib on mac
-ALL_INCS	=	$(INCS) $(LIBFT_INCS) $(MINILIB_INCS) -I${shell brew --prefix readline}/include
-ALL_LIBS	=	-lreadline -L$(shell brew --prefix readline)/lib -L$(DIR_LIBFT) -lft
+# ALL_INCS	=	$(INCS) $(LIBFT_INCS) $(MINILIB_INCS) -I${shell brew --prefix readline}/include
+# ALL_LIBS	=	-lreadline -L$(shell brew --prefix readline)/lib -L$(DIR_LIBFT) -lft
 
 
 DIR_OBJ		=	./objs/

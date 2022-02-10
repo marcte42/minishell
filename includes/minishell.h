@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 12:27:18 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/09 20:52:36 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/09 23:02:22 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 # define SUCCESS 1
 # define ERROR 0
 
-typedef struct		s_sys
+typedef struct s_sys
 {
 	char	*line;			// Ligne recuperee par readline
 	t_list	*env;			// Liste chainee avec les variables d'env
@@ -45,13 +45,13 @@ typedef struct		s_sys
 	int		exit;			// Flag pour le builtin exit
 }					t_sys;
 
-typedef struct		s_rdr
+typedef struct s_rdr
 {
-	int     type;			// Type 1 = '<' et '>' type 2 = '<<' et '>>'
-	char    *file;			// Destination vers le fichier
+	int		type;			// Type 1 = '<' et '>' type 2 = '<<' et '>>'
+	char	*file;			// Destination vers le fichier
 }					t_rdr;
 
-typedef struct		s_cmd
+typedef struct s_cmd
 {
 	int		id;				// L'id dans la ligne de commande 0, 1, 2,...
 	pid_t	pid;			// L'id du process de la commande 
@@ -64,14 +64,6 @@ typedef struct		s_cmd
 	int		fd_out;
 	int		retval;			// Valeur renvoyee par le process enfant ou le builtin
 }					t_cmd;
-
-typedef struct		s_var
-{
-	int		status;
-	int		signal;
-	pid_t	pid;
-}					t_var;
-
 
 t_list	*init_env(char **env);
 int		init_sys(t_sys *mini, char **env);
@@ -87,7 +79,7 @@ char	**env_to_tab(t_list *env);
 int		control_quotes(char *str);
 int		is_inquotes(char *s, char *c);
 int		has_quotes(char *s);
-void    trim_quotes(char *str);
+void	trim_quotes(char *str);
 char	*add_space(char *str);
 void	print_list(t_list *cmds);
 
@@ -131,6 +123,5 @@ int		is_binary(char *file);
 int		get_fd_in(t_sys *mini, t_cmd *cmd);
 int		get_fd_out(t_sys *mini, t_cmd *cmd);
 void	minishell_error(char *file);
-
 
 #endif
