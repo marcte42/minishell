@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 16:36:47 by me                #+#    #+#             */
-/*   Updated: 2022/02/10 16:00:03 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/10 16:01:38 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ void	free_cmd(t_list *elem)
 	cmd = elem->content;
 	if (cmd->raw)
 		free(cmd->raw);
-	i = -1;
 	unlink_heredocs(cmd);
+	i = -1;
 	while (cmd->argv && cmd->argv[++i])
 		free(cmd->argv[i]);
 	free(cmd->argv);
