@@ -6,16 +6,19 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 11:55:02 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/08 22:30:03 by me               ###   ########.fr       */
+/*   Updated: 2022/02/10 20:49:21 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	*g_ptr;
+
 void	signal_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
+		*g_ptr = 130;
 		ft_putchar_fd('\n', 2);
 		rl_on_new_line();
 		rl_replace_line("", 0);
@@ -27,6 +30,7 @@ void	signal_handler_2(int sig)
 {
 	if (sig == SIGINT)
 	{
+		*g_ptr = 130;
 		ft_putchar_fd('\n', 2);
 		rl_replace_line("", 0);
 		rl_redisplay();
@@ -69,6 +73,7 @@ int	main(int ac, char **av, char *env[])
 	signal(SIGQUIT, SIG_IGN);
 	if (!init_sys(&mini, env))
 		return (127);
+	g_ptr = &mini.retval;
 	if (ac != 1)
 		return (0);
 	while (1)
