@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 16:36:47 by me                #+#    #+#             */
-/*   Updated: 2022/02/08 23:47:18 by me               ###   ########.fr       */
+/*   Updated: 2022/02/10 16:00:03 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,21 @@ void	minishell_error(char *file)
 	ft_putendl_fd(strerror(errno), STDERR_FILENO);
 }
 
+void	unlink_heredocs(t_cmd *cmd)
+{
+	t_rdr	*rdr;
+	t_list	*rlst;
+
+	rlst = cmd->r_in;
+	while (rlst)
+	{
+		rdr = rlst->content;
+		if (rdr->type == 2)
+			unlink(rdr->file);
+		rlst = rlst->next;
+	}
+}
+
 void	free_cmd(t_list *elem)
 {
 	int		i;
@@ -29,6 +44,7 @@ void	free_cmd(t_list *elem)
 	if (cmd->raw)
 		free(cmd->raw);
 	i = -1;
+	unlink_heredocs(cmd);
 	while (cmd->argv && cmd->argv[++i])
 		free(cmd->argv[i]);
 	free(cmd->argv);
