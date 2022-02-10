@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 11:55:02 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/10 20:49:21 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/10 21:05:28 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	more_main(t_sys *mini)
 	{
 		mini->retval = 2;
 		free_sys(mini);
-		return (1);
+		return (ft_error_msg("minishell: syntax error\n", 1));
 	}
 	mini->retval = exec(mini);
 	if (mini->exit)

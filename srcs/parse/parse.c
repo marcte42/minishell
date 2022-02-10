@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/09 23:34:14 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/10 21:33:26 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ int	parse_args(t_sys *mini, t_list *cmds)
 	{
 		cmd = cmds->content;
 		cmd->id = i++;
+		if (ft_isempty(cmd->raw))
+			return (ERROR);
 		raw_space = add_space(cmd->raw);
 		if (!raw_space)
 			return (ERROR);
@@ -113,11 +115,11 @@ int	parse_args(t_sys *mini, t_list *cmds)
 
 int	parse(t_sys *mini)
 {
+	int	pipes_count;
+
+	pipes_count = count_pipes(mini->line);
 	if (!control_quotes(mini->line))
-	{
-		ft_putstr("minishell: syntax error\n");
 		return (ERROR);
-	}
 	if (!mini->line)
 		return (ERROR);
 	mini->cmds = parse_pipes(mini->line);
@@ -126,5 +128,7 @@ int	parse(t_sys *mini)
 	if (!parse_args(mini, mini->cmds))
 		return (ERROR);
 	mini->cmds_count = ft_lstsize(mini->cmds);
+	if (mini->cmds_count != pipes_count + 1)
+		return (ERROR);
 	return (SUCCESS);
 }

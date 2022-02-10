@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/31 12:27:18 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/09 23:02:22 by mterkhoy         ###   ########.fr       */
+/*   Created: 2022/02/10 16:07:04 by mterkhoy          #+#    #+#             */
+/*   Updated: 2022/02/10 21:33:14 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,33 +36,33 @@
 
 typedef struct s_sys
 {
-	char	*line;			// Ligne recuperee par readline
-	t_list	*env;			// Liste chainee avec les variables d'env
-	t_list	*cmds;			// Liste chainee avec les commandes
-	int		cmds_count;		// Nombre de commandes a executer
-	int		*pfds;			// Tableau de pipes
-	int		retval;			// Valeur finale de retour d'execution
-	int		exit;			// Flag pour le builtin exit
+	char	*line;
+	t_list	*env;
+	t_list	*cmds;
+	int		cmds_count;
+	int		*pfds;
+	int		retval;
+	int		exit;
 }					t_sys;
 
 typedef struct s_rdr
 {
-	int		type;			// Type 1 = '<' et '>' type 2 = '<<' et '>>'
-	char	*file;			// Destination vers le fichier
+	int		type;
+	char	*file;
 }					t_rdr;
 
 typedef struct s_cmd
 {
-	int		id;				// L'id dans la ligne de commande 0, 1, 2,...
-	pid_t	pid;			// L'id du process de la commande 
-	char	*raw;			// Ligne brute	
-	char	**argv;			// Tableau de char** avec la commande, les arguments et les redirs
-	char	**clean;		// Tableau de char** avec juste la commande et les args
-	t_list	*r_in;			// Liste chainee avec toutes les redirections entrantes
-	t_list	*r_out;			// Liste chainee avec toutes les redirections sortantes
+	int		id;
+	pid_t	pid;
+	char	*raw;
+	char	**argv;
+	char	**clean;
+	t_list	*r_in;
+	t_list	*r_out;
 	int		fd_in;
 	int		fd_out;
-	int		retval;			// Valeur renvoyee par le process enfant ou le builtin
+	int		retval;
 }					t_cmd;
 
 t_list	*init_env(char **env);
@@ -119,6 +119,8 @@ void	signal_handler(int sig);
 void	signal_handler_2(int sig);
 
 int		is_dir(char *path);
+int		ft_isempty(char *s);
+int		count_pipes(char *s);
 int		is_binary(char *file);
 int		get_fd_in(t_sys *mini, t_cmd *cmd);
 int		get_fd_out(t_sys *mini, t_cmd *cmd);

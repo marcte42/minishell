@@ -6,11 +6,41 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:46:21 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/10 15:46:32 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/10 21:33:35 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_isempty(char *s)
+{
+	int	i;
+
+	if (!s)
+		return (1);
+	i = -1;
+	while (s[++i])
+	{
+		if (!ft_isspace(s[i]))
+			return (0);
+	}
+	return (1);
+}
+
+int	count_pipes(char *s)
+{
+	int	i;
+	int	count;
+
+	count = 0;
+	i = -1;
+	while (s[++i])
+	{
+		if (s[i] == '|' && !is_inquotes(s, &s[i]))
+			count++;
+	}
+	return (count);
+}
 
 int	count_redirs(char *str)
 {
