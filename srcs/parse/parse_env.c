@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:28:11 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/10 14:17:44 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/11 02:17:10 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,24 +65,69 @@ char	*parse_env_heredoc(t_sys *mini, char *line, t_list *env)
 	return (line);
 }
 
-char	*parse_env(t_sys *mini, char *line, t_list *env)
+int	ft_has_valid_env(t_sys *mini, char *line)
 {
-	int		i;
+
+	// helpful for testing but no longer necessary
+	int	i;
 	char	*key;
 	char	*value;
 
 	i = -1;
-	while (line[++i])
+	while (line && line[++i])
 	{
 		if (line[i] == '$' && line[i + 1] && is_inquotes(line, &line[i]) != 1
 			&& (ft_isalnum(line[i + 1]) || line[i + 1] == '?'))
 		{
 			key = get_key(&line[i + 1]);
 			if (!key)
+				return (0);
+			value = ft_getenv(mini, key, mini->env);
+	//		printf("value: %s\n", value);
+			if (!value || value[0] == '\0')	// free key? might need a special free that returns null so can return it here
+			{
+				free(key);
+				return (ft_scott_free(&value, 2));
+			}
+			free(key);
+			i = i + ft_strlen(value) - 1;
+			free(value);
+			return (1);
+		}
+	}
+	return (0);
+}
+
+void	*ft_free_ret_null(char *thing)
+{
+	if (thing)
+		free(thing);
+	return (NULL);
+}
+
+
+char	*parse_env(t_sys *mini, char *line, t_list *env)
+{
+	int		i;
+	char	*key;
+	char	*value;
+
+//	printf("in pars env\n");
+	i = -1;
+	while (line && line[++i])
+	{
+	//	printf("line: |%s|\n", &line[i]);
+		if (line[i] == '$' && line[i + 1] && is_inquotes(line, &line[i]) != 1
+			&& (ft_isalnum(line[i + 1]) || line[i + 1] == '?'))
+		{
+		//	printf("line: |%s|\n", &line[i]);
+			key = get_key(&line[i + 1]);
+			if (!key)
 				return (NULL);
 			value = ft_getenv(mini, key, env);
-			if (!value)
-				return (NULL);
+			if (!value)	// free key? might need a special free that returns null so can return it here
+				return (ft_free_ret_null(value));
+	//			return (NULL);
 			line = expand_env(line, &line[i], key, value);
 			free(key);
 			i = i + ft_strlen(value) - 1;

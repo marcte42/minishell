@@ -23,6 +23,7 @@ int	size_arg(char **args)
 }
 
 // This has to go, it's problem to be solved in the Expansion, not here
+/*
 int	print_arg(char *arg, int fd)
 {
 	int		i;
@@ -43,6 +44,7 @@ int	print_arg(char *arg, int fd)
 	free(line);
 	return (1);
 }
+*/
 
 int	is_flag(char *str)
 {
@@ -75,7 +77,9 @@ int	ft_echo(char **args, int fd)
 		}
 		while (args[i])
 		{
-			if (print_arg(args[i], fd) && args[i + 1])
+			//if (print_arg(args[i], fd) && args[i + 1])
+			ft_putstr_fd(args[i], fd);
+			if (args[i + 1])
 				ft_putchar_fd(' ', fd);
 			i++;
 		}

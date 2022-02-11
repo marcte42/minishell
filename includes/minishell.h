@@ -83,6 +83,9 @@ void	trim_quotes(char *str);
 char	*add_space(char *str);
 void	print_list(t_list *cmds);
 
+int		ft_has_valid_env(t_sys *mini, char *line);
+
+
 int		exec(t_sys *mini);
 int		init_pfds(t_sys *mini);
 int		close_pfds(t_sys *mini);
