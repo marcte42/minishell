@@ -22,6 +22,7 @@ int	size_arg(char **args)
 	return (size);
 }
 
+// This has to go, it's problem to be solved in the Expansion, not here
 int	print_arg(char *arg, int fd)
 {
 	int		i;
@@ -74,8 +75,7 @@ int	ft_echo(char **args, int fd)
 		}
 		while (args[i])
 		{
-			print_arg(args[i], fd);
-			if (args[i + 1])
+			if (print_arg(args[i], fd) && args[i + 1])
 				ft_putchar_fd(' ', fd);
 			i++;
 		}

@@ -70,6 +70,11 @@ int	ft_unset(char **args, t_list **env)
 		return (0);
 	i = 0;
 	while (args[++i])
-		unset_one_elem(args[i], env);
+	{
+		if (args[i][0] == '\0')
+			ft_putstr_fd("Error: unset '' not a valid identifer\n", 2);
+		else
+			unset_one_elem(args[i], env);
+	}
 	return (0);
 }

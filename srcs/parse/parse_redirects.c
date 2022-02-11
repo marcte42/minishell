@@ -67,10 +67,7 @@ int	add_redirect(t_sys *mini, t_cmd *cmd, char **argv, char *type_char)
 	if (!*argv || !ft_strcmp(*argv, "<") || !ft_strcmp(*argv, "<<")
 		|| !ft_strcmp(*argv, ">") || !ft_strcmp(*argv, ">>")
 		|| !ft_strcmp(*argv, "|"))
-	{
-		ft_putstr_fd("minishell: syntax error\n", STDERR_FILENO);
 		return (ERROR);
-	}
 	type = 1;
 	if (!ft_strcmp(type_char, "<<") || !ft_strcmp(type_char, ">>"))
 		type = 2;
