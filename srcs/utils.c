@@ -99,3 +99,12 @@ int	is_dir(char *path)
 		close(fd);
 	return (0);
 }
+
+int	special_mini_error(char *file, int ret)
+{
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(file, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putendl_fd(strerror(errno), STDERR_FILENO);
+	return (ret);
+}

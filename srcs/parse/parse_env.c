@@ -65,13 +65,11 @@ char	*parse_env_heredoc(t_sys *mini, char *line, t_list *env)
 	return (line);
 }
 
-int	ft_has_valid_env(t_sys *mini, char *line)
+int	ft_has_valid_env(t_sys *mini, char *line, int i)
 {
-	int	i;
 	char	*key;
 	char	*value;
 
-	i = -1;
 	while (line && line[++i])
 	{
 		if (line[i] == '$' && line[i + 1] && is_inquotes(line, &line[i]) != 1
@@ -81,8 +79,7 @@ int	ft_has_valid_env(t_sys *mini, char *line)
 			if (!key)
 				return (0);
 			value = ft_getenv(mini, key, mini->env);
-	//		printf("value: %s\n", value);
-			if (!value || value[0] == '\0')	// free key? might need a special free that returns null so can return it here
+			if (!value || value[0] == '\0')
 			{
 				free(key);
 				return (ft_scott_free(&value, 2));
@@ -103,32 +100,24 @@ void	*ft_free_ret_null(char *thing)
 	return (NULL);
 }
 
-
 char	*parse_env(t_sys *mini, char *line, t_list *env)
 {
 	int		i;
 	char	*key;
 	char	*value;
 
-//	printf("in pars env\n");
 	i = -1;
 	while (line && line[++i])
 	{
-
-		// need to find a way to remove stray $ if in a line but not an env var...
-
-	//	printf("line: |%s|\n", &line[i]);
 		if (line[i] == '$' && line[i + 1] && is_inquotes(line, &line[i]) != 1
 			&& (ft_isalnum(line[i + 1]) || line[i + 1] == '?'))
 		{
-		//	printf("line: |%s|\n", &line[i]);
 			key = get_key(&line[i + 1]);
 			if (!key)
 				return (NULL);
 			value = ft_getenv(mini, key, env);
-			if (!value)	// free key? might need a special free that returns null so can return it here
+			if (!value)
 				return (ft_free_ret_null(value));
-	//			return (NULL);
 			line = expand_env(line, &line[i], key, value);
 			free(key);
 			i = i + ft_strlen(value) - 1;

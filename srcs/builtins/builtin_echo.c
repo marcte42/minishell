@@ -22,30 +22,6 @@ int	size_arg(char **args)
 	return (size);
 }
 
-// This has to go, it's problem to be solved in the Expansion, not here
-/*
-int	print_arg(char *arg, int fd)
-{
-	int		i;
-	char	**line;
-
-	line = ft_split(arg, ' ');
-	if (!line)
-		return (0);
-	i = 0;
-	while (line[i])
-	{
-		ft_putstr_fd(line[i], fd);
-		if (line[i + 1])
-			ft_putchar_fd(' ', fd);
-		++i;
-	}
-	ft_free_strtab(line);
-	free(line);
-	return (1);
-}
-*/
-
 int	is_flag(char *str)
 {
 	int	i;
@@ -77,7 +53,6 @@ int	ft_echo(char **args, int fd)
 		}
 		while (args[i])
 		{
-			//if (print_arg(args[i], fd) && args[i + 1])
 			ft_putstr_fd(args[i], fd);
 			if (args[i + 1])
 				ft_putchar_fd(' ', fd);

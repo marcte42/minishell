@@ -59,6 +59,8 @@ int	get_fd_in(t_sys *mini, t_cmd *cmd)
 	lst = cmd->r_in;
 	while (lst)
 	{
+		if (fd > 2)
+			close(fd);
 		rdr = lst->content;
 		fd = open((char *)rdr->file, O_RDONLY);
 		if (fd == -1)
@@ -83,6 +85,8 @@ int	get_fd_out(t_sys *mini, t_cmd *cmd)
 	lst = cmd->r_out;
 	while (lst)
 	{
+		if (fd > 2)
+			close(fd);
 		rdr = lst->content;
 		if (rdr->type == 1)
 			fd = open((char *)rdr->file, O_CREAT | O_WRONLY, 0600);
@@ -90,10 +94,7 @@ int	get_fd_out(t_sys *mini, t_cmd *cmd)
 			fd = open((char *)rdr->file, O_CREAT | O_WRONLY
 					| O_APPEND, 0600);
 		if (fd == -1)
-		{
-			minishell_error(rdr->file);
-			return (fd);
-		}
+			return (special_mini_error(rdr->file, fd));
 		lst = lst->next;
 	}
 	return (fd);

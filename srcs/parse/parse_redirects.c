@@ -64,23 +64,11 @@ int	add_redirect(t_sys *mini, t_cmd *cmd, char **argv, char *type_char)
 {
 	int		type;
 
-	// maybe we need to check expansions here!
-	// something like
-//	char	*tmp;
-
-	// redundant but at least it works.
 	argv[0] = parse_env(mini, argv[0], mini->env);
-
-/*	if (!tmp || !ft_strcmp(tmp, "<") || !ft_strcmp(tmp, "<<")
-		|| !ft_strcmp(tmp, ">") || !ft_strcmp(tmp, ">>")
-		|| !ft_strcmp(tmp, "|"))
-		return (ERROR);
-*/
 	if (!*argv || !ft_strcmp(*argv, "<") || !ft_strcmp(*argv, "<<")
 		|| !ft_strcmp(*argv, ">") || !ft_strcmp(*argv, ">>")
 		|| !ft_strcmp(*argv, "|"))
 		return (ERROR);
-
 	type = 1;
 	if (!ft_strcmp(type_char, "<<") || !ft_strcmp(type_char, ">>"))
 		type = 2;
@@ -89,25 +77,16 @@ int	add_redirect(t_sys *mini, t_cmd *cmd, char **argv, char *type_char)
 	return (add_r_out(cmd, argv, type));
 }
 
-
-// adding * to *cmd didn't help, why doesn't it work...
 int	parse_not_redirect(t_sys *mini, t_cmd **cmd, int *i, int *j)
 {
 	int	has_env;
 
-	has_env = ft_has_valid_env(mini, (*cmd)->argv[*i]);
+	has_env = ft_has_valid_env(mini, (*cmd)->argv[*i], -1);
 	(*cmd)->argv[*i] = parse_env(mini, (*cmd)->argv[*i], mini->env);
 	trim_quotes((*cmd)->argv[*i]);
-		// here, if it was an env var type, but not defined, we don't increment j
-		// need to skip only if empty thing was a env var, if '' you keep it...
-	if ((*cmd)->argv[*i][0] == '\0' && has_env == 2)	// ok i think this works...		
+	if ((*cmd)->argv[*i][0] == '\0' && has_env == 2)
 		return (0);
-	// maybe something like if (has_env == 1 )
-	// if argv[i] an env var we need to trim all but 1 space before, after and in between words.
-	// oh and to make it harder, we only trim if env var not between quotes...
-		// i guess we need this further up, above trim quotes...
 	(*cmd)->clean[*j] = (*cmd)->argv[*i];
-		// yea what we want is if an env vard doesn't exist, we don't add to clean
 	++(*j);
 	return (1);
 }
@@ -117,21 +96,9 @@ int	parse_redirects(t_sys *mini, t_cmd *cmd, int i, int j)
 	if (!cmd)
 		return (0);
 	i = strtab_len(cmd->argv);
-	// change to calloc?
 	cmd->clean = malloc((i + 1) * sizeof(char *));
 	if (!cmd->clean)
 		return (0);
-
-// testing
-
-/*	i = -1;
-	while (cmd->argv[++i])
-	{
-		printf("%s\n %d\n", cmd->argv[i], ft_has_valid_env(mini, cmd->argv[i]));
-	}
-*/
-
-
 	i = -1;
 	while (cmd->argv[++i])
 	{
@@ -139,23 +106,12 @@ int	parse_redirects(t_sys *mini, t_cmd *cmd, int i, int j)
 			|| !ft_strcmp(cmd->argv[i], ">") || !ft_strcmp(cmd->argv[i], ">>"))
 		{
 			i++;
-			// but maybe need to check expansions here?
 			if (!add_redirect(mini, cmd, &cmd->argv[i], cmd->argv[i - 1]))
 				return (ERROR);
 			continue ;
 		}
 		parse_not_redirect(mini, &cmd, &i, &j);
-/*		cmd->argv[i] = parse_env(mini, cmd->argv[i], mini->env);
-		trim_quotes(cmd->argv[i]);
-		// maybe here, if (!cmd->argv not ++j?)
-		// here, if it was an env var type, but not defined, we don't increment j
-		// not quite this need to skip only if empty thing was a env var, if '' you keep it...
-		if (cmd->argv[i][0] != '\0')	// ok i think this works...		
-			cmd->clean[j++] = cmd->argv[i];
-		// yea what we want is if an env vard doesn't exist, we don't add to clean
-*/
 	}
 	cmd->clean[j] = NULL;
-//	ft_print_strtab(cmd->clean);
 	return (SUCCESS);
 }

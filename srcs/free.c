@@ -51,6 +51,10 @@ void	free_cmd(t_list *elem)
 	free(cmd->clean);
 	ft_lstclear(&cmd->r_in, free);
 	ft_lstclear(&cmd->r_out, free);
+	if (cmd->fd_in > 2)
+		close(cmd->fd_in);
+	if (cmd->fd_out > 2)
+		close(cmd->fd_out);
 }
 
 void	free_sys(t_sys *mini)
