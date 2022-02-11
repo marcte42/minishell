@@ -67,8 +67,6 @@ char	*parse_env_heredoc(t_sys *mini, char *line, t_list *env)
 
 int	ft_has_valid_env(t_sys *mini, char *line)
 {
-
-	// helpful for testing but no longer necessary
 	int	i;
 	char	*key;
 	char	*value;
@@ -116,6 +114,9 @@ char	*parse_env(t_sys *mini, char *line, t_list *env)
 	i = -1;
 	while (line && line[++i])
 	{
+
+		// need to find a way to remove stray $ if in a line but not an env var...
+
 	//	printf("line: |%s|\n", &line[i]);
 		if (line[i] == '$' && line[i + 1] && is_inquotes(line, &line[i]) != 1
 			&& (ft_isalnum(line[i + 1]) || line[i + 1] == '?'))

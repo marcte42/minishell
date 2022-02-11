@@ -98,11 +98,14 @@ int	parse_not_redirect(t_sys *mini, t_cmd **cmd, int *i, int *j)
 	has_env = ft_has_valid_env(mini, (*cmd)->argv[*i]);
 	(*cmd)->argv[*i] = parse_env(mini, (*cmd)->argv[*i], mini->env);
 	trim_quotes((*cmd)->argv[*i]);
-		// maybe here, if (!cmd->argv not ++j?)
 		// here, if it was an env var type, but not defined, we don't increment j
-		// not quite this need to skip only if empty thing was a env var, if '' you keep it...
+		// need to skip only if empty thing was a env var, if '' you keep it...
 	if ((*cmd)->argv[*i][0] == '\0' && has_env == 2)	// ok i think this works...		
 		return (0);
+	// maybe something like if (has_env == 1 )
+	// if argv[i] an env var we need to trim all but 1 space before, after and in between words.
+	// oh and to make it harder, we only trim if env var not between quotes...
+		// i guess we need this further up, above trim quotes...
 	(*cmd)->clean[*j] = (*cmd)->argv[*i];
 		// yea what we want is if an env vard doesn't exist, we don't add to clean
 	++(*j);
