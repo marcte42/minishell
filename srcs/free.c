@@ -78,3 +78,10 @@ void	free_sys(t_sys *mini)
 	mini->cmds_count = 0;
 	mini->exit = 0;
 }
+
+void	*ft_free_ret_null(char *thing)
+{
+	if (thing)
+		free(thing);
+	return (NULL);
+}

@@ -103,6 +103,7 @@ void		ft_putnbrnl_fd(int nbr, int fd);
 int			ft_free_strtab(char **tab);
 int			ft_print_strtab(char **tab);
 int			strtab_len(char **tab);
+char		*concat_tab_strs(char **tab);
 
 /*
 **		Is Functions

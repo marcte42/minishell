@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/11 02:06:02 by me               ###   ########.fr       */
+/*   Updated: 2022/02/12 21:48:03 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,17 +77,27 @@ int	add_redirect(t_sys *mini, t_cmd *cmd, char **argv, char *type_char)
 	return (add_r_out(cmd, argv, type));
 }
 
-int	parse_not_redirect(t_sys *mini, t_cmd **cmd, int *i, int *j)
+int	parse_not_redirect(t_sys *mini, t_cmd *cmd, int i, int *j)
 {
-	int	has_env;
+	int		has_env;
+	char	**tab;
 
-	has_env = ft_has_valid_env(mini, (*cmd)->argv[*i], -1);
-	(*cmd)->argv[*i] = parse_env(mini, (*cmd)->argv[*i], mini->env);
-	trim_quotes((*cmd)->argv[*i]);
-	if ((*cmd)->argv[*i][0] == '\0' && has_env == 2)
+	has_env = ft_has_valid_env(mini, cmd->argv[i], -1);
+	cmd->argv[i] = parse_env(mini, cmd->argv[i], mini->env);
+	if (has_env == 1)
+	{
+		tab = ft_split_constraint(cmd->argv[i], ' ', is_inquotes);
+		if (!tab)
+			return (0);		// maybe something dif?
+		free(cmd->argv[i]);
+		cmd->argv[i] = concat_tab_strs(tab);
+
+	}
+//	cmd->argv[i] = trim_env(mini, cmd->argv[i], mini->env, has_env);
+	trim_quotes(cmd->argv[i]);
+	if (cmd->argv[i][0] == '\0' && has_env == 2)
 		return (0);
-	(*cmd)->clean[*j] = (*cmd)->argv[*i];
-	++(*j);
+	cmd->clean[(*j)++] = cmd->argv[i];
 	return (1);
 }
 
@@ -110,7 +120,7 @@ int	parse_redirects(t_sys *mini, t_cmd *cmd, int i, int j)
 				return (ERROR);
 			continue ;
 		}
-		parse_not_redirect(mini, &cmd, &i, &j);
+		parse_not_redirect(mini, cmd, i, &j);
 	}
 	cmd->clean[j] = NULL;
 	return (SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:28:11 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/11 02:17:10 by me               ###   ########.fr       */
+/*   Updated: 2022/02/12 02:16:49 by me               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,6 @@ int	ft_has_valid_env(t_sys *mini, char *line, int i)
 		}
 	}
 	return (0);
-}
-
-void	*ft_free_ret_null(char *thing)
-{
-	if (thing)
-		free(thing);
-	return (NULL);
 }
 
 char	*parse_env(t_sys *mini, char *line, t_list *env)
