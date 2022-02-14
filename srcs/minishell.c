@@ -53,7 +53,6 @@ int	more_main(t_sys *mini)
 		return (ft_error_msg("minishell: syntax error\n", 1));
 	}
 	mini->retval = exec(mini);
-//	printf("exec failed? retval: %d\n", mini->retval);
 	if (mini->exit)
 	{
 		ft_lstclear(&mini->env, free);

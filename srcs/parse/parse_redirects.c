@@ -88,15 +88,14 @@ int	parse_not_redirect(t_sys *mini, t_cmd *cmd, int i, int *j)
 	{
 		tab = ft_split_constraint(cmd->argv[i], ' ', is_inquotes);
 		if (!tab)
-			return (0);		// maybe something dif?
+			return (0);
 		free(cmd->argv[i]);
 		cmd->argv[i] = concat_tab_strs(tab);
 		ft_free_strtab(tab);
 		free(tab);
 	}
-//	cmd->argv[i] = trim_env(mini, cmd->argv[i], mini->env, has_env);
 	trim_quotes(cmd->argv[i]);
-	if (cmd->argv[i][0] == '\0' && has_env == 2)
+	if (cmd->argv[i] && cmd->argv[i][0] == '\0' && has_env == 2)
 		return (0);
 	cmd->clean[(*j)++] = cmd->argv[i];
 	return (1);

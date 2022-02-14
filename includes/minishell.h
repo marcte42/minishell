@@ -87,8 +87,6 @@ int		ft_has_valid_env(t_sys *mini, char *line, int i);
 int		special_mini_error(char *file, int ret);
 void	*ft_free_ret_null(char *thing);
 
-char	*trim_env(t_sys *mini, char *line, t_list *env, int has_env);
-
 int		exec(t_sys *mini);
 int		init_pfds(t_sys *mini);
 int		close_pfds(t_sys *mini);
