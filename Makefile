@@ -1,7 +1,7 @@
 
 
 CC			=	gcc
-CFLAGS		=	-g -Wall -Werror -Wextra
+CFLAGS		=	-Wall -Werror -Wextra
 
 NAME		=	minishell
 
@@ -130,7 +130,7 @@ re: fclean all
 
 ### Leak testing ####
 
-testf: 
+testf:
 
 testl:
 
