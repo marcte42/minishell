@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 14:38:15 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/06 21:04:10 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/24 14:15:24 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	get_fd_out(t_sys *mini, t_cmd *cmd)
 			close(fd);
 		rdr = lst->content;
 		if (rdr->type == 1)
-			fd = open((char *)rdr->file, O_CREAT | O_WRONLY, 0600);
+			fd = open((char *)rdr->file, O_CREAT | O_WRONLY | O_TRUNC, 0600);
 		else
 			fd = open((char *)rdr->file, O_CREAT | O_WRONLY
 					| O_APPEND, 0600);
