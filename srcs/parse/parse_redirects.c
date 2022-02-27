@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:22:29 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/12 21:48:03 by me               ###   ########.fr       */
+/*   Updated: 2022/02/27 18:12:09 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ int	parse_not_redirect(t_sys *mini, t_cmd *cmd, int i, int *j)
 		ft_free_strtab(tab);
 		free(tab);
 	}
-	trim_quotes(cmd->argv[i]);
 	if (cmd->argv[i] && cmd->argv[i][0] == '\0' && has_env == 2)
 		return (0);
 	cmd->clean[(*j)++] = cmd->argv[i];
@@ -120,6 +119,7 @@ int	parse_redirects(t_sys *mini, t_cmd *cmd, int i, int j)
 				return (ERROR);
 			continue ;
 		}
+		trim_quotes(cmd->argv[i]);
 		parse_not_redirect(mini, cmd, i, &j);
 	}
 	cmd->clean[j] = NULL;
