@@ -6,7 +6,7 @@
 /*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/01 20:47:04 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/09 23:28:41 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/02/28 15:21:03 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ void	trim_quotes(char *str)
 		return ;
 	s_quote = 0;
 	d_quote = 0;
+	if (!control_quotes(str))
+		return ;
 	i = -1;
 	while (str[++i])
 	{
