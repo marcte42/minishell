@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: acousini <acousini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/02 21:19:11 by pravry            #+#    #+#             */
-/*   Updated: 2022/02/03 03:56:46 by me               ###   ########.fr       */
+/*   Created: 2022/02/25 18:42:35 by acousini          #+#    #+#             */
+/*   Updated: 2022/03/02 19:14:00 by acousini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// looks fine to me
 
 int	ft_pwd(int fd)
 {

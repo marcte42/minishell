@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: me <erlazo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: acousini <acousini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/04 00:30:06 by me                #+#    #+#             */
-/*   Updated: 2022/02/07 22:49:41 by me               ###   ########.fr       */
+/*   Created: 2022/02/25 00:30:06 by acousini          #+#    #+#             */
+/*   Updated: 2022/03/02 19:13:37 by acousini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	update_pwds(t_list *env, char *new_pwd_path)
 
 int	ft_cd(t_sys *mini, char **args)
 {
-	if (!args[1])
+	if (!args[1] || !ft_strcmp(args[1], "~"))
 		return (go_to_home(mini->env));
 	else if (ft_strcmp(args[1], "-") == 0)
 		return (go_to_prev(mini->env));

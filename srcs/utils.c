@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: acousini <acousini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:33:50 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/02/09 19:02:25 by mterkhoy         ###   ########.fr       */
+/*   Updated: 2022/03/02 19:05:28 by acousini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,6 @@ char	*get_key(char *s)
 	return (key);
 }
 
-// ft_getenv
-// Retourne un char* avec la valeur associee a la key
-// Si la key n'a pas ete trouvee on retourne un char* vide ""
-// Si une erreur se produit on retourne un NULL
 char	*ft_getenv(t_sys *mini, char *key, t_list *env)
 {
 	char	*env_key;
