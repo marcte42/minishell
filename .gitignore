@@ -1,9 +1,0 @@
-*.swp
-objs
-*.o
-minishell
-libft.a
-42-minishell_bash_tester_2022
-minishell.dSYM/
-minishell_tester
-thallard_minishell_tester
