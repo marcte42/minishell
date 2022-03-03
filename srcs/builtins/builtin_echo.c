@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acousini <acousini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 18:32:35 by acousini          #+#    #+#             */
-/*   Updated: 2022/03/02 18:40:21 by acousini         ###   ########.fr       */
+/*   Updated: 2022/03/03 13:06:50 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	is_flag(char *str)
 		return (0);
 	if (str[0] != '-')
 		return (0);
-	i = 1;
+	i = 0;
 	while (str[++i])
 		if (str[i] != 'n')
 			return (0);

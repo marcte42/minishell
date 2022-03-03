@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acousini <acousini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 00:30:06 by acousini          #+#    #+#             */
-/*   Updated: 2022/03/02 19:13:37 by acousini         ###   ########.fr       */
+/*   Updated: 2022/03/03 13:14:15 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,10 @@ int	go_to_path(t_list *env, char *path)
 	{
 		ft_putstr_fd("cd: ", 2);
 		ft_putstr_fd(path, 2);
-		return (ft_error_msg_fd(": No such file or directory\n", 2, 1));
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putstr_fd("\n", 2);
+		return (1);
 	}
 	if (getcwd(you_are_here, PATH_MAX) == NULL)
 		return (1);

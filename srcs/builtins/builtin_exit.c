@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acousini <acousini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 18:41:25 by acousini          #+#    #+#             */
-/*   Updated: 2022/03/02 19:13:48 by acousini         ###   ########.fr       */
+/*   Updated: 2022/03/03 11:27:28 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	ft_full_strisnum(const char *str)
 int	ft_exit(char **args, t_sys *mini)
 {
 	if (mini->cmds_count == 1)
-			mini->exit = 1;
+		mini->exit = 1;
 	if (args[1] && ft_full_strisnum(args[1]) == 0)
 	{
 		ft_putstr_fd("exit\n", STDERR_FILENO);
