@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acousini <acousini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mterkhoy <mterkhoy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 11:55:02 by mterkhoy          #+#    #+#             */
-/*   Updated: 2022/03/02 18:43:49 by acousini         ###   ########.fr       */
+/*   Updated: 2022/03/06 13:50:06 by mterkhoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,20 @@ void	signal_handler_2(int sig)
 	}
 }
 
+int	ft_onlyspace(char *s)
+{
+	int	i;
+
+	i = -1;
+	while (s[++i])
+		if (!ft_isspace(s[i]))
+			return (0);
+	return (1);
+}
+
 int	more_main(t_sys *mini)
 {
-	if (!*(mini->line))
+	if (!*(mini->line) || ft_onlyspace(mini->line))
 	{
 		rl_redisplay();
 		free_sys(mini);
