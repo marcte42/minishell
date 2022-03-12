@@ -55,8 +55,8 @@ LIBFT_INCS		=	-I$(DIR_LIBFT)
 
 MINILIB_INCS	=	-I$(DIR_MINILIB)
 
-ALL_INCS	=	$(INCS) $(LIBFT_INCS) $(MINILIB_INCS)
-ALL_LIBS	=	-lreadline -L$(DIR_LIBFT) -lft
+ALL_INCS	=	$(INCS) $(LIBFT_INCS) $(MINILIB_INCS) -I${shell brew --prefix readline}/include
+ALL_LIBS	=	-lreadline -L$(shell brew --prefix readline)/lib -L$(DIR_LIBFT) -lft
 
 DIR_OBJ		=	./objs/
 
